@@ -16,8 +16,9 @@ This project is used for processing pointcould data of tunnel. All code was test
 getinnerrings<br>
 ![](https://github.com/cqc2/pc-road/blob/master/example/marking.png) 
 
-## classifying road marking of linear markings£¬arrow markings and guidelines
+## classifying road marking of linear markings,arrow markings and guidelines
 ![](https://github.com/cqc2/pc-road/blob/master/example/line.png) 
+![](https://github.com/cqc2/pc-road/blob/master/example/arrow.png)
 ![](https://github.com/cqc2/pc-road/blob/master/example/guideline.png) 
 
 The program is written by Chen Qichao in his period of studying in master degree at Tongji University. You can redistribute or modify the program for non-commercial use. Any commercial use of this program is forbidden except being authorized.<br>
