@@ -1,13 +1,13 @@
 function  [cluster,arrows] = vectorizearrow(cluster)
 %
-% ¼ıÍ·±êÏßÊ¶±ğ
+% ç®­å¤´æ ‡çº¿è¯†åˆ«
 % [cluster,breakLines] = vectorizearrow(cluster)
 % INPUT:
-% cluster - µãÔÆµÄ¾ÛÀà
+% cluster - ç‚¹äº‘çš„èšç±»
 % 
 % OUTPUT:
-% cluster - ´¦ÀíºóµÄµãÔÆ¾ÛÀà£¬ÔİÊ±ÎŞÓÃ¡£
-% arrows  - µÚÒ»ÁĞÊÇ¼ıÍ·ÔÚclusterÖĞµÄË÷ÒıºÅ£¬µÚ¶şÁĞÊÇ¶ÔÓ¦¼ıÍ·Àà±ğ±àºÅ
+% cluster - å¤„ç†åçš„ç‚¹äº‘èšç±»ï¼Œæš‚æ—¶æ— ç”¨ã€‚
+% arrows  - ç¬¬ä¸€åˆ—æ˜¯ç®­å¤´åœ¨clusterä¸­çš„ç´¢å¼•å·ï¼Œç¬¬äºŒåˆ—æ˜¯å¯¹åº”ç®­å¤´ç±»åˆ«ç¼–å·
 
 readtemplate();
 nc = size(cluster,2);
@@ -39,19 +39,19 @@ end
 
 function type = matchingarrow(cluster)
 %
-% ¼ıÍ·±êÏß¼ì²â
+% ç®­å¤´æ ‡çº¿æ£€æµ‹
 
 global template;
 w = cluster.length;
 h = cluster.width;
-% Óë±êÏß³ß´ç²îµÄÔ¶µÄÖ±½ÓÅÅ³ıµô
+% ä¸æ ‡çº¿å°ºå¯¸å·®çš„è¿œçš„ç›´æ¥æ’é™¤æ‰
 if (w>6.2)||(w<5)||(h<0.3)||(h>2.4)
     type =  0;
     return;
 else
-    %Éú³ÉµãÔÆÓ°ÏñµÄÄ¬ÈÏ²ÎÊı£¬
+    %ç”Ÿæˆç‚¹äº‘å½±åƒçš„é»˜è®¤å‚æ•°ï¼Œ
     pixelsize = 0.05;
-    buffersize = 0.2;
+    buffersize = 0.15;%è‹¥è®¾ç½®çš„è¿‡å°ï¼Œä¼šå‡ºç°å­”æ´ï¼Œè‹¥è®¾ç½®çš„è¿‡å¤§ï¼Œç”Ÿæˆçš„å›¾åƒè¾¹ç•Œä¼šè†¨èƒ€ï¼Œå½±å“è¯†åˆ«
     if cluster.density<100
         buffersize = 4/cluster.density;
     end
@@ -62,16 +62,16 @@ else
     
     se = strel('diamond',2);
     imageData = imclose(imageData,se);
-    imageData= imfill(imageData,'holes');% Ìî²¹¿×¶´
+    imageData= imfill(imageData,'holes');% å¡«è¡¥å­”æ´
 end
 % figure(2);imshow(imageData);
 
-% Ó°ÏìÊ¶±ğÂÊºÍ´¦ÀíËÙ¶ÈµÄÔ­ÒòÖ÷ÒªÊÇ±êÏßÈ±Ëğ£¬Èç¹û±êÏßÈ±Ëğ½ÏÉÙµÄ»°´¦ÀíĞ§¹û»¹ÊÇ¿ÉÒÔµÄ
+% å½±å“è¯†åˆ«ç‡å’Œå¤„ç†é€Ÿåº¦çš„åŸå› ä¸»è¦æ˜¯æ ‡çº¿ç¼ºæŸï¼Œå¦‚æœæ ‡çº¿ç¼ºæŸè¾ƒå°‘çš„è¯å¤„ç†æ•ˆæœè¿˜æ˜¯å¯ä»¥çš„
 [type,T,imageData] = findmostmatchbyskel(imageData,0.01/pixelsize);
 if type
-    % ½øĞĞÔ¤´¦Àí£¬Ê¹Ä£°åÓëÆ¥ÅäÍ¼Ïñ´óĞ¡¡¢Î»ÖÃÒ»ÖÂ
+    % è¿›è¡Œé¢„å¤„ç†ï¼Œä½¿æ¨¡æ¿ä¸åŒ¹é…å›¾åƒå¤§å°ã€ä½ç½®ä¸€è‡´
     [tI,mI] =  preprocimage(abs(imresize(template{type}, 0.01/pixelsize)),imageData,T);
-    % Æ¥Åä
+    % åŒ¹é…
     [regist_perct,defect_perct,exceed_perct,defect_area,exceed_area] =  matching(tI,mI);
     if ~analysispara(type,regist_perct,defect_perct,exceed_perct,defect_area,exceed_area)
         type = 0;
@@ -81,7 +81,7 @@ end
 
 function isMatched = analysispara(type,regist_perct,defect_perct,exceed_perct,defect_area,exceed_area)
 %
-% ¶Ô½á¹û²ÎÊı½øĞĞ·ÖÎö£¬×îÖÕÅĞ¶Ï±êÏßÀà±ğ
+% å¯¹ç»“æœå‚æ•°è¿›è¡Œåˆ†æï¼Œæœ€ç»ˆåˆ¤æ–­æ ‡çº¿ç±»åˆ«
 
 isMatched = false;
 r07 = (regist_perct>0.7);
@@ -101,7 +101,7 @@ end
 function  [regist_perct,defect_perct,exceed_perct,defect_area,exceed_area]...
     = matching(tImage,image)
 %
-%ÕâÀï½ö×÷Î¢µ÷£¬ÒªÇó´ıÆ¥ÅäÍ¼ÏñÓëÄ£°å´óĞ¡Ò»ÖÂ£¬²»ÄÜ½øĞĞ¾Ö²¿Æ¥ÅäÊ¶±ğ
+%è¿™é‡Œä»…ä½œå¾®è°ƒï¼Œè¦æ±‚å¾…åŒ¹é…å›¾åƒä¸æ¨¡æ¿å¤§å°ä¸€è‡´ï¼Œä¸èƒ½è¿›è¡Œå±€éƒ¨åŒ¹é…è¯†åˆ«
 
 % figure(1);imshow(tImage);
 % figure(2);imshow(image);
@@ -113,7 +113,7 @@ d = sum(sum((tImage - image).^2 - (tImage - image2).^2));
 % figure(2);imshow(image2);
 % figure(3);imshow(tImage);
 
-% È·¶¨Æ¥Åä·½Ïò
+% ç¡®å®šåŒ¹é…æ–¹å‘
 if d<0
     image3 = image;
 else
@@ -121,10 +121,10 @@ else
 end
 
 %--------------------------------------------------------------------------
-% ¹Ç¼ÜÆ¥ÅäÒÑ¾­´óÖÂÆ¥ÅäºÃÁË£¬ÕâÀïÔÙ´Î½øĞĞ×İ¡¢ºá¡¢Ğı×ªÆ¥ÅäÊÇ·ñÓĞ±ØÒª£¿
+% éª¨æ¶åŒ¹é…å·²ç»å¤§è‡´åŒ¹é…å¥½äº†ï¼Œè¿™é‡Œå†æ¬¡è¿›è¡Œçºµã€æ¨ªã€æ—‹è½¬åŒ¹é…æ˜¯å¦æœ‰å¿…è¦ï¼Ÿ
 tmp = zeros([h,w]);
-r = 10;%ÔÚ10¸öÏñËØÄÚ½øĞĞÎ¢µ÷Æ¥Åä
-% ¼ì²â×İÏò×î¼ÑÆ¥ÅäÎ»ÖÃ
+r = 10;%åœ¨10ä¸ªåƒç´ å†…è¿›è¡Œå¾®è°ƒåŒ¹é…
+% æ£€æµ‹çºµå‘æœ€ä½³åŒ¹é…ä½ç½®
 for i = 0:r
     image_moveY1 = tmp;
     image_moveY2 = tmp;
@@ -138,7 +138,7 @@ for i = 0:r
 %     figure(2);imshow(tImage + image_moveY2);
 end 
 [d_sort,idx] = sortrows([d;d2]);
-pan_y = mod(idx(1),r+1)-1;%ÏñËØ×İÏòÆ½ÒÆÁ¿
+pan_y = mod(idx(1),r+1)-1;%åƒç´ çºµå‘å¹³ç§»é‡
 if pan_y<0
     pan_y = pan_y+r+1;
 end
@@ -149,7 +149,7 @@ else
     image_moveY(pan_y+1:end,:) = image(1:end-pan_y,:);
 end
 
-% ¼ì²âºáÏò×î¼ÑÆ¥ÅäÎ»ÖÃ
+% æ£€æµ‹æ¨ªå‘æœ€ä½³åŒ¹é…ä½ç½®
 image = image_moveY;
 for i = 0:r
     image_moveX1 = tmp;
@@ -164,7 +164,7 @@ for i = 0:r
 %         figure(2);imshow(tImage + image_moveX2);
 end
 [d_sort,idx] = sortrows([d;d2]);
-pan_x = mod(idx(1),r+1)-1;%ÏñËØºáÏòÆ½ÒÆÁ¿
+pan_x = mod(idx(1),r+1)-1;%åƒç´ æ¨ªå‘å¹³ç§»é‡
 if pan_x<0
     pan_x = pan_x+r+1;
 end
@@ -176,17 +176,17 @@ else
 end
 %--------------------------------------------------------------------------
  
-%¼ì²âĞı×ª×î¼ÑÆ¥ÅäÎ»ÖÃ
+%æ£€æµ‹æ—‹è½¬æœ€ä½³åŒ¹é…ä½ç½®
 image = image_moveX;
-tImage_area =  sum(sum(tImage));%Ä£°åÏñËØÃæ»ı
-rotateA = 10;%Ğı×ª½Ç¶È·¶Î§
+tImage_area =  sum(sum(tImage));%æ¨¡æ¿åƒç´ é¢ç§¯
+rotateA = 10;%æ—‹è½¬è§’åº¦èŒƒå›´
 for i = -rotateA:rotateA
-    image_rotate = imrotate(image,i);%Ğı×ªÖĞĞÄÎªÍ¼ÏñÖĞĞÄ
+    image_rotate = imrotate(image,i);%æ—‹è½¬ä¸­å¿ƒä¸ºå›¾åƒä¸­å¿ƒ
     [rh,rw] = size(image_rotate);
     mh = max([h rh]);
     mw = max([w rw]);
-    tImage_ = zeros(mh,mw);% ´ıÆ¥ÅäÄ£°å
-    tMatch_ = zeros(mh,mw);% ´ıÆ¥ÅäÍ¼Ïñ
+    tImage_ = zeros(mh,mw);% å¾…åŒ¹é…æ¨¡æ¿
+    tMatch_ = zeros(mh,mw);% å¾…åŒ¹é…å›¾åƒ
     tImage_(ceil(mh/2-h/2+1):ceil(mh/2+h/2),ceil(mw/2-w/2+1):ceil(mw/2+w/2)) = tImage ;
     tMatch_(ceil(mh/2-rh/2+1):ceil(mh/2+rh/2),ceil(mw/2-rw/2+1):ceil(mw/2+rw/2)) = image_rotate;
     
@@ -195,14 +195,14 @@ for i = -rotateA:rotateA
 %     figure(6);imshow(tImage_);
 %     figure(3);imshow(tMatch_ + tImage_);
 
-    defect_area(i+rotateA+1,1) = sum(dImage(dImage>0));% ´ıÆ¥ÅäÍ¼ÏñÏà±ÈÄ£°åÈ±ËğµÄÏñËØÃæ»ı
-    exceed_area(i+rotateA+1,1) = abs(sum(dImage(dImage<0)));% ´ıÆ¥ÅäÍ¼ÏñÏà±ÈÄ£¶à³öµÄÏñËØÃæ»ı
+    defect_area(i+rotateA+1,1) = sum(dImage(dImage>0));% å¾…åŒ¹é…å›¾åƒç›¸æ¯”æ¨¡æ¿ç¼ºæŸçš„åƒç´ é¢ç§¯
+    exceed_area(i+rotateA+1,1) = abs(sum(dImage(dImage<0)));% å¾…åŒ¹é…å›¾åƒç›¸æ¯”æ¨¡å¤šå‡ºçš„åƒç´ é¢ç§¯
     d4(i+rotateA+1,1) =  sum(sum(dImage.^2));
 end
 defect_perct = defect_area./tImage_area;
 exceed_perct = exceed_area./tImage_area;
 regist_perct = 1-(defect_perct+exceed_perct);
-% ÕÒ³ö×î´óÖµ
+% æ‰¾å‡ºæœ€å¤§å€¼
 defect_area = min(defect_area);
 exceed_area = min(exceed_area);
 defect_perct = min(defect_perct);
@@ -213,28 +213,28 @@ end
 
 function [tI,mI] =  preprocimage(templateImage,matchImage,T)
 % 
-% ¸ù¾İĞı×ª¾ØÕó½«Ä£°åÓë´ıÆ¥ÅäÍ¼Ïñµ÷Õûµ½×î¼Ñ´óĞ¡ºÍÎ»ÖÃ
+% æ ¹æ®æ—‹è½¬çŸ©é˜µå°†æ¨¡æ¿ä¸å¾…åŒ¹é…å›¾åƒè°ƒæ•´åˆ°æœ€ä½³å¤§å°å’Œä½ç½®
 % [tI,mI] =  preprocimage(templateImage,matchImage,T)
-% INPUT£º
-% templateImage - Ä£°åÍ¼Ïñ
-% matchImage -´ıÆ¥ÅäÍ¼Ïñ
-% T - Ğı×ª¾ØÕó
+% INPUTï¼š
+% templateImage - æ¨¡æ¿å›¾åƒ
+% matchImage -å¾…åŒ¹é…å›¾åƒ
+% T - æ—‹è½¬çŸ©é˜µ
 %
 % OUTPUT:
-% tI - µ÷Õû´óĞ¡ºóµÄÄ£°åÍ¼Ïñ
-% mI - µ÷Õû´óĞ¡¼°µãÔÆÎ»ÖÃºóµÄ´ıÆ¥ÅäÍ¼Ïñ
+% tI - è°ƒæ•´å¤§å°åçš„æ¨¡æ¿å›¾åƒ
+% mI - è°ƒæ•´å¤§å°åŠç‚¹äº‘ä½ç½®åçš„å¾…åŒ¹é…å›¾åƒ
 
-% %ÏÈĞı×ª£¬ÔÚÆ½ÒÆ
-% paraR = T(1:2,1:2);%Ğı×ª²ÎÊı
-% paraM = T(4,1:2);%Æ½ÒÆ²ÎÊı
-%½«¶şÖµÍ¼Ïñ×ª»»Îªµã×ø±ê
+% %å…ˆæ—‹è½¬ï¼Œåœ¨å¹³ç§»
+% paraR = T(1:2,1:2);%æ—‹è½¬å‚æ•°
+% paraM = T(4,1:2);%å¹³ç§»å‚æ•°
+%å°†äºŒå€¼å›¾åƒè½¬æ¢ä¸ºç‚¹åæ ‡
 [my2,mx2] = find(matchImage>0);
 [ty2,tx2] = find(templateImage>0);
 
-% ×ø±ê×ª»»
+% åæ ‡è½¬æ¢
 transXY = [mx2 my2 zeros(size(mx2,1),1) ones(size(mx2,1),1)]*T;
 
-% È·¶¨Í³Ò»±ß½ç£¬Ê¹ÓÉµãÔÆÉú³ÉµÄÍ¼Ïñ´óĞ¡Î»ÖÃÒ»ÖÂ
+% ç¡®å®šç»Ÿä¸€è¾¹ç•Œï¼Œä½¿ç”±ç‚¹äº‘ç”Ÿæˆçš„å›¾åƒå¤§å°ä½ç½®ä¸€è‡´
 minX = min([min(transXY(:,1)) min(tx2)])-1;
 minY = min([min(transXY(:,2)) min(ty2)])-1;
 mx3 = transXY(:,1) - minX;
@@ -243,46 +243,46 @@ tx3 = tx2 - minX;
 ty3 = ty2 - minY;
 maxX = max([max(mx3) max(tx3)]);
 maxY = max([max(my3) max(ty3)]);
-tmp = zeros([ceil(maxY) ceil(maxX)]);% Í¼Ïñ´óĞ¡
+tmp = zeros([ceil(maxY) ceil(maxX)]);% å›¾åƒå¤§å°
 tI = tmp;
 mI = tmp;
-% ÓÉĞı×ª¾ØÕóT¼ÆËãµÄÍ¼Ïñ
+% ç”±æ—‹è½¬çŸ©é˜µTè®¡ç®—çš„å›¾åƒ
 tI(sub2ind(size(tI),ceil(ty3),ceil(tx3)))=1;
 mI(sub2ind(size(mI),ceil(my3),ceil(mx3)))=1;
-mI = imclose(mI,strel('diamond',1));% I2½øĞĞÁËĞı×ª£¬Éú³ÉµÄÍ¼Ïñ¿ÉÄÜÓĞµ¥ÏñËØ¿Õ¶´
+mI = imclose(mI,strel('diamond',1));% I2è¿›è¡Œäº†æ—‹è½¬ï¼Œç”Ÿæˆçš„å›¾åƒå¯èƒ½æœ‰å•åƒç´ ç©ºæ´
 end
 
 function  [tform,skelRate] =  matchingskel(MovingPcd,fixedPcd)
 %
-% ¹Ç¼ÜµãÔÆÆ¥Åä
+% éª¨æ¶ç‚¹äº‘åŒ¹é…
 % [tform,skelRate] =  matchingskel(MovingPcd,fixedPcd)
-% INPUT£º
-% MovingPcd - ÒÆ¶¯µãÔÆ£¬Éú³ÉÍ¼ÏñÊ±µãÔÆ·¢ÉúĞı×ª
-% fixedPcd - ¹Ì¶¨µãÔÆ£¬Éú³ÉÍ¼ÏñÊ±µãÔÆ²»·¢ÉúĞı×ª
+% INPUTï¼š
+% MovingPcd - ç§»åŠ¨ç‚¹äº‘ï¼Œç”Ÿæˆå›¾åƒæ—¶ç‚¹äº‘å‘ç”Ÿæ—‹è½¬
+% fixedPcd - å›ºå®šç‚¹äº‘ï¼Œç”Ÿæˆå›¾åƒæ—¶ç‚¹äº‘ä¸å‘ç”Ÿæ—‹è½¬
 %
-% OUTPUT£º
-% tform - ½«MovingPcdÆ¥Åäµ½fixedPcdµÄĞı×ª¾ØÕó
-% skelRate - MovingPcdÓëfixedPcdµÄÆ¥ÅäÎó²î
+% OUTPUTï¼š
+% tform - å°†MovingPcdåŒ¹é…åˆ°fixedPcdçš„æ—‹è½¬çŸ©é˜µ
+% skelRate - MovingPcdä¸fixedPcdçš„åŒ¹é…è¯¯å·®
 %
-% ÕâÀïÊ¹ÓÃµÄÊÇÈıÎ¬µãÔÆµÄICPËã·¨£¬Æ¥ÅäÊ±¿ÉÄÜ·¢Éú¾µÏñĞı×ªµ¼ÖÂÆ¥Åä´íÎó£¬Ó¦¸Ã¸Ä³É¶şÎ¬ICP
-%ICPËã·¨¶Ô³õÊ¼Î»ÖÃÓĞÒ»¶¨Ãô¸ĞĞÔ£¬½Ç¶È²îÒì¹ı´ó¿ÉÄÜÊ¹Æ¥Åä½á¹ûÊ×Î²µßµ¹,Ó¦¸Ã0¡¢180¶ÈÆ¥ÅäÁ½´ÎÈ¡×îĞ¡
-%»á³öÏÖÁ½Àà´íÎó£¬1¡¢²»Æ¥ÅäµÄÍ¼Ïñ¾µÏñºóÆ¥ÅäÁË£»2¡¢Æ¥ÅäµÄÍ¼Ïñ³õÊ¼Îó²î¹ı´ó£¨Èç½Ç¶È£©¹ı´óÊ¹½á¹ûÏÔÊ¾²»Æ¥Åä
+% è¿™é‡Œä½¿ç”¨çš„æ˜¯ä¸‰ç»´ç‚¹äº‘çš„ICPç®—æ³•ï¼ŒåŒ¹é…æ—¶å¯èƒ½å‘ç”Ÿé•œåƒæ—‹è½¬å¯¼è‡´åŒ¹é…é”™è¯¯ï¼Œåº”è¯¥æ”¹æˆäºŒç»´ICP
+%ICPç®—æ³•å¯¹åˆå§‹ä½ç½®æœ‰ä¸€å®šæ•æ„Ÿæ€§ï¼Œè§’åº¦å·®å¼‚è¿‡å¤§å¯èƒ½ä½¿åŒ¹é…ç»“æœé¦–å°¾é¢ å€’,åº”è¯¥0ã€180åº¦åŒ¹é…ä¸¤æ¬¡å–æœ€å°
+%ä¼šå‡ºç°ä¸¤ç±»é”™è¯¯ï¼Œ1ã€ä¸åŒ¹é…çš„å›¾åƒé•œåƒååŒ¹é…äº†ï¼›2ã€åŒ¹é…çš„å›¾åƒåˆå§‹è¯¯å·®è¿‡å¤§ï¼ˆå¦‚è§’åº¦ï¼‰è¿‡å¤§ä½¿ç»“æœæ˜¾ç¤ºä¸åŒ¹é…
 %--------------------------------------------------------------------------
-%ICPËã·¨¼Ù¶¨Ò»¸öµã¼¯ÊÇÁíÒ»¸öµã¼¯µÄ×Ó¼¯£¬ÕâÀïÄ£°å½üËÆ¿ÉÒÔ¿´×öÈ«¼¯£»
-%ICPËã·¨ÒªÈ¡µÃºÃµÄ½á¹ûÒªÇóÁ½¸öµã¼¯³õÊ¼Î»ÖÃÊÇ½üËÆ¶ÔÆëµÄ£¬²âÊÔ·¢ÏÖÈç¹ûÁ½¸öµã¼¯½Ç
-%¶È»ò×İÏò²î¾à¹ı´ó»áÊ¹×îÖÕÆ¥Åä½á¹û´íÎó£¬²»¹ıÓÉÓÚ±êÏßÍ¼ÏñÉú³ÉµÄµãÔÆ¶¼ÔÚÒ»¸ö¾ØĞÎ·¶
-%Î§ÄÚ£¬ËùÒÔ½øĞĞÆ¥ÅäÊ±½Ç¶È²îÔÚ0¶ÈºÍ180¶È¸½½ü£¬Ö»ĞèÔÚ0ºÍ180¶ÈÁ½¸ö·½Ïò¼ÆËãICPÈ¡Îó
-%²î½ÏĞ¡µÄ½á¹û¼´¿É£»
-%ICP¶Ô³õÊ¼Î»ÖÃÃô¸ĞÔ­ÒòÊÇÒÔ×î½üÅ·Ê½¾àÀëÈ·¶¨¶ÔÓ¦µã£¬ÕâÊÇÎä¶ÏµÄ£¬¶ÔÓ¦µãµÄ²»×¼È·µ¼
-%ÖÂÁË×îÖÕÆ¥Åä²»ÀíÏëÉõÖÁ´íÎó¡£½áºÏICPÈ·¶¨¶ÔÓ¦µãµÄ·½Ê½£¬¿ÉÒÔ¿´³ö±êÏßÆ¥ÅäÊ±³õÊ¼Î»
-%ÖÃ×İÏòÎó²î½Ï´óÊÇµ¼ÖÂÆ¥ÅäÊ§°ÜµÄÔ­Òò£¬½Ç¶ÈÒ²ÊÇÒòÎªĞı×ªºó²úÉúÁË×İÏòÎó²î´Ó¶øÓ°ÏìÆ¥
-%ÅäĞ§¹ûµÄ
+%ICPç®—æ³•å‡å®šä¸€ä¸ªç‚¹é›†æ˜¯å¦ä¸€ä¸ªç‚¹é›†çš„å­é›†ï¼Œè¿™é‡Œæ¨¡æ¿è¿‘ä¼¼å¯ä»¥çœ‹åšå…¨é›†ï¼›
+%ICPç®—æ³•è¦å–å¾—å¥½çš„ç»“æœè¦æ±‚ä¸¤ä¸ªç‚¹é›†åˆå§‹ä½ç½®æ˜¯è¿‘ä¼¼å¯¹é½çš„ï¼Œæµ‹è¯•å‘ç°å¦‚æœä¸¤ä¸ªç‚¹é›†è§’
+%åº¦æˆ–çºµå‘å·®è·è¿‡å¤§ä¼šä½¿æœ€ç»ˆåŒ¹é…ç»“æœé”™è¯¯ï¼Œä¸è¿‡ç”±äºæ ‡çº¿å›¾åƒç”Ÿæˆçš„ç‚¹äº‘éƒ½åœ¨ä¸€ä¸ªçŸ©å½¢èŒƒ
+%å›´å†…ï¼Œæ‰€ä»¥è¿›è¡ŒåŒ¹é…æ—¶è§’åº¦å·®åœ¨0åº¦å’Œ180åº¦é™„è¿‘ï¼Œåªéœ€åœ¨0å’Œ180åº¦ä¸¤ä¸ªæ–¹å‘è®¡ç®—ICPå–è¯¯
+%å·®è¾ƒå°çš„ç»“æœå³å¯ï¼›
+%ICPå¯¹åˆå§‹ä½ç½®æ•æ„ŸåŸå› æ˜¯ä»¥æœ€è¿‘æ¬§å¼è·ç¦»ç¡®å®šå¯¹åº”ç‚¹ï¼Œè¿™æ˜¯æ­¦æ–­çš„ï¼Œå¯¹åº”ç‚¹çš„ä¸å‡†ç¡®å¯¼
+%è‡´äº†æœ€ç»ˆåŒ¹é…ä¸ç†æƒ³ç”šè‡³é”™è¯¯ã€‚ç»“åˆICPç¡®å®šå¯¹åº”ç‚¹çš„æ–¹å¼ï¼Œå¯ä»¥çœ‹å‡ºæ ‡çº¿åŒ¹é…æ—¶åˆå§‹ä½
+%ç½®çºµå‘è¯¯å·®è¾ƒå¤§æ˜¯å¯¼è‡´åŒ¹é…å¤±è´¥çš„åŸå› ï¼Œè§’åº¦ä¹Ÿæ˜¯å› ä¸ºæ—‹è½¬åäº§ç”Ÿäº†çºµå‘è¯¯å·®ä»è€Œå½±å“åŒ¹
+%é…æ•ˆæœçš„
 %--------------------------------------------------------------------------
 if (2==size(fixedPcd,2))
     fixedPcd = [fixedPcd zeros([size(fixedPcd,1) 1])];
 end
 if (2==size(MovingPcd,2))
-    MovingPcd = [MovingPcd zeros([size(MovingPcd,1) 1])];%¹¹ÔìÈıÎ¬¹Ç¼ÜµãÔÆ
+    MovingPcd = [MovingPcd zeros([size(MovingPcd,1) 1])];%æ„é€ ä¸‰ç»´éª¨æ¶ç‚¹äº‘
 end
 
 % plot(MovingPcd(:,1),MovingPcd(:,2),'r.');axis equal;hold on;
@@ -291,48 +291,48 @@ end
 [tform,movingReg] = pcregrigid(pointCloud(MovingPcd),pointCloud(fixedPcd));
 matchedPcd = movingReg.Location;
 tform = tform.T;
-% ¹Ç¼ÜÆ¥Åä¶È
+% éª¨æ¶åŒ¹é…åº¦
 Mdl = KDTreeSearcher(fixedPcd(:,1:2));
 [Idx,D] = knnsearch(Mdl,matchedPcd(:,1:2));
-skelRate1 = sqrt(sum(D.*D)/size(Idx,1));%¾ù·½Îó²îÃèÊöÆ¥Åä¶È,µ¥Î»ÊÇÏñËØ
+skelRate1 = sqrt(sum(D.*D)/size(Idx,1));%å‡æ–¹è¯¯å·®æè¿°åŒ¹é…åº¦,å•ä½æ˜¯åƒç´ 
 
 Mdl = KDTreeSearcher(matchedPcd(:,1:2));
 [Idx,D] = knnsearch(Mdl,fixedPcd(:,1:2));
-skelRate2 = sqrt(sum(D.*D)/size(Idx,1));% Ä£°åµ½´ıÆ¥ÅäÍ¼ÏñµÄ¹Ç¼ÜÎó²î
+skelRate2 = sqrt(sum(D.*D)/size(Idx,1));% æ¨¡æ¿åˆ°å¾…åŒ¹é…å›¾åƒçš„éª¨æ¶è¯¯å·®
 skelRate = [skelRate1;skelRate2];
 end
 
 function [type,T,image] =  findmostmatchbyskel(image,scale)
 %
-% Í¨¹ıÓ°ÏñÉú³ÉµÄ¹Ç¼ÜÈ·¶¨ÓëÆä×îÏàËÆµÄ±êÏßÄ£°å
+% é€šè¿‡å½±åƒç”Ÿæˆçš„éª¨æ¶ç¡®å®šä¸å…¶æœ€ç›¸ä¼¼çš„æ ‡çº¿æ¨¡æ¿
 % [type,T,image] =  findmostmatchbyskel(image,scale)
-% INPUT£º
-% image - ´ı¼ì²âµÄµãÔÆ¾ÛÀàÓ°Ïñ
-% scale - imageµÄÏñËØ³ß¶È£¬±ÈÈçÄ£°åÊÇ°´1cm/pxÉú³ÉµÄ£¬imageÊÇ2cm/pc,ÔòÍ¬Ñù´óĞ¡
-%         µÄimage³ß¶ÈÊÇÄ£°åµÄÒ»°ë£¬¼´scale=0.5
+% INPUTï¼š
+% image - å¾…æ£€æµ‹çš„ç‚¹äº‘èšç±»å½±åƒ
+% scale - imageçš„åƒç´ å°ºåº¦ï¼Œæ¯”å¦‚æ¨¡æ¿æ˜¯æŒ‰1cm/pxç”Ÿæˆçš„ï¼Œimageæ˜¯2cm/pc,åˆ™åŒæ ·å¤§å°
+%         çš„imageå°ºåº¦æ˜¯æ¨¡æ¿çš„ä¸€åŠï¼Œå³scale=0.5
 %
-% OUTPUT £º
-% type - Æ¥Åä³öµÄÄ£°åÀàĞÍ±àºÅ
-% T - Ó°ÏñÓëÄ£°å×î¼ÑÆ¥ÅäÊ±imageµÄ±ä»»¾ØÕó£¬Í¨¹ıT¿ÉÒÔ½«Ó°ÏñÓëÄ£°å½üËÆ¶ÔÆë
-% image - ´¦ÀíºóµÄÓ°Ïì£¬ÔİÊ±²»Æğ×÷ÓÃ
+% OUTPUT ï¼š
+% type - åŒ¹é…å‡ºçš„æ¨¡æ¿ç±»å‹ç¼–å·
+% T - å½±åƒä¸æ¨¡æ¿æœ€ä½³åŒ¹é…æ—¶imageçš„å˜æ¢çŸ©é˜µï¼Œé€šè¿‡Tå¯ä»¥å°†å½±åƒä¸æ¨¡æ¿è¿‘ä¼¼å¯¹é½
+% image - å¤„ç†åçš„å½±å“ï¼Œæš‚æ—¶ä¸èµ·ä½œç”¨
 
 
 
-% 0.01mÒ»¸öÏñËØÉú³ÉµÄÍ¼ÏñĞèÒªÊÕËõ40´ÎµÃµ½¹Ç¼Ü£¬ÏñËØÔ½´óËùĞèÊÕËõ´ÎÊıÔ½ÉÕÉÙ
-% Ê¹ÓÃ'shrink'²ÎÊı¹Ç¼Ü»¯»áµ¼ÖÂ¶ËµãÒ»¶¨³Ì¶ÈÊÕËõ£¬ÆäÊµÓ¦¸ÃÊ¹ÓÃ'skel'£¬È»ºóÔÚÈ¥³ıÖ¦
-% è¾µÃµ½¹Ç¸É£¬µ«ÊÇÈ¥³ıÖ¦è¾µÄËã·¨µÃ·Ñµã¹¦·ò
-mSkel = bwmorph(image,'shrink',40*scale); %¹Ç¼Ü»¯
+% 0.01mä¸€ä¸ªåƒç´ ç”Ÿæˆçš„å›¾åƒéœ€è¦æ”¶ç¼©40æ¬¡å¾—åˆ°éª¨æ¶ï¼Œåƒç´ è¶Šå¤§æ‰€éœ€æ”¶ç¼©æ¬¡æ•°è¶Šçƒ§å°‘
+% ä½¿ç”¨'shrink'å‚æ•°éª¨æ¶åŒ–ä¼šå¯¼è‡´ç«¯ç‚¹ä¸€å®šç¨‹åº¦æ”¶ç¼©ï¼Œå…¶å®åº”è¯¥ä½¿ç”¨'skel'ï¼Œç„¶ååœ¨å»é™¤æ
+% æˆå¾—åˆ°éª¨å¹²ï¼Œä½†æ˜¯å»é™¤ææˆçš„ç®—æ³•å¾—è´¹ç‚¹åŠŸå¤«
+mSkel = bwmorph(image,'shrink',40*scale); %éª¨æ¶åŒ–
 % mSkel = bwmorph(image,'skel',inf); 
 
-[my,mx] = find(imrotate(mSkel,0)>0);%¶şÎ¬¹Ç¼Üµã
+[my,mx] = find(imrotate(mSkel,0)>0);%äºŒç»´éª¨æ¶ç‚¹
 % figure(2);imshow(mSkel);
 
-%È¥³ıÀëÈºµã£¬ÀëÈºµãÓĞ¿ÉÄÜÊÇ´íÎóµã
+%å»é™¤ç¦»ç¾¤ç‚¹ï¼Œç¦»ç¾¤ç‚¹æœ‰å¯èƒ½æ˜¯é”™è¯¯ç‚¹
 TT = clustereuclid([mx my],5);
 [C,~,ic] = unique(TT);
 tmpy = [];
 tmpx = [];
-rN = 4;%È¥µôÉÙÓÚ4¸öµãµÄ
+rN = 4;%å»æ‰å°‘äº4ä¸ªç‚¹çš„
 for i=1:size(C,1)
    idx =  find(ic==C(i));
 %    plot(mx(idx),my(idx),'o','Color',[rand rand rand]);axis equal;hold on
@@ -352,12 +352,12 @@ if isempty(mx)
     return;
 end
 
-matchPcd = [mx my zeros([size(mx,1) 1])];%¹¹ÔìÈıÎ¬¹Ç¼ÜµãÔÆ;
+matchPcd = [mx my zeros([size(mx,1) 1])];%æ„é€ ä¸‰ç»´éª¨æ¶ç‚¹äº‘;
 % figure(1);imshow(mSkel);
 % figure(2);imshow(image);
 [type,T] =  findmostmatchbyskelpcd(matchPcd,scale);
 if type
-     return;%Èç¹ûÒÑ¾­Æ¥Åä³É¹¦£¬Ôò²»ÔÙĞı×ª180¶È¼ì²â
+     return;%å¦‚æœå·²ç»åŒ¹é…æˆåŠŸï¼Œåˆ™ä¸å†æ—‹è½¬180åº¦æ£€æµ‹
 end
 matchPcd2 = pcdroateXY(matchPcd,[mean(mx) mean(my)],180);
 [type,T] =  findmostmatchbyskelpcd(matchPcd2,scale);
@@ -366,38 +366,38 @@ end
 
 function [type,T] =  findmostmatchbyskelpcd(matchPcd,scale)
 %
-% Í¨¹ı¹Ç¼ÜµãÔÆÆ¥ÅäÓëÆä×îÏàËÆµÄ±êÏßÄ£°å
+% é€šè¿‡éª¨æ¶ç‚¹äº‘åŒ¹é…ä¸å…¶æœ€ç›¸ä¼¼çš„æ ‡çº¿æ¨¡æ¿
 % [type,T] =  findmostmatchbyskelpcd(matchPcd,scale)
-% INPUT£º
-% matchPcd - ´ıÆ¥ÅäµÄ¹Ç¼ÜµãÔÆ
-% scale - imageµÄÏñËØ³ß¶È£¬±ÈÈçÄ£°åÊÇ°´1cm/pxÉú³ÉµÄ£¬imageÊÇ2cm/pc,ÔòÍ¬Ñù´óĞ¡
-%         µÄimage³ß¶ÈÊÇÄ£°åµÄÒ»°ë£¬¼´scale=0.5
+% INPUTï¼š
+% matchPcd - å¾…åŒ¹é…çš„éª¨æ¶ç‚¹äº‘
+% scale - imageçš„åƒç´ å°ºåº¦ï¼Œæ¯”å¦‚æ¨¡æ¿æ˜¯æŒ‰1cm/pxç”Ÿæˆçš„ï¼Œimageæ˜¯2cm/pc,åˆ™åŒæ ·å¤§å°
+%         çš„imageå°ºåº¦æ˜¯æ¨¡æ¿çš„ä¸€åŠï¼Œå³scale=0.5
 % 
-% OUTPUT £º
-% type - Æ¥Åä³öµÄÄ£°åÀàĞÍ±àºÅ
-% T - Ó°ÏñÓëÄ£°å×î¼ÑÆ¥ÅäÊ±imageµÄ±ä»»¾ØÕó£¬Í¨¹ıT¿ÉÒÔ½«Ó°ÏñÓëÄ£°å½üËÆ¶ÔÆë
+% OUTPUT ï¼š
+% type - åŒ¹é…å‡ºçš„æ¨¡æ¿ç±»å‹ç¼–å·
+% T - å½±åƒä¸æ¨¡æ¿æœ€ä½³åŒ¹é…æ—¶imageçš„å˜æ¢çŸ©é˜µï¼Œé€šè¿‡Tå¯ä»¥å°†å½±åƒä¸æ¨¡æ¿è¿‘ä¼¼å¯¹é½
 % 
-% ×¢Òâ£ºlimit_R2ÊÇ¸öÖØÒª²ÎÊı
+% æ³¨æ„ï¼šlimit_R2æ˜¯ä¸ªé‡è¦å‚æ•°
 
 global skel;
 
-% limit_R2ÊÇ¾ö¶¨¹Ç¼ÜÆ¥ÅäÑÏ¸ñ³Ì¶ÈµÄ²ÎÊı£¬Ïàµ±ÓÚÆ¥ÅäÏñËØÎó²î£¬ÖµÔ½´ó£¬Æ¥ÅäµÄ±ê×¼
-% Ô½µÍ£¬ÕâÑùÈ±Ëğ±È½Ï´ó±êÏß¹Ç¼ÜÒ²¿ÉÒÔÆ¥Åä³ö½á¹û£¨½ø¶ø¿ÉÒÔ¼ÌĞø½øĞĞºóÃæµÄÄ£°åÆ¥Åä£¬
-% ¶ø²»ÊÇÔÚ¹Ç¼ÜÆ¥ÅäÕâÒ»²½¾Í±»¹ıÂËµô£©£¬µ«Í¬Ê±Ò²»á½«Ğí¶à´íÎóµÄ¹Ç¼ÜÆ¥Åä³öÀ´£¬Ôö¼Ó
-% ºóÃæÄ£°åÆ¥ÅäµÄ¼ÆËãÁ¿ºÍÊ¶±ğÄÑ¶È¡£
+% limit_R2æ˜¯å†³å®šéª¨æ¶åŒ¹é…ä¸¥æ ¼ç¨‹åº¦çš„å‚æ•°ï¼Œç›¸å½“äºåŒ¹é…åƒç´ è¯¯å·®ï¼Œå€¼è¶Šå¤§ï¼ŒåŒ¹é…çš„æ ‡å‡†
+% è¶Šä½ï¼Œè¿™æ ·ç¼ºæŸæ¯”è¾ƒå¤§æ ‡çº¿éª¨æ¶ä¹Ÿå¯ä»¥åŒ¹é…å‡ºç»“æœï¼ˆè¿›è€Œå¯ä»¥ç»§ç»­è¿›è¡Œåé¢çš„æ¨¡æ¿åŒ¹é…ï¼Œ
+% è€Œä¸æ˜¯åœ¨éª¨æ¶åŒ¹é…è¿™ä¸€æ­¥å°±è¢«è¿‡æ»¤æ‰ï¼‰ï¼Œä½†åŒæ—¶ä¹Ÿä¼šå°†è®¸å¤šé”™è¯¯çš„éª¨æ¶åŒ¹é…å‡ºæ¥ï¼Œå¢åŠ 
+% åé¢æ¨¡æ¿åŒ¹é…çš„è®¡ç®—é‡å’Œè¯†åˆ«éš¾åº¦ã€‚
 limit_R2 = 15;
 
-%¹À¼Æ±êÏß´óĞ¡
+%ä¼°è®¡æ ‡çº¿å¤§å°
 % [h,w] = size(image);
 % h = (h*(1/scale))/100;
 % w = (w*(1/scale))/100;
 
-%ÕâÀïÔİÊ±²»½øĞĞ½øÒ»²½ÅĞ¶Ï£¬¶øÊÇ¶ÔËùÓĞÄ£°å½øĞĞÆ¥Åä£¬Âß¼­¼òµ¥£¬Ğ§ÂÊ½ÏµÍ
+%è¿™é‡Œæš‚æ—¶ä¸è¿›è¡Œè¿›ä¸€æ­¥åˆ¤æ–­ï¼Œè€Œæ˜¯å¯¹æ‰€æœ‰æ¨¡æ¿è¿›è¡ŒåŒ¹é…ï¼Œé€»è¾‘ç®€å•ï¼Œæ•ˆç‡è¾ƒä½
 rate = [];
 for i=1:8
     pcd = skel{i};
-    np = size(skel{i},1);%¹Ç¼Üµã¸öÊı
-    p = randperm(np,ceil(np.*scale));%Ëæ»ú²ÉÑù
+    np = size(skel{i},1);%éª¨æ¶ç‚¹ä¸ªæ•°
+    p = randperm(np,ceil(np.*scale));%éšæœºé‡‡æ ·
     [tform{i},skelRate(i,1:2)] =  matchingskel(matchPcd,pcd(p,:).*scale);
 %     ptCloudOut = pctransform(pointCloud(matchPcd),affine3d(tform{i}));
 %     ptCloudOut = ptCloudOut.Location;hold off;
@@ -408,10 +408,10 @@ for i=1:8
     R = skelRate(i,1:2);
     R1 = R(1);
     R2 = R(2);
-    % Èç¹û·ÇÖ±ĞĞ¼ıÍ·µÄÍ¼ÏñÊÇ¾µÏñÆ¥Åä£¬»òÕßÕıÏòÆ¥ÅäÎó²î³¬¹ı2¸öÏñËØ£¬»òÕß·´ÏòÆ¥
-    % ÅäÎó²î³¬¹ı5¸öÏñËØ,ÈÏÎªÆ¥ÅäÎŞĞ§
-    % ÓÉÓÚ¹Ç¼ÜËã·¨²»ÍêÉÆ£¬µÃµ½µÄ¹Ç¼Ü¶Ëµã»áÊÕËõ£¬ËùÒÔR2ÉèÖÃµÄ´óÒ»Ğ©£¬ÆäÊµÈç¹û¹Ç
-    % ¼ÜÎó²îĞ¡Ò»Ğ©µÄ»°£¬R2Ó¦¸ÃÖ®±ÈR1ãĞÖµÂÔ´ó£¬±ÈÈçR2=5£»
+    % å¦‚æœéç›´è¡Œç®­å¤´çš„å›¾åƒæ˜¯é•œåƒåŒ¹é…ï¼Œæˆ–è€…æ­£å‘åŒ¹é…è¯¯å·®è¶…è¿‡2ä¸ªåƒç´ ï¼Œæˆ–è€…åå‘åŒ¹
+    % é…è¯¯å·®è¶…è¿‡5ä¸ªåƒç´ ,è®¤ä¸ºåŒ¹é…æ— æ•ˆ
+    % ç”±äºéª¨æ¶ç®—æ³•ä¸å®Œå–„ï¼Œå¾—åˆ°çš„éª¨æ¶ç«¯ç‚¹ä¼šæ”¶ç¼©ï¼Œæ‰€ä»¥R2è®¾ç½®çš„å¤§ä¸€äº›ï¼Œå…¶å®å¦‚æœéª¨
+    % æ¶è¯¯å·®å°ä¸€äº›çš„è¯ï¼ŒR2åº”è¯¥ä¹‹æ¯”R1é˜ˆå€¼ç•¥å¤§ï¼Œæ¯”å¦‚R2=5ï¼›
     if (-1==T(3,3)&&(i~=1))||(R1>2||R2>limit_R2)
          rate = [rate;inf];
         continue;
@@ -430,7 +430,7 @@ end
 
 function pcdRoatated = pcdroateXY(pcd,point,rA)
 %
-% ½«µãÔÆpcdÒÔpointµãÎªÖáĞı×ªrA¶È
+% å°†ç‚¹äº‘pcdä»¥pointç‚¹ä¸ºè½´æ—‹è½¬rAåº¦
 % pcdRoatated = pcdroateXY(pcd,point,rA)
 
 if (2==size(pcd,2))
@@ -445,14 +445,14 @@ d =  cosd(rA);
 rT = [a b 0 0;c d 0 0;0 0 1 0;0 0 0 1];
 mT = [1 0 0 0;0 1 0 0;0 0 1 0;-cx -cy 0 1];
 mT2 = [1 0 0 0;0 1 0 0;0 0 1 0;cx cy 0 1];
-% mT*rT*mT2,¼´ÏÈ½øĞĞmTÆ½ÒÆ£¬ÔÚ½øĞĞrTĞı×ª£¬ÔÚ½øĞĞmT2Æ½ÒÆ£¬mT¡¢mT2´óĞ¡ÏàµÈ£¬·½ÏòÏà·´
+% mT*rT*mT2,å³å…ˆè¿›è¡ŒmTå¹³ç§»ï¼Œåœ¨è¿›è¡ŒrTæ—‹è½¬ï¼Œåœ¨è¿›è¡ŒmT2å¹³ç§»ï¼ŒmTã€mT2å¤§å°ç›¸ç­‰ï¼Œæ–¹å‘ç›¸å
 ptCloudOut = pctransform(pointCloud(pcd),affine3d(mT*rT*mT2));
 pcdRoatated = ptCloudOut.Location;
 end
 
 function readtemplate()
 %
-%¶ÁÈ¡Ä£°åÊı¾İ
+%è¯»å–æ¨¡æ¿æ•°æ®
 
 global template_go;
 global template_go_right;
@@ -482,10 +482,10 @@ template(7) = {template_merge_left};
 template(8) = {template_merge_right};
 
 
-%¶ÁÈ¡¹Ç¼ÜµãÔÆ
-%ÓÒÎª¼ıÍ·¹Ç¼Ü·½Ïò£¬Æä×îĞ¡Íâ½Ó¾ØĞÎ³¤±ßÎªxÖá£¬¶Ì±ßÎªyÖá
-%×¢Òâ£ºÉú³ÉÄ£°å¹Ç¼ÜÊÇ0.01Ã×Ò»¸öÏñËØ£¬¶øµãÔÆÉú³ÉµÄÍ¼ÏñÒ»°ãÓÃµÄ0.02Ã×£¬´¦Àí¹ı³Ì
-%      ÖĞ×¢ÒâËûÃÇÖ®¼äµÄÓ°Ïì¹ØÏµ
+%è¯»å–éª¨æ¶ç‚¹äº‘
+%å³ä¸ºç®­å¤´éª¨æ¶æ–¹å‘ï¼Œå…¶æœ€å°å¤–æ¥çŸ©å½¢é•¿è¾¹ä¸ºxè½´ï¼ŒçŸ­è¾¹ä¸ºyè½´
+%æ³¨æ„ï¼šç”Ÿæˆæ¨¡æ¿éª¨æ¶æ˜¯0.01ç±³ä¸€ä¸ªåƒç´ ï¼Œè€Œç‚¹äº‘ç”Ÿæˆçš„å›¾åƒä¸€èˆ¬ç”¨çš„0.02ç±³ï¼Œå¤„ç†è¿‡ç¨‹
+%      ä¸­æ³¨æ„ä»–ä»¬ä¹‹é—´çš„å½±å“å…³ç³»
 global skel_go;
 global skel_go_right;
 global skel_go_left;
