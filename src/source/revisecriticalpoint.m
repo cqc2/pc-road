@@ -1,6 +1,6 @@
 function [criticalPoint midHeight] = revisecriticalpoint(criticalPoint,scanLinePoint)
 %revise critical points. make sure that critical points are close to ground
-%Ã»´¦ÀíºÃ¿ÉÄÜ»áµ¼ÖÂÄ³Ğ©É¨ÃèÏßÈ±Ê§
+%æ²¡å¤„ç†å¥½å¯èƒ½ä¼šå¯¼è‡´æŸäº›æ‰«æçº¿ç¼ºå¤±
      [temp heightOrder] = sortrows(scanLinePoint,3);
      nScanLinePoint = size(scanLinePoint,1);
      midHeight = scanLinePoint(heightOrder(ceil(nScanLinePoint/2)),3);
@@ -9,8 +9,8 @@ function [criticalPoint midHeight] = revisecriticalpoint(criticalPoint,scanLineP
      y = scanLinePoint(:,2);
      h = scanLinePoint(:,3);
      if nCriticalPoint==2,
-         %µ±Ã»ÓĞ¼ì²âµ½ÌØÕ÷µãÊ±£¬´ËÊ±Ä¬ÈÏÌØÕ÷µãÊÇÊ×Î»Á½¸öµã
-         %´ËÊ±Ö»ÓÃ¸ß¶ÈÉ¸Ñ¡
+         %å½“æ²¡æœ‰æ£€æµ‹åˆ°ç‰¹å¾ç‚¹æ—¶ï¼Œæ­¤æ—¶é»˜è®¤ç‰¹å¾ç‚¹æ˜¯é¦–ä½ä¸¤ä¸ªç‚¹
+         %æ­¤æ—¶åªç”¨é«˜åº¦ç­›é€‰
          num = 0;
          for i=1:nScanLinePoint,
              dH = abs(midHeight - h(i));
@@ -27,8 +27,8 @@ function [criticalPoint midHeight] = revisecriticalpoint(criticalPoint,scanLineP
          cX = scanLinePoint(criticalPoint(i),1);
          cY = scanLinePoint(criticalPoint(i),2);
          cH = scanLinePoint(criticalPoint(i),3);       
-         %µÚÒ»ÁĞÊÇ¹Ø¼üµã-É¨ÃèµãÆ½¾à£¬µÚ¶şÁĞÊÇ¹Ø¼üµã-É¨Ãèµã¸ß²î£¬µÚÈıÁĞÊÇÉ¨
-         %Ãèµã-µØÃæµã¸ß²î
+         %ç¬¬ä¸€åˆ—æ˜¯å…³é”®ç‚¹-æ‰«æç‚¹å¹³è·ï¼Œç¬¬äºŒåˆ—æ˜¯å…³é”®ç‚¹-æ‰«æç‚¹é«˜å·®ï¼Œç¬¬ä¸‰åˆ—æ˜¯æ‰«
+         %æç‚¹-åœ°é¢ç‚¹é«˜å·®
          dxyh = [sqrt((x-cX).^2+(y-cY).^2) (cH-h) abs(midHeight-h)];
          [dxyh dxyOrder] = sortrows(dxyh);
         alternativePointInfo = [];

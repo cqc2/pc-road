@@ -1,46 +1,46 @@
 function cluster = getclusterinfo(cluster,tracedata)
 %
-% ¼ÆËãµãÔÆ¾ÛÀàµÄÃèÊöĞÔĞÅÏ¢£¬Ê¹ÓÃÕâĞ©ĞÅÏ¢¶Ô¿ÉÒÔ¶Ô¾ÛÀà½øĞĞ¸ü¸ß²ã´ÎµÄ³éÏóÒÔ±ã×ö½ø
-% Ò»²½µÄ´¦Àí¡£
+% è®¡ç®—ç‚¹äº‘èšç±»çš„æè¿°æ€§ä¿¡æ¯ï¼Œä½¿ç”¨è¿™äº›ä¿¡æ¯å¯¹å¯ä»¥å¯¹èšç±»è¿›è¡Œæ›´é«˜å±‚æ¬¡çš„æŠ½è±¡ä»¥ä¾¿åšè¿›
+% ä¸€æ­¥çš„å¤„ç†ã€‚
 %
-% INPUT£º
-% cluster - µãÔÆ¾ÛÀà½á¹¹Ìå
+% INPUTï¼š
+% cluster - ç‚¹äº‘èšç±»ç»“æ„ä½“
 % 
-% OUTPUT£º
-% cluster - ÓµÓĞÏà¹ØÃèÊöĞÔÊôĞÔ×Ö¶ÎµÄµãÔÆ¾ÛÀà½á¹¹Ìå
+% OUTPUTï¼š
+% cluster - æ‹¥æœ‰ç›¸å…³æè¿°æ€§å±æ€§å­—æ®µçš„ç‚¹äº‘èšç±»ç»“æ„ä½“
 %
-% STRUCT£º
-% data - µãÔÆÊı¾İ
-% isLabel - ÊÇ·ñÒÑ¾­±ê¼Ç¹ı£¬false or true
-% label - µãÔÆÀà±ğ£¬Ä¬ÈÏ0
-% rectx - Íâ½Ó¾ØĞÎµÄºá×ø±ê£¬ÆäÖĞÊ×Î²ÊÇÍ¬Ò»¸öµã£¬ËùÒÔÓĞ5¸öÊı¾İ
-% recty - Íâ½ç¾ØĞÎµÄ×İ×ø±ê
-% center - Íâ½Ó¾ØĞÎÖĞĞÄ
-% rectArea - Íâ½Ó¾ØĞÎÃæ»ı
-% perimeter - Íâ½Ó¾ØĞÎÖÜ³¤
-% length - Íâ½Ó¾ØĞÎ½Ï³¤±ß
-% width - Íâ½Ó¾ØĞÎ½Ï¶Ì±ß
-% pointArea - ÒÔ¸ñÍø¸öÊı½üËÆ¼ÆËãµÄµãÔÆÃæ»ı 
-% perctA - µãÔÆÃæ»ıÕ¼ÆäÍâ½Ó¾ØĞÎÃæ»ı±ÈÀı
-% density - µãÃÜ¶È
-% direction - ¾ØĞÎ·½ÏòÏòÁ¿£¬±íÊ¾ÁË¾ØĞÎµÄ×ËÌ¬£¨²»·Ö·½Ïò£©£¬Ä£µÄ´óĞ¡±íÊ¾ÁË³Ê¾ØĞÎµÄ³Ì¶È
-% squareValue - ×Ô¶¨Òå¾ØĞÎ¶È£¬²»ÊÇ³¤¿í±È£¬Ò²²»ÊÇ³£¹æµÄ¾ØĞÎ¶È
-% angle - ÓëxÖá¼Ğ½Ç£¨0~180£©
-% lenWidthRate - ³¤¿í±È
-% n - µã¸öÊı
-% angle2trace - ¾ÛÂä³¯ÏòÓë¹ì¼£¼Ğ½Ç
-% len2trace - ¾ÛÂäÖĞĞÄµ½¹ì¼£¾àÀë
+% STRUCTï¼š
+% data - ç‚¹äº‘æ•°æ®
+% isLabel - æ˜¯å¦å·²ç»æ ‡è®°è¿‡ï¼Œfalse or true
+% label - ç‚¹äº‘ç±»åˆ«ï¼Œé»˜è®¤0
+% rectx - å¤–æ¥çŸ©å½¢çš„æ¨ªåæ ‡ï¼Œå…¶ä¸­é¦–å°¾æ˜¯åŒä¸€ä¸ªç‚¹ï¼Œæ‰€ä»¥æœ‰5ä¸ªæ•°æ®
+% recty - å¤–ç•ŒçŸ©å½¢çš„çºµåæ ‡
+% center - å¤–æ¥çŸ©å½¢ä¸­å¿ƒ
+% rectArea - å¤–æ¥çŸ©å½¢é¢ç§¯
+% perimeter - å¤–æ¥çŸ©å½¢å‘¨é•¿
+% length - å¤–æ¥çŸ©å½¢è¾ƒé•¿è¾¹
+% width - å¤–æ¥çŸ©å½¢è¾ƒçŸ­è¾¹
+% pointArea - ä»¥æ ¼ç½‘ä¸ªæ•°è¿‘ä¼¼è®¡ç®—çš„ç‚¹äº‘é¢ç§¯ 
+% perctA - ç‚¹äº‘é¢ç§¯å å…¶å¤–æ¥çŸ©å½¢é¢ç§¯æ¯”ä¾‹
+% density - ç‚¹å¯†åº¦
+% direction - çŸ©å½¢æ–¹å‘å‘é‡ï¼Œè¡¨ç¤ºäº†çŸ©å½¢çš„å§¿æ€ï¼ˆä¸åˆ†æ–¹å‘ï¼‰ï¼Œæ¨¡çš„å¤§å°è¡¨ç¤ºäº†å‘ˆçŸ©å½¢çš„ç¨‹åº¦
+% squareValue - è‡ªå®šä¹‰çŸ©å½¢åº¦ï¼Œä¸æ˜¯é•¿å®½æ¯”ï¼Œä¹Ÿä¸æ˜¯å¸¸è§„çš„çŸ©å½¢åº¦
+% angle - ä¸xè½´å¤¹è§’ï¼ˆ0~180ï¼‰
+% lenWidthRate - é•¿å®½æ¯”
+% n - ç‚¹ä¸ªæ•°
+% angle2trace - èšè½æœå‘ä¸è½¨è¿¹å¤¹è§’
+% len2trace - èšè½ä¸­å¿ƒåˆ°è½¨è¿¹è·ç¦»
 
 isCaltraceinfo = false;
 if exist('tracedata','var')&&~isempty(tracedata)
     Mdl = KDTreeSearcher(tracedata(:,1:2));
    isCaltraceinfo = true;
 end
-    nc  = size(cluster,2);%¾ÛÀà¸öÊı
+    nc  = size(cluster,2);%èšç±»ä¸ªæ•°
 for i=1:nc
     data = cluster(i).data;
     cluster(i).isLabel = false;
-    cluster(i).label = 0;%-1±íÊ¾Àà±ğ»¹Î´Öª
+    cluster(i).label = 0;%-1è¡¨ç¤ºç±»åˆ«è¿˜æœªçŸ¥
     x = data(:,1);
     y = data(:,2);
     n = size(x,1);
@@ -53,29 +53,29 @@ for i=1:nc
         perimeter =0;
     end
     if n<3
-        % µ±µã¸öÊı²»µ½3¸öÊ±minboundrect»á³öÏÖÒ»Ğ©bug
+        % å½“ç‚¹ä¸ªæ•°ä¸åˆ°3ä¸ªæ—¶minboundrectä¼šå‡ºç°ä¸€äº›bug
         perimeter=perimeter(1,1);
     end
     cluster(i).rectx = rectx;
     cluster(i).recty = recty;
     cx = mean(rectx);
     cy = mean(recty);
-    cluster(i).center = [cx cy];%Íâ½Ó¾ØĞÎÖĞĞÄ
-    cluster(i).rectArea = rectArea;%×îĞ¡Íâ½Ó¾ØĞÎÃæ»ı
+    cluster(i).center = [cx cy];%å¤–æ¥çŸ©å½¢ä¸­å¿ƒ
+    cluster(i).rectArea = rectArea;%æœ€å°å¤–æ¥çŸ©å½¢é¢ç§¯
     cluster(i).perimeter = perimeter;
-    d = sqrt((rectx(1:2) - rectx(2:3)).^2+(recty(1:2) - recty(2:3)).^2);%Íâ½Ó¾ØĞÎ±ß³¤
+    d = sqrt((rectx(1:2) - rectx(2:3)).^2+(recty(1:2) - recty(2:3)).^2);%å¤–æ¥çŸ©å½¢è¾¹é•¿
     cluster(i).length = max(d);
     cluster(i).width = min(d);
-    areaSeed = unique([roundn(x,-1) roundn(y,-1)],'rows');%×ø±ê¶ÔÓ¦µ½0.1Ã×µÄ¸ñÍøÖĞ
-    pointArea = 0.1*0.1*size(areaSeed,1)-0.5*perimeter*0.1;%ÒÔ¸ñÍø¸öÊı½üËÆ¼ÆËãµãÔÆÃæ»ı 
+    areaSeed = unique([roundn(x,-1) roundn(y,-1)],'rows');%åæ ‡å¯¹åº”åˆ°0.1ç±³çš„æ ¼ç½‘ä¸­
+    pointArea = 0.1*0.1*size(areaSeed,1)-0.5*perimeter*0.1;%ä»¥æ ¼ç½‘ä¸ªæ•°è¿‘ä¼¼è®¡ç®—ç‚¹äº‘é¢ç§¯ 
     cluster(i).area = pointArea;
-    cluster(i).n = n;%µã¸öÊı
-    cluster(i).perctA = pointArea/rectArea;%¾ØĞÎ¶È
-    cluster(i).density = n/rectArea;%µãÃÜ¶È
+    cluster(i).n = n;%ç‚¹ä¸ªæ•°
+    cluster(i).perctA = pointArea/rectArea;%çŸ©å½¢åº¦
+    cluster(i).density = n/rectArea;%ç‚¹å¯†åº¦
     
-    %¾ØĞÎ·½ÏòÏòÁ¿£¬±íÊ¾ÁË¾ØĞÎµÄ×ËÌ¬£¨²¿·Ö·½Ïò£©£¬Ä£µÄ´óĞ¡±íÊ¾ÁË³Ê¾ØĞÎµÄ³Ì¶È
+    %çŸ©å½¢æ–¹å‘å‘é‡ï¼Œè¡¨ç¤ºäº†çŸ©å½¢çš„å§¿æ€ï¼ˆéƒ¨åˆ†æ–¹å‘ï¼‰ï¼Œæ¨¡çš„å¤§å°è¡¨ç¤ºäº†å‘ˆçŸ©å½¢çš„ç¨‹åº¦
     if d(1)==d(2)
-        cluster(i).direction = [0,0];%Õı·½ĞÎÏòÁ¿Ä£Îª0
+        cluster(i).direction = [0,0];%æ­£æ–¹å½¢å‘é‡æ¨¡ä¸º0
     elseif d(1)>d(2)
          cluster(i).direction = [(rectx(1) - rectx(2))/d(1),(recty(1) - recty(2))/d(1)].*(abs(d(1)/d(2)-1));   
     elseif d(1)<d(2)
@@ -84,10 +84,10 @@ for i=1:nc
     if cluster(i).direction(2)<0
         cluster(i).direction = -cluster(i).direction;
     end 
-    cluster(i).squareValue = cluster(i).direction*(cluster(i).direction)';%¾ØĞÎ¶È
+    cluster(i).squareValue = cluster(i).direction*(cluster(i).direction)';%çŸ©å½¢åº¦
     cluster(i).angle = atand(cluster(i).direction(2)/cluster(i).direction(1));
     if cluster(i).angle<0
-        cluster(i).angle = cluster(i).angle+180;%½Ç¶È»»Ëãµ½0~180
+        cluster(i).angle = cluster(i).angle+180;%è§’åº¦æ¢ç®—åˆ°0~180
     end
     cluster(i).lenWidthRate = cluster(i).length/cluster(i).width;
     
@@ -97,16 +97,16 @@ for i=1:nc
         Idx = Idx{1};
         D =  D{1};
         angle1 = cluster(i).angle;
-        if size(Idx,2)>=2%¼ÆËã¹ì¼£·½ÏòÖÁÉÙĞèÒª2¸öµã
+        if size(Idx,2)>=2%è®¡ç®—è½¨è¿¹æ–¹å‘è‡³å°‘éœ€è¦2ä¸ªç‚¹
             dx =  tracedata(Idx(1),1)-tracedata(Idx(2),1);
             dy = tracedata(Idx(1),2)-tracedata(Idx(2),2);
-            angle2 = atand(dy/dx);%¹ì¼£½Ç¶È
+            angle2 = atand(dy/dx);%è½¨è¿¹è§’åº¦
             if angle2<0
-                angle2 = angle2+180;%½Ç¶È»»Ëãµ½0~180
+                angle2 = angle2+180;%è§’åº¦æ¢ç®—åˆ°0~180
             end
             angle12 = abs(angle1-angle2);
             if angle12>90
-                angle12 = 180-angle12;%¼Ğ½Ç»»ËãµÀ0~90
+                angle12 = 180-angle12;%å¤¹è§’æ¢ç®—é“0~90
             end
            cluster(i).angle2trace = angle12;
            cluster(i).len2trace = (D(1)+D(2))/2;

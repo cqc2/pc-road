@@ -2,7 +2,7 @@ function densePointData = densifypoint(pointData,step)
  %
  [nPoint,~]= size(pointData);
  interpol = pointData';
-% ÑùÌõÇúÏß²îÖµ  
+% æ ·æ¡æ›²çº¿å·®å€¼  
 t=1:nPoint;  
 ts = 1:step:nPoint;  
 xys = spline(t,interpol,ts); 

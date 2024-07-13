@@ -25,21 +25,21 @@ end
 
 function segmentArray = segmentdata(filePath,nSegment,interval)
 %     %read point cloud file
-%     if (isunix) % LinuxÏµÍ³Ìá¹©ÁËwcÃüÁî¿ÉÒÔÖ±½ÓÊ¹ÓÃ
-%         % Ê¹ÓÃsyetemº¯Êı¿ÉÒÔÖ´ĞĞ²Ù×÷ÏµÍ³µÄº¯Êı
-%         % ±ÈÈçwindowÖĞdir£¬linuxÖĞlsµÈ
+%     if (isunix) % Linuxç³»ç»Ÿæä¾›äº†wcå‘½ä»¤å¯ä»¥ç›´æ¥ä½¿ç”¨
+%         % ä½¿ç”¨syetemå‡½æ•°å¯ä»¥æ‰§è¡Œæ“ä½œç³»ç»Ÿçš„å‡½æ•°
+%         % æ¯”å¦‚windowä¸­dirï¼Œlinuxä¸­lsç­‰
 %         [~, numstr] = system( ['wc -l ', filePath] );
 %         row=str2double(numstr);
-%     elseif (ispc) % WindowsÏµÍ³¿ÉÒÔÊ¹ÓÃperlÃüÁî
+%     elseif (ispc) % Windowsç³»ç»Ÿå¯ä»¥ä½¿ç”¨perlå‘½ä»¤
 %         if exist('countlines.pl','file')~=2
-%             % perlÎÄ¼şÄÚÈİºÜ¼òµ¥¾ÍÁ½ĞĞ
+%             % perlæ–‡ä»¶å†…å®¹å¾ˆç®€å•å°±ä¸¤è¡Œ
 %             % while (<>) {};
 %             % print $.,"\n";
 %             fid=fopen('countlines.pl','w');
 %             fprintf(fid,'%s\n%s','while (<>) {};','print $.,"\n";');
 %             fclose(fid);
 %         end
-%         % Ö´ĞĞperl½Å±¾
+%         % æ‰§è¡Œperlè„šæœ¬
 %         row=str2double( perl('countlines.pl',filePath) );
 %     end
 %     nPoint = row;   

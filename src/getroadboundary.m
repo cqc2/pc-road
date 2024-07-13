@@ -50,7 +50,7 @@ mileagedata(:,3) = posData.elevation;
 % [xi,yi]=meshgrid(linspace(min(x),max(x),50),linspace(min(y),max(y),50));
 % zi=griddata(x,y,z,xi,yi,'v4');
 % surf(xi,yi,zi);axis equal;
-%shading interp %È¥³ıÍø¸ñ
+%shading interp %å»é™¤ç½‘æ ¼
    
 %     ransac(boundary1(:,1:2),2);
 %     a=0;
@@ -77,7 +77,7 @@ function isBoundaryInfoArray = refineroadboundarypoint(boundaryArray,mileageArra
     clusterInfoArray = cell(1,nBoundary);
     clusterArray = cell(1,nBoundary);
     for iBoundary = 1:nBoundary
-    %¼ÆËã±ß½çÓë¹ì¼£ÏßµÄ¹ØÏµĞÅÏ¢
+    %è®¡ç®—è¾¹ç•Œä¸è½¨è¿¹çº¿çš„å…³ç³»ä¿¡æ¯
        boundary = boundaryArray{iBoundary};
         cluster = clusterpoint(boundary,0.5,3);
         cluster = cluster2straightline(cluster,mileageArray);
@@ -91,7 +91,7 @@ function isBoundaryInfoArray = refineroadboundarypoint(boundaryArray,mileageArra
         
         clusterArray(iBoundary) = {cluster};
         nCluster = size(cluster,2);
-        %[ÆğµãÀï³Ì Æğµã-¹ì¼£¾àÀë ÖÕµãÀï³Ì ÖÕµã-¹ì¼£¾àÀë ÆğÖÕµã³¤¶È]
+        %[èµ·ç‚¹é‡Œç¨‹ èµ·ç‚¹-è½¨è¿¹è·ç¦» ç»ˆç‚¹é‡Œç¨‹ ç»ˆç‚¹-è½¨è¿¹è·ç¦» èµ·ç»ˆç‚¹é•¿åº¦]
         clusterInfo = zeros(nCluster,5);
         
         for i=1:nCluster,
@@ -109,14 +109,14 @@ function isBoundaryInfoArray = refineroadboundarypoint(boundaryArray,mileageArra
     end
     
     for iBoundary = 1:nBoundary,
-        %³¤¶È½Ï¶Ì£¬ÇÒ±ÈÏàÁÚµÄ¾ÛÀàÏß¸ü¿¿½ü¹ì¼£µÄÏß¶ÎÈÏÎªÊÇ·Ç±ß½ç¾ÛÀàÏß
+        %é•¿åº¦è¾ƒçŸ­ï¼Œä¸”æ¯”ç›¸é‚»çš„èšç±»çº¿æ›´é è¿‘è½¨è¿¹çš„çº¿æ®µè®¤ä¸ºæ˜¯éè¾¹ç•Œèšç±»çº¿
        clusterInfo = clusterInfoArray(1,iBoundary);
        clusterInfo = clusterInfo{1};
        cluster = clusterArray{iBoundary};       
        nCluster =  size(clusterInfo,1);
-       isBoundaryArray = zeros(nCluster,1);%±ê¼Ç£¬Èç¹ûÅĞ¶ÏÎª±ß½çÔòÖÃÎªtrue£¬·ñÔòÎª0
+       isBoundaryArray = zeros(nCluster,1);%æ ‡è®°ï¼Œå¦‚æœåˆ¤æ–­ä¸ºè¾¹ç•Œåˆ™ç½®ä¸ºtrueï¼Œå¦åˆ™ä¸º0
        if nCluster==1,
-           %µ±Ö»ÓĞÒ»¸ö¾ÛÀàÏßÊ±£¬´ËÊ±Ö»ÄÜ¸ù¾İ×ÔÌØÕ÷ÅĞ¶Ï
+           %å½“åªæœ‰ä¸€ä¸ªèšç±»çº¿æ—¶ï¼Œæ­¤æ—¶åªèƒ½æ ¹æ®è‡ªç‰¹å¾åˆ¤æ–­
            points = cluster{1};
            info = clusterInfo(1,:);
           [mileageLength range] = calculatesolefeatures(points,info);
@@ -124,7 +124,7 @@ function isBoundaryInfoArray = refineroadboundarypoint(boundaryArray,mileageArra
               isBoundaryArray(1,1) = true;
           end
        elseif nCluster==2,
-           %µ±ÓĞ2¸ö¾ÛÀàÏßÊ±,´ËÊ±ÈÔÖ»ÄÜ¸ù¾İÃ÷ÏÔµÄ±ß½ç×ÔÌØÕ÷ÅĞ¶Ï
+           %å½“æœ‰2ä¸ªèšç±»çº¿æ—¶,æ­¤æ—¶ä»åªèƒ½æ ¹æ®æ˜æ˜¾çš„è¾¹ç•Œè‡ªç‰¹å¾åˆ¤æ–­
            for i = 1:2,
                points = cluster{i};
                info = clusterInfo(i,:);
@@ -134,7 +134,7 @@ function isBoundaryInfoArray = refineroadboundarypoint(boundaryArray,mileageArra
                end
            end
        elseif nCluster>=3,
-           %¶ÔÓÚµÚÒ»Ìõ¾ÛÀàÏß£¬ÆäÇ°ÃæÃ»ÓĞÊı¾İ£¬°Ñ±¾ÉíÊı¾İ×÷ÎªÇ°Ò»ÌõÊı¾İ£¬ÕâÑù·½±ã´¦Àí
+           %å¯¹äºç¬¬ä¸€æ¡èšç±»çº¿ï¼Œå…¶å‰é¢æ²¡æœ‰æ•°æ®ï¼ŒæŠŠæœ¬èº«æ•°æ®ä½œä¸ºå‰ä¸€æ¡æ•°æ®ï¼Œè¿™æ ·æ–¹ä¾¿å¤„ç†
            adjacentCluster(1:3) =[{[]} cluster(1:2)]; 
            adjacentClusterInfo = [clusterInfo(1,:); clusterInfo(1:2,:)];
            multiFeaturesArray = zeros(nCluster,4);
@@ -175,7 +175,7 @@ function isBoundaryArray = checkBoundary(multiFeaturesArray)
         length = multiFeaturesArray(i,3);
         range= multiFeaturesArray(i,4);
         if length>60||dRangeL>=1||dRangeR>=1,
-            %³¤¶È´óÓÚ60»òÕßÊÇ×óÓÒÍ¹³öµÄÈÏÎªÊÇ±ß½ç
+            %é•¿åº¦å¤§äº60æˆ–è€…æ˜¯å·¦å³å‡¸å‡ºçš„è®¤ä¸ºæ˜¯è¾¹ç•Œ
             isBoundaryArray(i,1) = true;
         elseif dRangeL<-1&&dRangeR<-1,
             continue;
@@ -187,7 +187,7 @@ end
 
 function isBoundaryArray = checkBoundary2(isBoundaryArray,multiFeaturesArray)
 %determine boundary by relative type of adjacent clusters 
-%ÔÚ³õ²½±ß½çÅĞ¶Ï½á¹û»ù´¡ÉÏ½øĞĞ½øÒ»²½ÅĞ¶Ï
+%åœ¨åˆæ­¥è¾¹ç•Œåˆ¤æ–­ç»“æœåŸºç¡€ä¸Šè¿›è¡Œè¿›ä¸€æ­¥åˆ¤æ–­
     nBoundary = size(isBoundaryArray,1);
     bunch.active = false;
     bunch.start = -1;
@@ -199,20 +199,20 @@ function isBoundaryArray = checkBoundary2(isBoundaryArray,multiFeaturesArray)
         isBoundary = isBoundaryArray(i);
         isBoundaryR = isBoundaryArray(i+1);
         if bunch.active,
-        %bunch´¦ÓÚ¼¤»î×´Ì¬£¬ËµÃ÷µ±Ç°ÊÇ·Ç±ß½ç£¬ÇÒºÍÉÏÒ»¸öÓĞ¹ØÏµ£¬¼´ËûÃÇ¶¼ÊÇ·Ç±ß½çÇÒÏà¾Û¾àÀëĞ¡ÓÚ1    
+        %bunchå¤„äºæ¿€æ´»çŠ¶æ€ï¼Œè¯´æ˜å½“å‰æ˜¯éè¾¹ç•Œï¼Œä¸”å’Œä¸Šä¸€ä¸ªæœ‰å…³ç³»ï¼Œå³ä»–ä»¬éƒ½æ˜¯éè¾¹ç•Œä¸”ç›¸èšè·ç¦»å°äº1    
             if dRangeR<1&&~isBoundaryR,
-                %ÓëÏÂÒ»¸ö¾àÀëĞ¡ÓÚ1,ÇÒÏÂÒ»¸öÒ²²»ÊÇ±ß½ç£¬bunch¸üĞÂºó¼ÌĞø´¦ÓÚ¼¤»î×´Ì¬
+                %ä¸ä¸‹ä¸€ä¸ªè·ç¦»å°äº1,ä¸”ä¸‹ä¸€ä¸ªä¹Ÿä¸æ˜¯è¾¹ç•Œï¼Œbunchæ›´æ–°åç»§ç»­å¤„äºæ¿€æ´»çŠ¶æ€
                 bunch.end = i;
                 bunch.length = bunch.length+length;
             elseif dRangeR<1&&isBoundaryR,
-                %ÓëÏÂÒ»¸ö¾àÀëĞ¡ÓÚ1,ÇÒÏÂÒ»¸öÊÇ±ß½ç£¬½«bunchÖĞ¶¼ÖÃÎª±ß½ç£¬¹Ø±Õbunch¡£
+                %ä¸ä¸‹ä¸€ä¸ªè·ç¦»å°äº1,ä¸”ä¸‹ä¸€ä¸ªæ˜¯è¾¹ç•Œï¼Œå°†bunchä¸­éƒ½ç½®ä¸ºè¾¹ç•Œï¼Œå…³é—­bunchã€‚
                 isBoundaryArray(bunch.start:i) = isBoundaryR;
                 bunch.active = false;
                 bunch.start = -1;
                 bunch.end = -1;
                 bunch.length = 0;
             else dRangeR>1,
-                %½áÊøbunchÀÛ¼Æ£¬ÓÉbunchÀÛ¼ÆµÄÊı¾İÅĞ¶ÏÀàĞÍ£¬¹Ø±Õbunch¡£
+                %ç»“æŸbunchç´¯è®¡ï¼Œç”±bunchç´¯è®¡çš„æ•°æ®åˆ¤æ–­ç±»å‹ï¼Œå…³é—­bunchã€‚
                 if bunch.length>50,
                     isBoundaryArray(bunch.start:i) = isBoundaryR;
                 end
@@ -222,14 +222,14 @@ function isBoundaryArray = checkBoundary2(isBoundaryArray,multiFeaturesArray)
                 bunch.length = 0;
             end
         else
-        %bunchÎ´¼¤»î
+        %bunchæœªæ¿€æ´»
             if ~isBoundary,
                 if dRangeR<1&&isBoundaryR,
-                    %µ±Ç°²»ÊÇ±ß½ç£¬ÏÂÒ»¸öÊÇ±ß½ç£¬µ±Ç°ÓëÏÂÒ»¸ö¾àÀëĞ¡ÓÚ1£¬ÔòÈÏÎªµ±Ç°Ò²ÊÇ±ß½ç
+                    %å½“å‰ä¸æ˜¯è¾¹ç•Œï¼Œä¸‹ä¸€ä¸ªæ˜¯è¾¹ç•Œï¼Œå½“å‰ä¸ä¸‹ä¸€ä¸ªè·ç¦»å°äº1ï¼Œåˆ™è®¤ä¸ºå½“å‰ä¹Ÿæ˜¯è¾¹ç•Œ
                     isBoundaryArray(i) = isBoundaryR;
                 elseif dRangeR<1&&~isBoundaryR,
-                    %µ±Ç°²»ÊÇ±ß½ç£¬ÏÂÒ»¸ö²»ÊÇ±ß½ç£¬µ±Ç°ÓëÏÂÒ»¸ö¾àÀëĞ¡ÓÚ1£¬½«µ±Ç°ÓëÏÂÒ»¸öĞÔÖÊÀ¦°ó£¬ºóÃæÒ»Æğ½øĞĞÅĞ¶Ï
-                    bunch.active = 1;%¼¤»îbunch±äÁ¿
+                    %å½“å‰ä¸æ˜¯è¾¹ç•Œï¼Œä¸‹ä¸€ä¸ªä¸æ˜¯è¾¹ç•Œï¼Œå½“å‰ä¸ä¸‹ä¸€ä¸ªè·ç¦»å°äº1ï¼Œå°†å½“å‰ä¸ä¸‹ä¸€ä¸ªæ€§è´¨æ†ç»‘ï¼Œåé¢ä¸€èµ·è¿›è¡Œåˆ¤æ–­
+                    bunch.active = 1;%æ¿€æ´»bunchå˜é‡
                     bunch.start = i;
                     bunch.end = i;
                     bunch.length = bunch.length + length;
@@ -241,11 +241,11 @@ end
 
 function [mileageLength range] =  calculatesolefeatures(points,info)
 %calculate self features of cluster
-%¼ÆËã¾ÛÀàÏß×ÔÌØÕ÷£¬°üÀ¨Àï³Ì³¤¶È¡¢µ½¹ì¼£Ïß¾àÀë
-%×¢Òâ£ººóÃæÒ²¿ÉÒÔÌí¼Ó±ğµÄ×ÔÌØÕ÷£¬Èç¾ÛÀàÏßÖĞµãµÄÀëÉ¢³Ì¶È¡¢Ö±ÏßĞ±ÂÊµÈ
+%è®¡ç®—èšç±»çº¿è‡ªç‰¹å¾ï¼ŒåŒ…æ‹¬é‡Œç¨‹é•¿åº¦ã€åˆ°è½¨è¿¹çº¿è·ç¦»
+%æ³¨æ„ï¼šåé¢ä¹Ÿå¯ä»¥æ·»åŠ åˆ«çš„è‡ªç‰¹å¾ï¼Œå¦‚èšç±»çº¿ä¸­ç‚¹çš„ç¦»æ•£ç¨‹åº¦ã€ç›´çº¿æ–œç‡ç­‰
     mileageStart = info(1,1);
     mileageEnd = info(1,3);
-    mileageLength = abs(mileageEnd-mileageStart);%ÓÃÀï³Ì¼ÆËãµÄÃ¿¸ö¾ÛÀàÏßµÄ³¤¶È
+    mileageLength = abs(mileageEnd-mileageStart);%ç”¨é‡Œç¨‹è®¡ç®—çš„æ¯ä¸ªèšç±»çº¿çš„é•¿åº¦
     rangeStart  = info(1,2);
     rangeEnd = info(1,4);
     range = (rangeStart+rangeEnd)/2;
@@ -253,9 +253,9 @@ end
 
 function multiFeatures =  calculatesmultifeatures(adjacentCluster,infoArray)
 %calculate relative features of clusters
-%clusterArrayÊÇÈı¸öÏàÁÚµÄ¾ÛÀàÏß£¬¶ÔÖĞ¼äµÄ¾ÛÀàÏß½øĞĞÏà¹ØÌØÕ÷¼ÆËã
-%ÕâÀïÔİÊ±Ö»¿¼ÂÇÏàÁÚµÄÈıÌõ¾ÛÀàÏßÏà»¥¹ØÏµ£¬ºóÃæ¿ÉÌí¼Ó¸ü¶àÈ«¾Ö¹ØÏµ
-%ÕâÀï¼æÈİÁËcalculatesolefeatures¹¦ÄÜ
+%clusterArrayæ˜¯ä¸‰ä¸ªç›¸é‚»çš„èšç±»çº¿ï¼Œå¯¹ä¸­é—´çš„èšç±»çº¿è¿›è¡Œç›¸å…³ç‰¹å¾è®¡ç®—
+%è¿™é‡Œæš‚æ—¶åªè€ƒè™‘ç›¸é‚»çš„ä¸‰æ¡èšç±»çº¿ç›¸äº’å…³ç³»ï¼Œåé¢å¯æ·»åŠ æ›´å¤šå…¨å±€å…³ç³»
+%è¿™é‡Œå…¼å®¹äº†calculatesolefeaturesåŠŸèƒ½
     preCluster = adjacentCluster{1};
     midCluster = adjacentCluster{2};
     nextCluster = adjacentCluster{3};
@@ -270,17 +270,17 @@ end
 
 function [rangeInfo nFlag]= distpoint2trace(point,mileageArray,nFlag)
 %calculate distance between the point and trace.
-%ÒòÎª±ß½çÊÇËæ×ÅÀï³ÌÔö³¤µÄ£¬ËùÒÔ´ÓµÚnFlag¸öµã¸½½ü¿ªÊ¼¼ìË÷£¬¼õÉÙ²»±ØÒªµÄÔËËã
+%å› ä¸ºè¾¹ç•Œæ˜¯éšç€é‡Œç¨‹å¢é•¿çš„ï¼Œæ‰€ä»¥ä»ç¬¬nFlagä¸ªç‚¹é™„è¿‘å¼€å§‹æ£€ç´¢ï¼Œå‡å°‘ä¸å¿…è¦çš„è¿ç®—
         xp =point(1,1);
         yp =point(1,2);
         hp =point(1,3);
     nMileage = size(mileageArray,1);
-    backNum = 100;%Íù»Ø¶à¼ìË÷¸öÊı
+    backNum = 100;%å¾€å›å¤šæ£€ç´¢ä¸ªæ•°
     if nFlag<backNum+1,
         nFlag = backNum+1;
     end
     nFlag = backNum+1;
-    %rangeArrayÄÚÈİÎª[mx my mh mileage range],mx¡¢my¡¢mzÎªÀï³Ìµã×ø±ê,mileageÎªÀï³Ì£¬rangeÎªµãµ½¹ì¼£µã¾àÀë
+    %rangeArrayå†…å®¹ä¸º[mx my mh mileage range],mxã€myã€mzä¸ºé‡Œç¨‹ç‚¹åæ ‡,mileageä¸ºé‡Œç¨‹ï¼Œrangeä¸ºç‚¹åˆ°è½¨è¿¹ç‚¹è·ç¦»
     rangeArray = zeros(nMileage-nFlag+backNum+1,6);
     num = 0; 
     for i=nFlag-backNum:nMileage,
@@ -298,17 +298,17 @@ end
 
 function rangeInfo= distpoint2trace2(point,mileageArray)
 %calculate distance between the point and trace.
-%´úÌædistpoint2trace,
-    %rangeInfoÄÚÈİÎª[mx my mh mileage range],mx¡¢my¡¢mzÎªÀï³Ìµã×ø±ê,mileageÎªÀï³Ì£¬rangeÎªµãµ½¹ì¼£µã¾àÀë
-    [IDX, range]= knnsearch(mileageArray(:,1:2),point(1:2));%·´¸´½¨Á¢ËÑË÷Ê÷£¬Ğ§ÂÊ½ÏµÍ£¬ÀÁµÃ¸ÄÁË
+%ä»£æ›¿distpoint2trace,
+    %rangeInfoå†…å®¹ä¸º[mx my mh mileage range],mxã€myã€mzä¸ºé‡Œç¨‹ç‚¹åæ ‡,mileageä¸ºé‡Œç¨‹ï¼Œrangeä¸ºç‚¹åˆ°è½¨è¿¹ç‚¹è·ç¦»
+    [IDX, range]= knnsearch(mileageArray(:,1:2),point(1:2));%åå¤å»ºç«‹æœç´¢æ ‘ï¼Œæ•ˆç‡è¾ƒä½ï¼Œæ‡’å¾—æ”¹äº†
     rangeInfo = [mileageArray(IDX,1:4) range];
 end
 
 function mileageArray = createmileage(traceData)
 %create mileage
-%mileage´æ´¢Àï³Ìµã×ø±êÓëÀï³ÌÊı
-%more¶¼ÊÇÈıÎ¬µã
-    intervalPoint = 10;%Ã¿10¸öµã¼ÆËãÒ»´ÎÀï³Ìµã
+%mileageå­˜å‚¨é‡Œç¨‹ç‚¹åæ ‡ä¸é‡Œç¨‹æ•°
+%moreéƒ½æ˜¯ä¸‰ç»´ç‚¹
+    intervalPoint = 10;%æ¯10ä¸ªç‚¹è®¡ç®—ä¸€æ¬¡é‡Œç¨‹ç‚¹
     nTracePoint = size(traceData,1);
     nMileage = floor(nTracePoint/intervalPoint);
     mileage = 0;
@@ -402,7 +402,7 @@ function boundaryArray = getroadboundarypoint(SliceArray)
         yn = y(nPoint);
         hn = h(nPoint);
         insn = ins(nPoint);      
-        boundaryPointArray(i,1:nFiled*2) = [x1 y1 h1 ins1 xn yn hn insn];%É¨ÃèÏßµÄÊ×Î²µã
+        boundaryPointArray(i,1:nFiled*2) = [x1 y1 h1 ins1 xn yn hn insn];%æ‰«æçº¿çš„é¦–å°¾ç‚¹
     end
     x1 = boundaryPointArray(:,1);
     y1 = boundaryPointArray(:,2);
@@ -418,7 +418,7 @@ function boundaryArray = getroadboundarypoint(SliceArray)
     boundary1 = zeros(nBoundaryPoint,dim);
     for i=1:nBoundaryPoint,
         if info(i),
-            %ÌáÈ¡·ûºÏÒªÇó±ß½çµã
+            %æå–ç¬¦åˆè¦æ±‚è¾¹ç•Œç‚¹
             num = num+1;
             boundary1(num,:) = data(i,:);
         end
@@ -447,13 +447,13 @@ end
 function FilteredPoint = filterpoint(pointData,distanceLimit,nIsolate)
 % filter point by setting flag value as 0 if the distance of previous point
 % and next point to current point are both greater than the limit parameter.
-% ÕâÀïµÄpointDataÓ¦¸ÃÊÇÓĞĞòÏß×´µãÔÆ
-%ÎªÁË±£´æ±ß½çµãÊÇ³É¶ÔĞÔÖÊ£¬ÂËµôµÄµã²»É¾³ı¶øÊÇinfoÊôĞÔÖµÖÃÎª0,ÓĞÊ±Ò»´ÎÂË²¨²»Íê
-%È«ĞèÒª¶ş´Îµü´úÂË²¨
+% è¿™é‡Œçš„pointDataåº”è¯¥æ˜¯æœ‰åºçº¿çŠ¶ç‚¹äº‘
+%ä¸ºäº†ä¿å­˜è¾¹ç•Œç‚¹æ˜¯æˆå¯¹æ€§è´¨ï¼Œæ»¤æ‰çš„ç‚¹ä¸åˆ é™¤è€Œæ˜¯infoå±æ€§å€¼ç½®ä¸º0,æœ‰æ—¶ä¸€æ¬¡æ»¤æ³¢ä¸å®Œ
+%å…¨éœ€è¦äºŒæ¬¡è¿­ä»£æ»¤æ³¢
     filteredPoint = pointData;
     [nPoint col] = size(pointData);
     info = ones([nPoint 1]);
-    %ÂË³ıµô¾àÀëÆäËûµãÈº¾àÀë´óÓÚdistanceLimitÇÒ¸öÊı²»³¬¹ınIsolate¸öµÄ¹ÂÁ¢µãÈº
+    %æ»¤é™¤æ‰è·ç¦»å…¶ä»–ç‚¹ç¾¤è·ç¦»å¤§äºdistanceLimitä¸”ä¸ªæ•°ä¸è¶…è¿‡nIsolateä¸ªçš„å­¤ç«‹ç‚¹ç¾¤
 %     distanceLimit = 0.5;
 %     nIsolate = 1;
     x1 = pointData(1:end-1,1);

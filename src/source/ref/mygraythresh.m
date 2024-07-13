@@ -43,7 +43,7 @@ if ~isempty(I)
   I = im2uint8(I(:));
   num_bins = 256;
   counts = imhist(I,num_bins);
-  counts(1)=0;%ºöÂÔµô0
+  counts(1)=0;%å¿½ç•¥æ‰0
   % Variables names are chosen to be similar to the formulas in
   % the Otsu paper.
   p = counts / sum(counts);

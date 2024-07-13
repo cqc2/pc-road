@@ -5,7 +5,7 @@
 %      posFilePath = 'POS_#2_20141114.txt';
 %      pointCloudData = readpointcloudfile(pointCloudFilePath);
 
- if ~exist('TYPE','var') || isempty(TYPE), TYPE = 'scanlines'; end%Ä¬ÈÏÊ¹ÓÃÉ¨ÃèÏß·¨ÇĞ¸î
+ if ~exist('TYPE','var') || isempty(TYPE), TYPE = 'scanlines'; end%é»˜è®¤ä½¿ç”¨æ‰«æçº¿æ³•åˆ‡å‰²
  if ~exist('width','var'), width =[]; end
  if strcmp(TYPE,'scanlines')
      if ~exist('sliceInfo','var')
@@ -67,21 +67,21 @@
 
 function SliceArray = slice2subarea(pointData,sliceX,sliceY,sliceK,cutLocation)
 % slice pointdata along given direction into several regions
-% -cutInfo:ÇĞ¸îµãĞÅÏ¢£¬°üÀ¨ÇĞ¸îµã×ø±ê¡¢ÇĞ¸îÏß·½Ïò
-% -cutLenght:ÇĞ¸îºñ¶È
+% -cutInfo:åˆ‡å‰²ç‚¹ä¿¡æ¯ï¼ŒåŒ…æ‹¬åˆ‡å‰²ç‚¹åæ ‡ã€åˆ‡å‰²çº¿æ–¹å‘
+% -cutLenght:åˆ‡å‰²åšåº¦
 PointSet= struct('data',[],'range',[]);
 SliceArray=repmat(PointSet,[1 50]);
 x = pointData(:,1);
 y = pointData(:,2);
-%¶ÔµãÔÆ½øĞĞĞı×ª
-A = pi/2-sliceK;%Ğı×ª½Ç
+%å¯¹ç‚¹äº‘è¿›è¡Œæ—‹è½¬
+A = pi/2-sliceK;%æ—‹è½¬è§’
 
-%½«×ø±ê×ª»»µ½ÒÔÇĞµãÎªÔ­µã£¬ÇĞÏßÎª×İ×ø±êµãµÄ×ø±êÏµÖĞ
-x0= (x - sliceX).*cos(A) - (y - sliceY).*sin(A) ;%ÄæÊ±ÕëĞı×ªA
+%å°†åæ ‡è½¬æ¢åˆ°ä»¥åˆ‡ç‚¹ä¸ºåŸç‚¹ï¼Œåˆ‡çº¿ä¸ºçºµåæ ‡ç‚¹çš„åæ ‡ç³»ä¸­
+x0= (x - sliceX).*cos(A) - (y - sliceY).*sin(A) ;%é€†æ—¶é’ˆæ—‹è½¬A
 y0= (x - sliceX).*sin(A) + (y - sliceY).*cos(A) ;
 data = [pointData x0 y0];
 
-%ÇĞÆ¬
+%åˆ‡ç‰‡
 nSlice = size(cutLocation,2)/2;
 for iSlice=1:nSlice
     locL = cutLocation(2*iSlice-1);
@@ -95,22 +95,22 @@ end
   
 function SliceArray = slicebydirection(pointData,sliceX,sliceY,sliceK,cutLenght)
 % slice pointdata along given direction
-% -cutInfo:ÇĞ¸îµãĞÅÏ¢£¬°üÀ¨ÇĞ¸îµã×ø±ê¡¢ÇĞ¸îÏß·½Ïò
-% -cutLenght:ÇĞ¸îºñ¶È
+% -cutInfo:åˆ‡å‰²ç‚¹ä¿¡æ¯ï¼ŒåŒ…æ‹¬åˆ‡å‰²ç‚¹åæ ‡ã€åˆ‡å‰²çº¿æ–¹å‘
+% -cutLenght:åˆ‡å‰²åšåº¦
 PointSet= struct('data',[],'range',[]);
 SliceArray=repmat(PointSet,[1 50]);
 x = pointData(:,1);
 y = pointData(:,2);
-%¶ÔµãÔÆ½øĞĞĞı×ª
+%å¯¹ç‚¹äº‘è¿›è¡Œæ—‹è½¬
 if sliceK<0;
     sliceK = sliceK+pi;
 end
-A = pi/2-sliceK;%Ğı×ª½Ç
-%½«×ø±ê×ª»»µ½ÒÔÇĞµãÎªÔ­µã£¬ÇĞÏßÎª×İ×ø±êµãµÄ×ø±êÏµÖĞ
-x0= (x - sliceX).*cos(A) - (y - sliceY).*sin(A) ;%ÄæÊ±ÕëĞı×ªA
+A = pi/2-sliceK;%æ—‹è½¬è§’
+%å°†åæ ‡è½¬æ¢åˆ°ä»¥åˆ‡ç‚¹ä¸ºåŸç‚¹ï¼Œåˆ‡çº¿ä¸ºçºµåæ ‡ç‚¹çš„åæ ‡ç³»ä¸­
+x0= (x - sliceX).*cos(A) - (y - sliceY).*sin(A) ;%é€†æ—¶é’ˆæ—‹è½¬A
 y0= (x - sliceX).*sin(A) + (y - sliceY).*cos(A) ;
 data = [pointData x0 y0];
-%ÇĞÆ¬
+%åˆ‡ç‰‡
 tempData = data(data(:,end-1)<=(cutLenght/2)&data(:,end-1)>-(cutLenght/2),1:end-2);
 if isempty(tempData),
     nArray = 0;
@@ -153,7 +153,7 @@ end
 function  ScanLineArray = slice2scanlines(pointCloudData,sliceInfo)
 % slice point cloud data according to the maximal distance of two contiguous point
 % the result of this process will abtain each scanline
-%¼ì²âÉ¨ÃèÏßÔ­Ôò£ºÒ»£¬¼ä¸ô´óÓÚ5Ã×£»¶ş£¬ÔÚ¼ä¸ôÍ¼ÏñÖĞÊÇ¶¥µã£»Èı£¬¶¥µãÖ®¼äµÄµã¸öÊı´óÓÚÒ»¶¨ÊıÁ¿
+%æ£€æµ‹æ‰«æçº¿åŸåˆ™ï¼šä¸€ï¼Œé—´éš”å¤§äº5ç±³ï¼›äºŒï¼Œåœ¨é—´éš”å›¾åƒä¸­æ˜¯é¡¶ç‚¹ï¼›ä¸‰ï¼Œé¡¶ç‚¹ä¹‹é—´çš„ç‚¹ä¸ªæ•°å¤§äºä¸€å®šæ•°é‡
     nPoint = size(pointCloudData,1);
     prePoint = pointCloudData(1:nPoint-1,1:4);
     nextPoint = pointCloudData(2:nPoint,1:4);    
@@ -161,7 +161,7 @@ function  ScanLineArray = slice2scanlines(pointCloudData,sliceInfo)
     dy = (prePoint(1:nPoint-1,2)-nextPoint(1:nPoint-1,2));
     dh = (prePoint(1:nPoint-1,3)-nextPoint(1:nPoint-1,3));
     ds = sqrt(dx.^2+dy.^2+dh.^2);
-    %¼ä¸ôÍ¼Ïñ,µ÷ÊÔÓÃ
+    %é—´éš”å›¾åƒ,è°ƒè¯•ç”¨
 %     plot(1:10000,ds(1:10000),'r.');
 %     hold on
 %     plot(1:10000,ds(1:10000));
@@ -169,12 +169,12 @@ function  ScanLineArray = slice2scanlines(pointCloudData,sliceInfo)
     nVertex = 1;
     vertexInfoArray(1,1) = 1;
     vertexInfoArray(1,2) = ds(1);   
-    intervalQuantity = 5;%Ã¿ÌõÉ¨ÃèÏß×îÉÙµã¸öÊı£¬³õÊ¼Ä¬ÈÏÊÇ5¸ö
+    intervalQuantity = 5;%æ¯æ¡æ‰«æçº¿æœ€å°‘ç‚¹ä¸ªæ•°ï¼Œåˆå§‹é»˜è®¤æ˜¯5ä¸ª
     
-    %¼ä¸ôÄ¬ÈÏÊÇ5Ã×£¬ÕâÊÊÓÃ´ó¶àÊıµÀÂ·ÌáÈ¡£»µ±´ÓËíµÀÊı¾İÖĞÌáÈ¡µÀÂ·Ê±£¬¼ä¸ôÓ¦ÉèÖÃµÄºÜĞ¡£¬±ÈÈç0.5Ã×¡£
-    %Èç¹ûÉ¨ÃèÏß»¹ÒªÓÃÓÚÆäËûÂ·Ãæ¸½ÊôÎïµÄ·ÖÎö£¨ÈçÂ·µÆ¡¢Ê÷Ä¾µÈ£©£¬¼ä¸ôÓ¦ÉèÖÃµÄ´óÒ»Ğ©£¬µ«´ËÊ±Ôò²»ÄÜÓÃÓÚÌáÈ¡ËíµÀÂ·Ãæ¡£
+    %é—´éš”é»˜è®¤æ˜¯5ç±³ï¼Œè¿™é€‚ç”¨å¤§å¤šæ•°é“è·¯æå–ï¼›å½“ä»éš§é“æ•°æ®ä¸­æå–é“è·¯æ—¶ï¼Œé—´éš”åº”è®¾ç½®çš„å¾ˆå°ï¼Œæ¯”å¦‚0.5ç±³ã€‚
+    %å¦‚æœæ‰«æçº¿è¿˜è¦ç”¨äºå…¶ä»–è·¯é¢é™„å±ç‰©çš„åˆ†æï¼ˆå¦‚è·¯ç¯ã€æ ‘æœ¨ç­‰ï¼‰ï¼Œé—´éš”åº”è®¾ç½®çš„å¤§ä¸€äº›ï¼Œä½†æ­¤æ—¶åˆ™ä¸èƒ½ç”¨äºæå–éš§é“è·¯é¢ã€‚
     if ~exist('sliceInfo','var') || isempty(sliceInfo)
-        intervalDist = 5;%É¨ÃèÏß·Ö½çµãÖ®¼äµÄ×îĞ¡¾àÀë£¬Ò»°ã±ÈµÀÂ·¿í¶ÈÂÔĞ¡ ,Ä¬ÈÏ5Ã×
+        intervalDist = 5;%æ‰«æçº¿åˆ†ç•Œç‚¹ä¹‹é—´çš„æœ€å°è·ç¦»ï¼Œä¸€èˆ¬æ¯”é“è·¯å®½åº¦ç•¥å° ,é»˜è®¤5ç±³
     else
         intervalDist = sliceInfo(1);
     end
@@ -184,14 +184,14 @@ function  ScanLineArray = slice2scanlines(pointCloudData,sliceInfo)
     vertexInfoArrayTemp(1,1) = 1;
     vertexInfoArrayTemp(1,2) = ds(1);
     for i = 2:(nPoint-2),
-        %¼ÆËã¼ä¸ô²ÎÊıintervalQuantity
-        %µ±¿ªÊ¼²¿·ÖµãÔÆ±È½ÏÔÓÂÒÊ¹£¬ÇĞÆ¬¿ÉÄÜ²»¾«È·£¬´ËÊ±¼ÆËãµÄintervalQuantity¿ÉÄÜ²»ºÏÊÊ
-        %Ëã·¨È´Òª¸Ä½ø
+        %è®¡ç®—é—´éš”å‚æ•°intervalQuantity
+        %å½“å¼€å§‹éƒ¨åˆ†ç‚¹äº‘æ¯”è¾ƒæ‚ä¹±ä½¿ï¼Œåˆ‡ç‰‡å¯èƒ½ä¸ç²¾ç¡®ï¼Œæ­¤æ—¶è®¡ç®—çš„intervalQuantityå¯èƒ½ä¸åˆé€‚
+        %ç®—æ³•å´è¦æ”¹è¿›
         preDs = ds(i-1);
         currentDs = ds(i);
         nextDs = ds(i+1);
         if (preDs<currentDs)&&(nextDs<currentDs)&&currentDs>intervalDist,
-            %currentDsÊÇ¶¥µã
+            %currentDsæ˜¯é¡¶ç‚¹
             preVertexOrder = vertexInfoArrayTemp(nVertexTemp,1);
             preVertexDs = vertexInfoArrayTemp(nVertexTemp,2);
             if (i - preVertexOrder)>=intervalQuantity,
@@ -212,14 +212,14 @@ function  ScanLineArray = slice2scanlines(pointCloudData,sliceInfo)
         intervalTemp = vertexInfoArrayTemp(i+1,1) - vertexInfoArrayTemp(i,1);
         sumIntervalTemp = sumIntervalTemp+intervalTemp;
     end
-    intervalQuantity = fix((sumIntervalTemp/nVertexTemp)*0.75);%´Ë²ÎÊı¿ÉÄÜ²»×¼
+    intervalQuantity = fix((sumIntervalTemp/nVertexTemp)*0.75);%æ­¤å‚æ•°å¯èƒ½ä¸å‡†
 %     intervalQuantity = 90;
     for i = 2:(nPoint-2),
         preDs = ds(i-1);
         currentDs = ds(i);
         nextDs = ds(i+1);
         if (preDs<currentDs)&&(nextDs<currentDs)&&(currentDs>intervalDist),
-            %currentDsÊÇ¶¥µã
+            %currentDsæ˜¯é¡¶ç‚¹
             preVertexOrder = vertexInfoArray(nVertex,1);
             preVertexDs = vertexInfoArray(nVertex,2);
             if (i - preVertexOrder)>=intervalQuantity,
@@ -237,7 +237,7 @@ function  ScanLineArray = slice2scanlines(pointCloudData,sliceInfo)
     ScanLineArray=repmat(PointSet,[1 nScanLine]);  
     
     for i = 1:nVertex-1,
-        nStart = vertexInfoArray(i)+1;%±ÈÈçÓĞ5¶à¸öµã£¬µ«Ö»ÓĞ4¸ö¼ä¾à
+        nStart = vertexInfoArray(i)+1;%æ¯”å¦‚æœ‰5å¤šä¸ªç‚¹ï¼Œä½†åªæœ‰4ä¸ªé—´è·
         nEnd = vertexInfoArray(i+1);
         ScanLineArray(i).x=pointCloudData(nStart:nEnd,1);
         ScanLineArray(i).y=pointCloudData(nStart:nEnd,2);
@@ -248,7 +248,7 @@ function  ScanLineArray = slice2scanlines(pointCloudData,sliceInfo)
         return;
     end
     if nPoint>nEnd
-        %µ±»¹ÓĞÊ£ÓàµãÃ»ÓĞ±»ÇĞ¸î³ÉÉ¨ÃèÏßÊ±£¬½«Ê£ÓàµÄµã¹éÎªÒ»ÌõÉ¨ÃèÏß
+        %å½“è¿˜æœ‰å‰©ä½™ç‚¹æ²¡æœ‰è¢«åˆ‡å‰²æˆæ‰«æçº¿æ—¶ï¼Œå°†å‰©ä½™çš„ç‚¹å½’ä¸ºä¸€æ¡æ‰«æçº¿
         ScanLineArray(nVertex).x=pointCloudData(nEnd+1:nPoint,1);
         ScanLineArray(nVertex).y=pointCloudData(nEnd+1:nPoint,2);
         ScanLineArray(nVertex).h=pointCloudData(nEnd+1:nPoint,3);
@@ -262,24 +262,24 @@ function SliceArray = slicebythinned(rawPointData,ThinnedSliceArray,thinRate)
 % slicebythinned - slice raw point data through slices of thinned point data
 %
 % Input Arguments
-% rawPointData : ´ıÇĞÆ¬Ô­Ê¼µãÔÆÊı¾İ¾ØÕó£¨[x y h ints]£©
-% ThinnedSliceArray : ÓÉrawPointData³éÏ¡ºóµÄµãÔÆÊı¾İ¼ÆËãµÄÇĞÆ¬½á¹ûÊı×é
+% rawPointData : å¾…åˆ‡ç‰‡åŸå§‹ç‚¹äº‘æ•°æ®çŸ©é˜µï¼ˆ[x y h ints]ï¼‰
+% ThinnedSliceArray : ç”±rawPointDataæŠ½ç¨€åçš„ç‚¹äº‘æ•°æ®è®¡ç®—çš„åˆ‡ç‰‡ç»“æœæ•°ç»„
 %
 % Output Arguments
-% SliceArray £º Ô­Ê¼µãÔÆÇĞÆ¬½á¹ûÊı×é
+% SliceArray ï¼š åŸå§‹ç‚¹äº‘åˆ‡ç‰‡ç»“æœæ•°ç»„
 %
 % Discription
 % 
     nSlice = size(ThinnedSliceArray,2);
     PointSet= struct('x',0,'y',0,'h',0,'ins',0);
     SliceArray=repmat(PointSet,[1 nSlice]);
-    SliceRangeArray = zeros(nSlice,2);%´æ´¢½á¹ûÇĞÆ¬£¨²»ÊÇÏ¡ÊèÇĞÆ¬£©ÆğÖ¹µãÔÚÔ­Ê¼µãÔÆÖĞµÄË³ĞòºÅ
+    SliceRangeArray = zeros(nSlice,2);%å­˜å‚¨ç»“æœåˆ‡ç‰‡ï¼ˆä¸æ˜¯ç¨€ç–åˆ‡ç‰‡ï¼‰èµ·æ­¢ç‚¹åœ¨åŸå§‹ç‚¹äº‘ä¸­çš„é¡ºåºå·
     nRawPoint = size(rawPointData,1);
     iRawPoint = 0;
-    iRawPoint2nd = 1;%µÚ2¸öÆğÊ¼µãÔÚÔ­Ê¼µãÔÆÖĞµÄË³ĞòºÅ
+    iRawPoint2nd = 1;%ç¬¬2ä¸ªèµ·å§‹ç‚¹åœ¨åŸå§‹ç‚¹äº‘ä¸­çš„é¡ºåºå·
     iRawPoint3rd = 2;
     for i = 1:nSlice,
-        %ÓÃ¿ªÍ·£¬½áÎ²¸÷Èı¸öµãÀ´ÅĞ¶Ï£¬ÕâÑù¿ÉÒÔÈ¥¼õÉÙ·ÉµãµÄÓ°Ïì
+        %ç”¨å¼€å¤´ï¼Œç»“å°¾å„ä¸‰ä¸ªç‚¹æ¥åˆ¤æ–­ï¼Œè¿™æ ·å¯ä»¥å»å‡å°‘é£ç‚¹çš„å½±å“
         StartPoint.x = ThinnedSliceArray(i).x(1:3);
         StartPoint.y = ThinnedSliceArray(i).y(1:3);
         StartPoint.h = ThinnedSliceArray(i).h(1:3);
@@ -307,7 +307,7 @@ function SliceArray = slicebythinned(rawPointData,ThinnedSliceArray,thinRate)
                 h3rd = rawPointData(iRawPoint3rd,3);
                 iRawPoint2nd = iRawPoint;
                 while (StartPoint.x(2) ~= x2nd)||(StartPoint.y(2) ~= y2nd)||(StartPoint.h(2) ~= h2nd),
-                    iRawPoint2nd = iRawPoint2nd+1;%µÚ¶ş¸öÆğÊ¼µãÔÚÔ­Ê¼µãÔÆÖĞµÄË³ĞòºÅ
+                    iRawPoint2nd = iRawPoint2nd+1;%ç¬¬äºŒä¸ªèµ·å§‹ç‚¹åœ¨åŸå§‹ç‚¹äº‘ä¸­çš„é¡ºåºå·
                     x2nd = rawPointData(iRawPoint2nd,1);
                     y2nd = rawPointData(iRawPoint2nd,2);
                     h2nd = rawPointData(iRawPoint2nd,3);
@@ -338,7 +338,7 @@ function SliceArray = slicebythinned(rawPointData,ThinnedSliceArray,thinRate)
                             h3rd = rawPointData(iRawPoint3rd,3);
                         end
                     else
-                        %ÖÁ´ËÕÒµ½ÁËÈı¸öË³Ğò¼ä¸ôÏàµÈµÄµã
+                        %è‡³æ­¤æ‰¾åˆ°äº†ä¸‰ä¸ªé¡ºåºé—´éš”ç›¸ç­‰çš„ç‚¹
                         x = rawPointData(iRawPoint,1);
                         y = rawPointData(iRawPoint,2);
                         h = rawPointData(iRawPoint,3);
@@ -349,12 +349,12 @@ function SliceArray = slicebythinned(rawPointData,ThinnedSliceArray,thinRate)
                     end
                 end
             elseif (EndPoint.x(3) == x)&&(EndPoint.y(3) == y)&&(EndPoint.h(3) == h),
-                %×¢Òâ¼ÆÊı·½Ïò£¬EndPoint£¨3£©²ÅÊÇ×îºóÒ»¸ö½áÊøµã£¬Óëx2nd£¬y3rdÊÇ·´µÄ
+                %æ³¨æ„è®¡æ•°æ–¹å‘ï¼ŒEndPointï¼ˆ3ï¼‰æ‰æ˜¯æœ€åä¸€ä¸ªç»“æŸç‚¹ï¼Œä¸x2ndï¼Œy3rdæ˜¯åçš„
                 iRawPoint2ndBack = iRawPoint2ndBack - 1;
                 x2nd = rawPointData(iRawPoint2ndBack,1);
                 y2nd = rawPointData(iRawPoint2ndBack,2);
                 while (EndPoint.x(2) ~= x2nd)||(EndPoint.y(2) ~= y2nd),
-                    %ÕÒµ½EndPoint.x(2)ÔÚÔ­Ê¼µãÔÆÖĞµÄË³ĞòºÅ
+                    %æ‰¾åˆ°EndPoint.x(2)åœ¨åŸå§‹ç‚¹äº‘ä¸­çš„é¡ºåºå·
                     iRawPoint2ndBack = iRawPoint2ndBack-1;
                     if iRawPoint2ndBack <1,
                         break;
@@ -373,11 +373,11 @@ function SliceArray = slicebythinned(rawPointData,ThinnedSliceArray,thinRate)
                     x3rd = rawPointData(iRawPoint3rdBack,1);
                     y3rd = rawPointData(iRawPoint3rdBack,2);
                 end
-                %ÖÁ´ËËã³öÁËÄ©Î²Èı¸öµãÔÚÔ­Ê¼µãÔÆÖĞµÄµÄ´æ´¢Ë³ĞòÎ»ÖÃ
+                %è‡³æ­¤ç®—å‡ºäº†æœ«å°¾ä¸‰ä¸ªç‚¹åœ¨åŸå§‹ç‚¹äº‘ä¸­çš„çš„å­˜å‚¨é¡ºåºä½ç½®
                 temp = 0;
                 while (temp<nThinnedSlicePoint)&&(iRawPoint3rdBack>0),                  
                     if ((iRawPoint-iRawPoint2ndBack)~=thinRate)||((iRawPoint2ndBack-iRawPoint3rdBack)~=thinRate),
-                        temp = temp+1;%EndPointÍù»Øµ¹µÃ´ÎÊı
+                        temp = temp+1;%EndPointå¾€å›å€’å¾—æ¬¡æ•°
                         iRawPoint = iRawPoint2ndBack;
                         iRawPoint2ndBack = iRawPoint3rdBack;
                         EndPoint.x(2:3) = EndPoint.x(1:2);
@@ -385,13 +385,13 @@ function SliceArray = slicebythinned(rawPointData,ThinnedSliceArray,thinRate)
                         EndPoint.x(1) = ThinnedSliceArray(i).x(nThinnedSlicePoint-temp-2);
                         EndPoint.y(1) = ThinnedSliceArray(i).y(nThinnedSlicePoint-temp-2);
                         while (EndPoint.x(1) ~= x3rd)||(EndPoint.y(1) ~= y3rd),
-                            %ÕÒEndPoint.x(1)ÔÚÔ­Ê¼µãÔÆÖĞµÄË³ĞòºÅ
+                            %æ‰¾EndPoint.x(1)åœ¨åŸå§‹ç‚¹äº‘ä¸­çš„é¡ºåºå·
                             iRawPoint3rdBack = iRawPoint3rdBack-1;
                             x3rd = rawPointData(iRawPoint3rdBack,1);
                             y3rd = rawPointData(iRawPoint3rdBack,2);
                         end
                     else
-                        %ÖÁ´ËÕÒµ½ÁËÈı¸öË³Ğò¼ä¸ôÏàµÈµÄµã
+                        %è‡³æ­¤æ‰¾åˆ°äº†ä¸‰ä¸ªé¡ºåºé—´éš”ç›¸ç­‰çš„ç‚¹
                         iEnd = iRawPoint;
                         SliceRangeArray(i,2) = iEnd;
                         x = rawPointData(iRawPoint,1);
@@ -405,12 +405,12 @@ function SliceArray = slicebythinned(rawPointData,ThinnedSliceArray,thinRate)
             end
         end
             if (i>1)&&(iStart == SliceRangeArray(i-1,1)),
-                %¼´µ±Ã»ÓĞÕÒµ½ÆğÊ¼µãÊ±£¬ÕâÊ±µÄiStartÓëÉÏÒ»´ÎiStartÏàµÈ
+                %å³å½“æ²¡æœ‰æ‰¾åˆ°èµ·å§‹ç‚¹æ—¶ï¼Œè¿™æ—¶çš„iStartä¸ä¸Šä¸€æ¬¡iStartç›¸ç­‰
                 iStart=SliceRangeArray(i-1,2)+1;
                 SliceRangeArray(i,1) = iStart;
             end
             if (i>1)&&(iEnd == SliceRangeArray(i-1,2)),
-                %Ã»ÓĞÕÒµ½ÖÕµã£¬ÈÏÎª´ËÊ±µãÔÆÇĞ¸îÍê±Ï
+                %æ²¡æœ‰æ‰¾åˆ°ç»ˆç‚¹ï¼Œè®¤ä¸ºæ­¤æ—¶ç‚¹äº‘åˆ‡å‰²å®Œæ¯•
                 SliceArray=SliceArray(1:i-1);
                 return;
             end
@@ -424,15 +424,15 @@ end
 function SliceArray = slicebypos(pointCloudData,posData,separation,thickness,width)
 % slicebypos - slcie point cloud data through pos data.
 % the center point of slices is on the track curve fitted through pos data. 
-% - separation:ÏàÁÚÇĞÆ¬¼ä¸ô
-% - thickness:ÇĞÆ¬ºñ¶È
-% ¶ÔÀëÉ¢µÄPosÊı¾İ½øĞĞÇúÏßÄâºÏ£¬´Ó¶ø¿ÉÒÔÈ·¶¨¹ì¼£ÏßÉÏÈÎÒ»µãÇĞÏò·½Ïò£¬½ø¶ø¿ÉÒÔ
-% ÔÚÈÎÒ»µã½øĞĞÇĞÆ¬¡£
-%   ×¢Òâ£ºµ±ÇĞÆ¬¼ä¸ô½ÏĞ¡Ê±£¬ÈôA£¬BÎªÏàÁÚÇĞÆ¬£¬pÎªA¡¢BÏà½Ó±ß½çÉÏµÄµã£¬ÔòpÓĞ¿ÉÄÜ¼´±»
-% ¹éÀàÎªAÇĞÆ¬£¬ÓÖ±»¹éÀàÎªBÇĞÆ¬£¬µ¼ÖÂ´ËÏÖÏóµÄÔ­ÒòÊÇD(A,B)Óë£¨separation+thickness£©
-% ²»ÑÏ¸ñÏàµÈ£»ÁíÍâ£¬Èç¹ûposÊı¾İÖØ¸´µÄ»°µãÔÆÒ²»á±»ÖØ¸´ÇĞÆ¬¡£
-    %ÀÛ¼Æ¾àÀëÒÔÖ±Ïß½üËÆÈ·¶¨
-    %ÇĞÏòÁ¿±¾Ó¦Í¨¹ıÄâºÏµÄÇúÏßÈ·¶¨£¬ÕâÀïÍ¨¹ıÇ°ºóÁ½µãÖ±ÏßĞ±ÂÊ½üËÆ´úÌæ
+% - separation:ç›¸é‚»åˆ‡ç‰‡é—´éš”
+% - thickness:åˆ‡ç‰‡åšåº¦
+% å¯¹ç¦»æ•£çš„Posæ•°æ®è¿›è¡Œæ›²çº¿æ‹Ÿåˆï¼Œä»è€Œå¯ä»¥ç¡®å®šè½¨è¿¹çº¿ä¸Šä»»ä¸€ç‚¹åˆ‡å‘æ–¹å‘ï¼Œè¿›è€Œå¯ä»¥
+% åœ¨ä»»ä¸€ç‚¹è¿›è¡Œåˆ‡ç‰‡ã€‚
+%   æ³¨æ„ï¼šå½“åˆ‡ç‰‡é—´éš”è¾ƒå°æ—¶ï¼Œè‹¥Aï¼ŒBä¸ºç›¸é‚»åˆ‡ç‰‡ï¼Œpä¸ºAã€Bç›¸æ¥è¾¹ç•Œä¸Šçš„ç‚¹ï¼Œåˆ™pæœ‰å¯èƒ½å³è¢«
+% å½’ç±»ä¸ºAåˆ‡ç‰‡ï¼Œåˆè¢«å½’ç±»ä¸ºBåˆ‡ç‰‡ï¼Œå¯¼è‡´æ­¤ç°è±¡çš„åŸå› æ˜¯D(A,B)ä¸ï¼ˆseparation+thicknessï¼‰
+% ä¸ä¸¥æ ¼ç›¸ç­‰ï¼›å¦å¤–ï¼Œå¦‚æœposæ•°æ®é‡å¤çš„è¯ç‚¹äº‘ä¹Ÿä¼šè¢«é‡å¤åˆ‡ç‰‡ã€‚
+    %ç´¯è®¡è·ç¦»ä»¥ç›´çº¿è¿‘ä¼¼ç¡®å®š
+    %åˆ‡å‘é‡æœ¬åº”é€šè¿‡æ‹Ÿåˆçš„æ›²çº¿ç¡®å®šï¼Œè¿™é‡Œé€šè¿‡å‰åä¸¤ç‚¹ç›´çº¿æ–œç‡è¿‘ä¼¼ä»£æ›¿
     distTotal = 0;
     nSlice = 0;
     posX = posData.x;
@@ -441,17 +441,17 @@ function SliceArray = slicebypos(pointCloudData,posData,separation,thickness,wid
     PointSet= struct('x',0,'y',0,'h',0,'ins',0);
     SliceArray=repmat(PointSet,[1 1000]);
     nPoint = 0;
-    k = zeros(nPos,1); %posµãµ½ÏÂÒ»µãÖ±ÏßµÄ·½Î»½Ç£¨-180,180£©
+    k = zeros(nPos,1); %posç‚¹åˆ°ä¸‹ä¸€ç‚¹ç›´çº¿çš„æ–¹ä½è§’ï¼ˆ-180,180ï¼‰
     for i = 1:nPos-1
         distTotal=distTotal+norm([posX(i+1)-posX(i) posY(i+1)-posY(i)]);
-        k(i,1) = atan2(posY(i+1)-posY(i),posX(i+1)-posX(i));%ËÄÏóÏŞ·½Ïò½Ç
+        k(i,1) = atan2(posY(i+1)-posY(i),posX(i+1)-posX(i));%å››è±¡é™æ–¹å‘è§’
     end
     k(nPos,1) = k(nPos-1,1);
-    nSlice = ceil(distTotal/(separation+thickness));%ÀíÂÛÇĞÆ¬¸öÊı
-    %³õÊ¼Öµ
-    dist = norm([posX(2)-posX(1) posY(2)-posY(1)]);%ÏàÁÚposµãÖ®¼äµÄ¾àÀë
+    nSlice = ceil(distTotal/(separation+thickness));%ç†è®ºåˆ‡ç‰‡ä¸ªæ•°
+    %åˆå§‹å€¼
+    dist = norm([posX(2)-posX(1) posY(2)-posY(1)]);%ç›¸é‚»posç‚¹ä¹‹é—´çš„è·ç¦»
     distTotal = dist;
-    dist2 = dist;%ÇĞÆ¬µãµ½ÏÂÒ»¸öposµãµÄ¾àÀë
+    dist2 = dist;%åˆ‡ç‰‡ç‚¹åˆ°ä¸‹ä¸€ä¸ªposç‚¹çš„è·ç¦»
     iPos = 1;
     iSlice = 1;
     sliceX = zeros(1,nSlice);
@@ -461,7 +461,7 @@ function SliceArray = slicebypos(pointCloudData,posData,separation,thickness,wid
     sliceY(1) = posY(1);
     sliceK(1) = k(1);
     while iSlice<nSlice,
-        %¼ÆËãÇĞÆ¬µãÎ»ÖÃ£¨ÓĞÎÊÌâĞèÒªĞŞ¸Ä£©
+        %è®¡ç®—åˆ‡ç‰‡ç‚¹ä½ç½®ï¼ˆæœ‰é—®é¢˜éœ€è¦ä¿®æ”¹ï¼‰
         iSlice = iSlice+1;
         if  dist2>(separation+thickness),
             sliceX(iSlice) = sliceX(iSlice-1)+(separation+thickness)*cosd(k(iPos));
@@ -473,7 +473,7 @@ function SliceArray = slicebypos(pointCloudData,posData,separation,thickness,wid
                 dist2Pre = dist2;
                 dist2 = dist2+norm([posX(iPos)-posX(iPos+1) posY(iPos)-posY(iPos+1)]);
             end
-            dL = separation+thickness-dist2Pre;%ÔöÁ¿³¤¶È
+            dL = separation+thickness-dist2Pre;%å¢é‡é•¿åº¦
             sliceX(iSlice) = posX(iPos)+dL*cosd(k(iPos));
             sliceY(iSlice) = posY(iPos)+dL*sind(k(iPos));
             sliceK(iSlice) = k(iPos);
@@ -487,26 +487,26 @@ function SliceArray = slicebypos(pointCloudData,posData,separation,thickness,wid
     end        
     PointSet= struct('x',0,'y',0,'h',0,'ins',0);
     SliceArray=repmat(PointSet,[1 nSlice]);
-    nSlice2 = 0;%È¥µô¿ÕÊı¾İºóµÄÊµ¼ÊÇĞÆ¬¸öÊı
+    nSlice2 = 0;%å»æ‰ç©ºæ•°æ®åçš„å®é™…åˆ‡ç‰‡ä¸ªæ•°
     nZreos = 0;
     for i = 1:nSlice,    
-        %µãÔÆµ½ÇĞ¸î¶ÏÃæµÄ´¹Ö±¾àÀë
+        %ç‚¹äº‘åˆ°åˆ‡å‰²æ–­é¢çš„å‚ç›´è·ç¦»
         deltad=abs((pointCloudData(:,1)-sliceX(i))*cos(sliceK(i))+...
             (pointCloudData(:,2)-sliceY(i))*sin(sliceK(i)));
         if exist('width','var')&&~isempty(width),
-            %µãÔÆµ½ÇĞ¸îµãµÄÖ±Ïß¾àÀë(Ğ±±ß)
+            %ç‚¹äº‘åˆ°åˆ‡å‰²ç‚¹çš„ç›´çº¿è·ç¦»(æ–œè¾¹)
             deltad3_2 = (pointCloudData(:,1)-sliceX(i)).^2+(pointCloudData(:,2)-sliceY(i)).^2;
-            %µãÔÆµ½ÇĞ¸îµãµÄÁ¬ÏßÔÚÇĞ¸îÃæÉÏµÄÍ¶Ó°¾àÀë
+            %ç‚¹äº‘åˆ°åˆ‡å‰²ç‚¹çš„è¿çº¿åœ¨åˆ‡å‰²é¢ä¸Šçš„æŠ•å½±è·ç¦»
             deltad2 = sqrt(deltad3_2-deltad.^2);
             tempptcl=[pointCloudData deltad deltad2];         
-            tempptcl=tempptcl(tempptcl(:,6)<=width,:); %ÌŞ³ıÔ¶ÀëÇĞ¸îµãµÄµã
+            tempptcl=tempptcl(tempptcl(:,6)<=width,:); %å‰”é™¤è¿œç¦»åˆ‡å‰²ç‚¹çš„ç‚¹
         else
              tempptcl=[pointCloudData deltad];
         end           
-        tempptcl=tempptcl(tempptcl(:,5)<=(thickness/2),:); %ÌŞ³ı´óÓÚÇĞÆ¬ºñ¶ÈµÄµã
-        %ÓĞÊ±¹ì¼£Êı¾İºÜ³¤£¬¶øÇĞÆ¬µÄµãÔÆÖ»ÊÇÒ»Ğ¡¶Î£¬ÕâÊ±»áÓĞ´óÁ¿¿ÕÇĞÆ¬
-        %ÎªÁË·ÀÖ¹´óÁ¿¿ÕÇĞÆ¬ÀË·Ñ¼ÆËãÊ±¼ä£¬ÕâÀï¶¨ÒåÁ¬Ğø³öÏÖ10´Î¿ÕÇĞÆ¬¾ÍÈÏÎªÇĞÆ¬ÒÑÍê³É
-        %ÕâÖÖ¶¨ÒåÊÇ²»ÑÏ½÷µÄ£¬ºóÃæÓ¦¸Ã¶ÔposÊı¾İÊ¶±ğ£¬Ö»ÀûÓÃ¼ÆËãµãÔÆÂ·¶Î¶ÔÓ¦µÄposÊı
+        tempptcl=tempptcl(tempptcl(:,5)<=(thickness/2),:); %å‰”é™¤å¤§äºåˆ‡ç‰‡åšåº¦çš„ç‚¹
+        %æœ‰æ—¶è½¨è¿¹æ•°æ®å¾ˆé•¿ï¼Œè€Œåˆ‡ç‰‡çš„ç‚¹äº‘åªæ˜¯ä¸€å°æ®µï¼Œè¿™æ—¶ä¼šæœ‰å¤§é‡ç©ºåˆ‡ç‰‡
+        %ä¸ºäº†é˜²æ­¢å¤§é‡ç©ºåˆ‡ç‰‡æµªè´¹è®¡ç®—æ—¶é—´ï¼Œè¿™é‡Œå®šä¹‰è¿ç»­å‡ºç°10æ¬¡ç©ºåˆ‡ç‰‡å°±è®¤ä¸ºåˆ‡ç‰‡å·²å®Œæˆ
+        %è¿™ç§å®šä¹‰æ˜¯ä¸ä¸¥è°¨çš„ï¼Œåé¢åº”è¯¥å¯¹posæ•°æ®è¯†åˆ«ï¼Œåªåˆ©ç”¨è®¡ç®—ç‚¹äº‘è·¯æ®µå¯¹åº”çš„posæ•°
         if size(tempptcl,1),
             nZreos = 0;
         elseif ~size(tempptcl,1)&&nSlice2>1,
@@ -516,7 +516,7 @@ function SliceArray = slicebypos(pointCloudData,posData,separation,thickness,wid
             end
         end
         if size(tempptcl,1)>(thickness*100)
-        %È¥³ıµãÊı¹ıÉÙµÄÇĞÆ¬
+        %å»é™¤ç‚¹æ•°è¿‡å°‘çš„åˆ‡ç‰‡
 %         plot3(tempptcl(:,1),tempptcl(:,2),tempptcl(:,3),'r.');axis equal;hold on;
 %          plot3(posX,posY, tempptcl(1,3)*ones(size(posX,1),1),'go');
 %           plot3(sliceX(i),sliceY(i), tempptcl(1,3),'ro');
@@ -525,7 +525,7 @@ function SliceArray = slicebypos(pointCloudData,posData,separation,thickness,wid
             SliceArray(nSlice2).y=tempptcl(:,2);
             SliceArray(nSlice2).h=tempptcl(:,3);
             SliceArray(nSlice2).ins=tempptcl(:,4);
-            SliceArray(nSlice2).info = [sliceX(i) sliceY(i) sliceK(i)];%×¢ÒâkÎª½Ç¶È£¬²»ÊÇĞ±ÂÊ
+            SliceArray(nSlice2).info = [sliceX(i) sliceY(i) sliceK(i)];%æ³¨æ„kä¸ºè§’åº¦ï¼Œä¸æ˜¯æ–œç‡
         end
     end
     SliceArray = SliceArray(1:nSlice2);    
@@ -551,10 +551,10 @@ function SliceArray = sliceonpos(pointCloudData,posData,separation,thickness)
             deltad=abs((ptcl(:,1)-xpos(i))*cos(azimuth(i)/180*pi)+...
                 (ptcl(:,2)-ypos(i))*sin(azimuth(i)/180*pi));
             tempptcl=[ptcl deltad];
-            tempptcl=tempptcl(tempptcl(:,5)<=(thickness/2),:); %ÌŞ³ı´óÓÚÇĞÆ¬ºñ¶ÈµÄµã
+            tempptcl=tempptcl(tempptcl(:,5)<=(thickness/2),:); %å‰”é™¤å¤§äºåˆ‡ç‰‡åšåº¦çš„ç‚¹
             medianz=median(tempptcl(:,3));
             if size(tempptcl,1)<(thickness*100)
-                %È¥³ıµãÊı¹ıÉÙµÄÇĞÆ¬
+                %å»é™¤ç‚¹æ•°è¿‡å°‘çš„åˆ‡ç‰‡
                 dist=0.0;
                 deltad=[];
                 tempptcl=[];
@@ -609,7 +609,7 @@ end
 
 function posData = readposfile(filePath)
 % read pose file 
-%¶ÁÈ¡posÊı¾İÊ±×¢ÒâÊı¾İÅÅÁĞ¸ñÊ½
+%è¯»å–posæ•°æ®æ—¶æ³¨æ„æ•°æ®æ’åˆ—æ ¼å¼
     fid=fopen(filePath,'r');
     data = fscanf(fid,'%d %d %d %d %d %f %d %f %f %f %f %f %f %f %f %f',[16,inf])';
     posData.year = data(1:end,1);

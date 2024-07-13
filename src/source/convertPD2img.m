@@ -1,25 +1,25 @@
 function [imageData,gridArray] = convertPD2img(pointData,pxielSize,radius,isRotate)
 %   
 % [imageData,gridArray] = convertPD2img(pointData,pxielSize,radius,isRotate)%
-% convertPD2img£º½«µãÔÆ×ª»»³ÉÕ¤¸ñÍ¼Ïñ£¬Ìæ´úconvertpointcloud2imgº¯Êı
+% convertPD2imgï¼šå°†ç‚¹äº‘è½¬æ¢æˆæ …æ ¼å›¾åƒï¼Œæ›¿ä»£convertpointcloud2imgå‡½æ•°
 %
 % arguments: (input)
-% radius - ÏñËØ²åÖµ°ë¾¶£¬¹ı´ó»áÔö¼Ó¼ÆËãÁ¿£¬¹ıĞ¡Í¼Ïñ»á²úÉúºÚ¶´ÏñËØµã£¬Ò»°ãÉèÖÃ
-%          ÎªµãµÄ¼ä¸ô´óĞ¡
-% isRotate - £¨OPTIONAL£©- ÊÇ·ñĞı×ªÍ¼Ïñ£¬Í¨¹ıĞı×ª¿ÉÒÔÊ¹µÀÂ·Í¼ÏñÑÓ¹ì¼£Ë®Æ½·ÅÖÃ£¬
-%           ±ÜÃâÍ¼ÏñÓëÍ¼·ùÓĞ½Ï´ó¼Ğ½Ç
+% radius - åƒç´ æ’å€¼åŠå¾„ï¼Œè¿‡å¤§ä¼šå¢åŠ è®¡ç®—é‡ï¼Œè¿‡å°å›¾åƒä¼šäº§ç”Ÿé»‘æ´åƒç´ ç‚¹ï¼Œä¸€èˆ¬è®¾ç½®
+%          ä¸ºç‚¹çš„é—´éš”å¤§å°
+% isRotate - ï¼ˆOPTIONALï¼‰- æ˜¯å¦æ—‹è½¬å›¾åƒï¼Œé€šè¿‡æ—‹è½¬å¯ä»¥ä½¿é“è·¯å›¾åƒå»¶è½¨è¿¹æ°´å¹³æ”¾ç½®ï¼Œ
+%           é¿å…å›¾åƒä¸å›¾å¹…æœ‰è¾ƒå¤§å¤¹è§’
 % arguments: (output)
-% radius - ÏñËØ²åÖµ°ë¾¶£¬¹ı´ó»áÔö¼Ó¼ÆËãÁ¿£¬¹ıĞ¡Í¼Ïñ»á²úÉúºÚ¶´ÏñËØµã£¬Ò»°ãÉèÖÃ
-%          ÎªµãµÄ¼ä¸ô´óĞ¡
+% radius - åƒç´ æ’å€¼åŠå¾„ï¼Œè¿‡å¤§ä¼šå¢åŠ è®¡ç®—é‡ï¼Œè¿‡å°å›¾åƒä¼šäº§ç”Ÿé»‘æ´åƒç´ ç‚¹ï¼Œä¸€èˆ¬è®¾ç½®
+%          ä¸ºç‚¹çš„é—´éš”å¤§å°
 %           DEFAULT: 'radius'    (pxielSize*3)
 %                    'isRotate'  (true)
 %
-% isRotate - £¨OPTIONAL£©- ÊÇ·ñĞı×ªÍ¼Ïñ£¬Í¨¹ıĞı×ª¿ÉÒÔÊ¹µÀÂ·Í¼ÏñÑÓ¹ì¼£Ë®Æ½·ÅÖÃ£¬
-%           ±ÜÃâÍ¼ÏñÓëÍ¼·ùÓĞ½Ï´ó¼Ğ½Ç
+% isRotate - ï¼ˆOPTIONALï¼‰- æ˜¯å¦æ—‹è½¬å›¾åƒï¼Œé€šè¿‡æ—‹è½¬å¯ä»¥ä½¿é“è·¯å›¾åƒå»¶è½¨è¿¹æ°´å¹³æ”¾ç½®ï¼Œ
+%           é¿å…å›¾åƒä¸å›¾å¹…æœ‰è¾ƒå¤§å¤¹è§’
 % 
 % arguments: (output)
-% imageData - ×ª»¯ºóµÄ»Ò¶ÈÍ¼Ïñ
-% gridArray - »Ò¶ÈÍ¼ÏñÃ¿¸öÏñËØ¶ÔÓ¦µÄµãÔÆ
+% imageData - è½¬åŒ–åçš„ç°åº¦å›¾åƒ
+% gridArray - ç°åº¦å›¾åƒæ¯ä¸ªåƒç´ å¯¹åº”çš„ç‚¹äº‘
 % 
 % datetime('now','TimeZone','local','Format','HH:mm:ss Z')
 if ~exist('radius','var')||isempty(radius),radius = pxielSize*3;end
@@ -27,16 +27,16 @@ if ~exist('isRotate','var')||(isRotate==true)
     x = pointData(:,1);
     y = pointData(:,2);
     [rectx,recty,~,~] = minboundrect(x,y);
-    d = sqrt((rectx(1:2) - rectx(2:3)).^2+(recty(1:2) - recty(2:3)).^2);%Íâ½Ó¾ØĞÎ±ß³¤
-    [a,idx_a] = max(d);%½Ï³¤µÄ±ß
+    d = sqrt((rectx(1:2) - rectx(2:3)).^2+(recty(1:2) - recty(2:3)).^2);%å¤–æ¥çŸ©å½¢è¾¹é•¿
+    [a,idx_a] = max(d);%è¾ƒé•¿çš„è¾¹
     b = min(d);
-    rotateA = atand((recty(idx_a)-recty(idx_a+1))/(rectx(idx_a)-rectx(idx_a+1)));%Íâ½Ó¾ØĞÎ½Ï³¤µÄ±ßÓÚxÖá¼Ğ½Ç
+    rotateA = atand((recty(idx_a)-recty(idx_a+1))/(rectx(idx_a)-rectx(idx_a+1)));%å¤–æ¥çŸ©å½¢è¾ƒé•¿çš„è¾¹äºxè½´å¤¹è§’
     if rotateA>=0
         [minY,idx_minY] = min(recty);
-        origin  = [rectx(idx_minY) minY];%Í¼ÏñÔ­µã¶ÔÓ¦×ø±ê
+        origin  = [rectx(idx_minY) minY];%å›¾åƒåŸç‚¹å¯¹åº”åæ ‡
     else
         [minX,idx_minX] = min(rectx);
-        origin  = [minX recty(idx_minX)];%Í¼ÏñÔ­µã¶ÔÓ¦×ø±ê
+        origin  = [minX recty(idx_minX)];%å›¾åƒåŸç‚¹å¯¹åº”åæ ‡
     end
 else
     [width,height,minX,minY,maxX,maxY] = calculatesize(pointData,pxielSize);
@@ -45,8 +45,8 @@ else
     origin = [minX,minY];
     rotateA = 0;
 end
-    gridArray = gridpoint(pointData,pxielSize,origin,rotateA);%¸ñÍø»¯
-    greyImage = idw(pointData,origin,a,b,rotateA,pxielSize,radius);%²åÖµ£¬±È½ÏºÄÊ± 
+    gridArray = gridpoint(pointData,pxielSize,origin,rotateA);%æ ¼ç½‘åŒ–
+    greyImage = idw(pointData,origin,a,b,rotateA,pxielSize,radius);%æ’å€¼ï¼Œæ¯”è¾ƒè€—æ—¶ 
     imageData = greyImage;
 end
 
@@ -61,8 +61,8 @@ function gridArray = gridpoint(pointData,gridSize,origin,rotateA)
         A = k;
         B = -1;
         C = origin(2)-k*origin(1);
-        d1 = abs(A.*x0+B.*y0+C)./sqrt(A*A+B*B);%µãµ½³¤±ßµÄ¾àÀë,¶ÔÓ¦µÄÊÇY
-        %µãµ½¶Ì±ßµÄ¾àÀë£¬¶ÔÓ¦Ğı×ªºóµÄx¾àÀë
+        d1 = abs(A.*x0+B.*y0+C)./sqrt(A*A+B*B);%ç‚¹åˆ°é•¿è¾¹çš„è·ç¦»,å¯¹åº”çš„æ˜¯Y
+        %ç‚¹åˆ°çŸ­è¾¹çš„è·ç¦»ï¼Œå¯¹åº”æ—‹è½¬åçš„xè·ç¦»
         k = tand(rotateA+90);
         A = k;
         B = -1;
@@ -72,13 +72,13 @@ function gridArray = gridpoint(pointData,gridSize,origin,rotateA)
         d1 = y0-origin(2);
         d2 = x0 - origin(1);
     end
-    minX = min(d2);%d1.d2ÀàËÆÓÚx£¬y
+    minX = min(d2);%d1.d2ç±»ä¼¼äºxï¼Œy
     minY = min(d1);
     maxX = max(d2);
     maxY = max(d1);
     width = ceil((maxX-minX)/gridSize);
     height = ceil((maxY-minY)/gridSize);
-    pointData(:,5) = d2;%½«ÇĞ¸îÌõ¼ş·ÅÔÚ5,6Î»£¬Èç¹û5,6Î»´æ´¢ÁËÆäËûÊı¾İ£¬ÕâÀï¾ÍµÃĞŞ¸Äµ½ÆäËûÎ»
+    pointData(:,5) = d2;%å°†åˆ‡å‰²æ¡ä»¶æ”¾åœ¨5,6ä½ï¼Œå¦‚æœ5,6ä½å­˜å‚¨äº†å…¶ä»–æ•°æ®ï¼Œè¿™é‡Œå°±å¾—ä¿®æ”¹åˆ°å…¶ä»–ä½
     pointData(:,6) = d1;
     widthStripsArray = cut2strips(pointData,width,minX,maxX,gridSize,5);
     gridArray = cell(height,width);
@@ -93,20 +93,20 @@ function stripsArray = cut2strips(pointData,nStrips,startValue,endValue,pxielSiz
 %cut point into strips
 %type==1, cut by x coordinate;
 %type==2, cut by y coordinate;
-%typeÒ²¿ÉÒÔÊÇÆäËûÖ¸¶¨ÁĞ;
+%typeä¹Ÿå¯ä»¥æ˜¯å…¶ä»–æŒ‡å®šåˆ—;
     stripsArray(1:nStrips) = {[]};
     if isempty(pointData),
         return;
     end
-    pointData = sortrows(pointData,type);%°´x×ø±êÅÅĞò
+    pointData = sortrows(pointData,type);%æŒ‰xåæ ‡æ’åº
     nPoint = size(pointData,1);
-    valueArray = pointData(:,type);%·Ö¸îµÄÒÀ¾İ£¬Èç°´x»òÕßy×ø±ê
+    valueArray = pointData(:,type);%åˆ†å‰²çš„ä¾æ®ï¼Œå¦‚æŒ‰xæˆ–è€…yåæ ‡
     cutStart = startValue;
     cutEnd = startValue + pxielSize;
     iPoint=1;
     value = valueArray(1);
-    isEndPoint = false;%ÊÇ·ñ±éÀúµ½×îºóÒ»¸öµã
-    for i = 1:nStrips,%·Ö³ÉnStripsÌõ
+    isEndPoint = false;%æ˜¯å¦éå†åˆ°æœ€åä¸€ä¸ªç‚¹
+    for i = 1:nStrips,%åˆ†æˆnStripsæ¡
         strip = [];
         iStripPoint = 0;
         while value<cutEnd,
@@ -146,23 +146,23 @@ function [imageOut,gridArray]= idw(pointData,origin,a,b,rotateCloudA,pxielSize,r
 %inverse distance weighted interpolation for pointcloud
 %
 % arguments(input):
-% pointData - µãÔÆÊı¾İxyzi
-% origin - ²åÖµ¾ØĞÎÔ­µã£¨×óÏÂ½Ç£©
-% a - ²åÖµ¾ØĞÎ¿í
-% b - ²åÖµ¾ØĞÎ¸ß
-% rotateCloudA - Ô­×ø±êÏµµ½²åÖµ¾ØĞÎ×ø±êÏµĞı×ª½Ç£¨Ë³Ê±ÕëÎªÕı£©
-% radius - 0.10;²åÖµ°ë¾¶£¬¿ÉÒÔÌî²¹¿Õ¶´ÏñËØµã
+% pointData - ç‚¹äº‘æ•°æ®xyzi
+% origin - æ’å€¼çŸ©å½¢åŸç‚¹ï¼ˆå·¦ä¸‹è§’ï¼‰
+% a - æ’å€¼çŸ©å½¢å®½
+% b - æ’å€¼çŸ©å½¢é«˜
+% rotateCloudA - åŸåæ ‡ç³»åˆ°æ’å€¼çŸ©å½¢åæ ‡ç³»æ—‹è½¬è§’ï¼ˆé¡ºæ—¶é’ˆä¸ºæ­£ï¼‰
+% radius - 0.10;æ’å€¼åŠå¾„ï¼Œå¯ä»¥å¡«è¡¥ç©ºæ´åƒç´ ç‚¹
 %
-% ²åÖµ¾ØĞÎÖ¸¶ÔµãÔÆµÄ²åÖµ·¶Î§£¬Ò»°ãÓĞÁ½ÖÖ£¬Ò»ÖÖÊÇÓëµãÔÆ×ø±êÏµxyÖáÆ½ĞĞµÄÍâ½Ó¾ØĞÎ£¬
-% ÁíÒ»ÖÖÊÇ×îĞ¡Íâ½Ó¾ØĞÎ¡£Èç¹ûÊÇ×îĞ¡Íâ½Ó¾ØĞÎ£¬Ôòa¶ÔÓ¦³¤±ß£¬b¶ÔÓ¦¶Ì±ß£¬ÒòÎªµÀÂ·ÊÇ
-% Ïß×´µÄ£¬Ï£Íû²åÖµºóµÄÍ¼ÏñÊÇ×óÓÒ×ßÏò£¬¶ø·ÇÉÏÏÂ×ßÏò¡£
+% æ’å€¼çŸ©å½¢æŒ‡å¯¹ç‚¹äº‘çš„æ’å€¼èŒƒå›´ï¼Œä¸€èˆ¬æœ‰ä¸¤ç§ï¼Œä¸€ç§æ˜¯ä¸ç‚¹äº‘åæ ‡ç³»xyè½´å¹³è¡Œçš„å¤–æ¥çŸ©å½¢ï¼Œ
+% å¦ä¸€ç§æ˜¯æœ€å°å¤–æ¥çŸ©å½¢ã€‚å¦‚æœæ˜¯æœ€å°å¤–æ¥çŸ©å½¢ï¼Œåˆ™aå¯¹åº”é•¿è¾¹ï¼Œbå¯¹åº”çŸ­è¾¹ï¼Œå› ä¸ºé“è·¯æ˜¯
+% çº¿çŠ¶çš„ï¼Œå¸Œæœ›æ’å€¼åçš„å›¾åƒæ˜¯å·¦å³èµ°å‘ï¼Œè€Œéä¸Šä¸‹èµ°å‘ã€‚
 %
 % arguments(output):
-% imageOut - ²åÖµºóÍ¼Ïñ
-% gridArray - ²åÖµÍ¼ÏñÃ¿¸öÏñËØ¶ÔÓ¦µÄµãÔÆ£¬ÔİÈ±
+% imageOut - æ’å€¼åå›¾åƒ
+% gridArray - æ’å€¼å›¾åƒæ¯ä¸ªåƒç´ å¯¹åº”çš„ç‚¹äº‘ï¼Œæš‚ç¼º
 %
 
-Mdl = KDTreeSearcher(pointData(:,1:2));%½¨Á¢kdËÑË÷Ê÷
+Mdl = KDTreeSearcher(pointData(:,1:2));%å»ºç«‹kdæœç´¢æ ‘
 maxI = max(pointData(:,4));
 minI = min(pointData(:,4));
 minX = origin(1);
@@ -170,20 +170,20 @@ minY = origin(2);
 height = ceil(b/pxielSize);
 width = ceil(a/pxielSize);
 imageOut = zeros(height,width);
-% normPara = normalizegray(imageArray);%¹éÒ»»¯½üËÆÏµÊı
+% normPara = normalizegray(imageArray);%å½’ä¸€åŒ–è¿‘ä¼¼ç³»æ•°
 if maxI~=minI
-    normPara = 1/abs(0.6*maxI-minI);%´óÓÚ0.8maxIµÄÏñËØµã»á
-%     normPara = 1/abs(maxI-minI);%´óÓÚ0.8maxIµÄÏñËØµã»á
+    normPara = 1/abs(0.6*maxI-minI);%å¤§äº0.8maxIçš„åƒç´ ç‚¹ä¼š
+%     normPara = 1/abs(maxI-minI);%å¤§äº0.8maxIçš„åƒç´ ç‚¹ä¼š
 else
     normPara = 1;
 end
-interX = (0.5*pxielSize:pxielSize:width*pxielSize);%²åÖµÖĞĞÄÃ×ÖÆÏñËØ×ø±ê
+interX = (0.5*pxielSize:pxielSize:width*pxielSize);%æ’å€¼ä¸­å¿ƒç±³åˆ¶åƒç´ åæ ‡
 interY = (0.5*pxielSize:pxielSize:height*pxielSize)';
 interX = repmat(interX,height,1);
 interY = repmat(interY,1,width);
-rotateImageA = atand(interY./interX);%²åÖµµãÔÚÃ×ÖÆÏñËØ×ø±êÏµÖĞxÖá¼Ğ½Ç
+rotateImageA = atand(interY./interX);%æ’å€¼ç‚¹åœ¨ç±³åˆ¶åƒç´ åæ ‡ç³»ä¸­xè½´å¤¹è§’
 rotateA = rotateCloudA + rotateImageA;
-distO = sqrt(interX.^2+interY.^2);%²åÖµµã¾àÃ×ÖÆÏñËØ×ø±êÏµÔ­µã¾àÀë
+distO = sqrt(interX.^2+interY.^2);%æ’å€¼ç‚¹è·ç±³åˆ¶åƒç´ åæ ‡ç³»åŸç‚¹è·ç¦»
 dx = distO.*cosd(rotateA);
 dy = distO.*sind(rotateA);
 interX = minX + dx;
@@ -194,8 +194,8 @@ iy = reshape(interY',[1 width*height])';
 Idx = rangesearch(Mdl,[ix iy],radius);
 for iHeight=1:height
     for iWidth=1:width
-        idx_pixel = (iHeight-1)*width+iWidth;%ÏñËØµãÔÚÁĞÏòÁ¿ÖĞµÄË³ĞòºÅ
-        points = pointData(Idx{idx_pixel},:);%²åÖµ°ë¾¶ÄÚµÄµã
+        idx_pixel = (iHeight-1)*width+iWidth;%åƒç´ ç‚¹åœ¨åˆ—å‘é‡ä¸­çš„é¡ºåºå·
+        points = pointData(Idx{idx_pixel},:);%æ’å€¼åŠå¾„å†…çš„ç‚¹
         nPoints = size(points,1);
         distC = sqrt((points(:,1)-ix(idx_pixel)).^2 + (points(:,2)-iy(idx_pixel)).^2);
         weight = [];

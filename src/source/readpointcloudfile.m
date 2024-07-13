@@ -2,15 +2,15 @@ function pointCloudData = readpointcloudfile(pointCloudFilePath,nPoint)
 % read specified number of points from point cloud file
 % suitable for reading the large text file 
 if ischar(pointCloudFilePath),
-    %´«ÈëµÄÊÇÎÄ¼şÂ·¾¶
+    %ä¼ å…¥çš„æ˜¯æ–‡ä»¶è·¯å¾„
     fid=fopen(pointCloudFilePath,'r');
 elseif isa(pointCloudFilePath,'double'),
-    %¾ä±ú
+    %å¥æŸ„
     fid = pointCloudFilePath;
 end
-    tline=fgetl(fid);   %Ö´ĞĞÍêºóÎÄ¼şÖ¸ÕëÒÑ¾­Ö¸ÏòµÚ¶şĞĞ
+    tline=fgetl(fid);   %æ‰§è¡Œå®Œåæ–‡ä»¶æŒ‡é’ˆå·²ç»æŒ‡å‘ç¬¬äºŒè¡Œ
     lineByte = size(tline,2);
-    %Òª¶àÒÆ¶¯2Î»£¬¿ÉÄÜÊÇÃ¿Ò»ĞĞÊı¾İ¿ªÍ·½áÎ²¸÷Õ¼Ò»Î»
+    %è¦å¤šç§»åŠ¨2ä½ï¼Œå¯èƒ½æ˜¯æ¯ä¸€è¡Œæ•°æ®å¼€å¤´ç»“å°¾å„å ä¸€ä½
     fseek(fid, -lineByte-2, 'cof');   
     lineData = regexp(tline, '\s+', 'split');
     col =  size(lineData,2);
@@ -25,7 +25,7 @@ end
     end
     fseek(fid, 2, 'cof');  
     if ischar(pointCloudFilePath),
-        %´«ÈëµÄÊÇÎÄ¼şÂ·¾¶
+        %ä¼ å…¥çš„æ˜¯æ–‡ä»¶è·¯å¾„
         fclose(fid);
     end 
 end

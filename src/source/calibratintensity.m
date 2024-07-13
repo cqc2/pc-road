@@ -6,14 +6,14 @@ function calibdata = calibratintensity(pointData,sliceInfo)
       sliceK = sliceInfo(3);
 x = pointData(:,1);
 y = pointData(:,2);
-%¶ÔµãÔÆ½øĞĞĞı×ª
-A = pi/2-sliceK;%Ğı×ª½Ç
+%å¯¹ç‚¹äº‘è¿›è¡Œæ—‹è½¬
+A = pi/2-sliceK;%æ—‹è½¬è§’
 
-%½«×ø±ê×ª»»µ½ÒÔÇĞµãÎªÔ­µã£¬ÇĞÏßÎª×İ×ø±êµãµÄ×ø±êÏµÖĞ
-x0= (x - sliceX).*cos(A) - (y - sliceY).*sin(A) ;%ÄæÊ±ÕëĞı×ªA
+%å°†åæ ‡è½¬æ¢åˆ°ä»¥åˆ‡ç‚¹ä¸ºåŸç‚¹ï¼Œåˆ‡çº¿ä¸ºçºµåæ ‡ç‚¹çš„åæ ‡ç³»ä¸­
+x0= (x - sliceX).*cos(A) - (y - sliceY).*sin(A) ;%é€†æ—¶é’ˆæ—‹è½¬A
 y0= (x - sliceX).*sin(A) + (y - sliceY).*cos(A) ;
 
-%ÇĞÆ¬
+%åˆ‡ç‰‡
 w = 0.05;
 minx0 = min(x0);
 maxx0 = max(x0);
@@ -48,16 +48,16 @@ function out = getbackcurve(points)
 x = points(:,1);
 y = points(:,2);
 
-% ½«Êı¾İ·ÖÎªÈı²¿·Ö
+% å°†æ•°æ®åˆ†ä¸ºä¸‰éƒ¨åˆ†
 idx1 = find(x<-3);
 idx2 = find(x>=-3&x<3);
 idx3 = find(x>=3);
 points1 = [x(idx1) y(idx1)];
 points2 = [x(idx2) y(idx2)];
 points3 = [x(idx3) y(idx3)];
-points1 = removepeak(points1,0.5);%°µÇøÓò
-points2 = removepeak(points2,3);%ÁÁÇøÓò
-points3 = removepeak(points3,0.5);%°µÇøÓò
+points1 = removepeak(points1,0.5);%æš—åŒºåŸŸ
+points2 = removepeak(points2,3);%äº®åŒºåŸŸ
+points3 = removepeak(points3,0.5);%æš—åŒºåŸŸ
 
 %  points2(:,2) = points2(:,2)*0.8;
 
@@ -75,13 +75,13 @@ end
 
 function points = removepeak(points,sigma)
 %
-% sigmaÉèÖÃµÄÔ½´óÔ½Ğ£ÕıÇúÏßÔ½ÇĞ½üÊµ¼Ê»Ò¶È·Ö²¼£¬µ«È¥µô¸ü¶à±³¾°Í¬Ê±±êÏß±»È¥µôµÄ¿ÉÄÜĞÔÒ²Ôö´ó
+% sigmaè®¾ç½®çš„è¶Šå¤§è¶Šæ ¡æ­£æ›²çº¿è¶Šåˆ‡è¿‘å®é™…ç°åº¦åˆ†å¸ƒï¼Œä½†å»æ‰æ›´å¤šèƒŒæ™¯åŒæ—¶æ ‡çº¿è¢«å»æ‰çš„å¯èƒ½æ€§ä¹Ÿå¢å¤§
 
 if ~exist('sigma','var')||isempty(sigma), sigma = 3;end
 x = points(:,1);
 y = points(:,2);
 
-% ½«yÒì³£ÖµÓÃÆ½»¬Öµ´úÌæ
+% å°†yå¼‚å¸¸å€¼ç”¨å¹³æ»‘å€¼ä»£æ›¿
 yy  = smooth(y,5);
 idx =  find(isnan(y));
 y(idx) = yy(idx);

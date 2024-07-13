@@ -1,6 +1,6 @@
 function originalname = getoriginalname(filename)
 %
-%ÌáÈ¡²»´øºó×ºÔ­Ê¼ÎÄ¼şÃû
+%æå–ä¸å¸¦åç¼€åŸå§‹æ–‡ä»¶å
  S = regexp(filename, '_', 'split');
  if size(S,1)==1
     [path,originalname,type]=fileparts(S{1});

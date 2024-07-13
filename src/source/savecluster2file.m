@@ -18,7 +18,7 @@ if isstruct(data)
     col = size(pointdata,2);
 else
     [C,~,ic] = unique(index);
-    nCluster = size(C,1); %聚类个数
+    nCluster = size(C,1); %鑱氱被涓暟
     indexRange = zeros(nCluster,2);
     clusterPoints = zeros([size(data,1) size(data,2)+1]);
     endIdx = 1+nCluster;

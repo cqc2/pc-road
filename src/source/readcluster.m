@@ -1,16 +1,16 @@
 function cluster = readcluster(filename)
 %
-% ¶ÁÈ¡µãÔÆ¾ÛÀàÎÄ¼ş
+% è¯»å–ç‚¹äº‘èšç±»æ–‡ä»¶
 %filename = 'data-20170418-085955_marking_seg.txt';
 
 if ischar(filename)
-    %´«ÈëµÄÊÇÎÄ¼şÂ·¾¶
+    %ä¼ å…¥çš„æ˜¯æ–‡ä»¶è·¯å¾„
     fid=fopen(filename,'r');
 elseif isa(filename,'double')
-    %¾ä±ú
+    %å¥æŸ„
     fid = filename;
 end
-    %¶ÁÈëÎÄ¼şÍ·
+    %è¯»å…¥æ–‡ä»¶å¤´
     nCluster = str2num(fgetl(fid));
     cluster = struct('index',zeros(1,2),'data',zeros(1,4));
     for i=1:nCluster
@@ -20,10 +20,10 @@ end
     end
     nPoint = cluster(i).index(2)-cluster(1).index(1)+1;
     
-    %¶ÁÈëµãÊı¾İ
-    tline=fgetl(fid);   %Ö´ĞĞÍêºóÎÄ¼şÖ¸ÕëÒÑ¾­Ö¸ÏòµÚ¶şĞĞ
+    %è¯»å…¥ç‚¹æ•°æ®
+    tline=fgetl(fid);   %æ‰§è¡Œå®Œåæ–‡ä»¶æŒ‡é’ˆå·²ç»æŒ‡å‘ç¬¬äºŒè¡Œ
     lineByte = size(tline,2);
-    %Òª¶àÒÆ¶¯2Î»£¬¿ÉÄÜÊÇÃ¿Ò»ĞĞÊı¾İ¿ªÍ·½áÎ²¸÷Õ¼Ò»Î»
+    %è¦å¤šç§»åŠ¨2ä½ï¼Œå¯èƒ½æ˜¯æ¯ä¸€è¡Œæ•°æ®å¼€å¤´ç»“å°¾å„å ä¸€ä½
     fseek(fid, -lineByte-2, 'cof');   
     lineData = regexp(tline, '\s+', 'split');
     col =  size(lineData,2);
@@ -42,7 +42,7 @@ end
     end
     fseek(fid, 2, 'cof');  
     if ischar(filename),
-        %´«ÈëµÄÊÇÎÄ¼şÂ·¾¶
+        %ä¼ å…¥çš„æ˜¯æ–‡ä»¶è·¯å¾„
         fclose(fid);
     end 
     

@@ -1,20 +1,20 @@
 function [cluster,breakLines] = vectorizebreakline_for_solid2(cluster)
 %
 % 
-% ´ÓÌáÈ¡µÄ±êÏßµãÔÆÖĞÊ¶±ğ¶ÏÁÑÏß£¬²¢È·¶¨¶ÏÁÑÏßÖĞÔªËØµÄÁ¬½ÓË³Ğò
-% INPUT£º
-% cluster - µãÔÆ¾ÛÀàÊı¾İµÄ½á¹¹ÌåÊı×é
+% ä»æå–çš„æ ‡çº¿ç‚¹äº‘ä¸­è¯†åˆ«æ–­è£‚çº¿ï¼Œå¹¶ç¡®å®šæ–­è£‚çº¿ä¸­å…ƒç´ çš„è¿æ¥é¡ºåº
+% INPUTï¼š
+% cluster - ç‚¹äº‘èšç±»æ•°æ®çš„ç»“æ„ä½“æ•°ç»„
 %
-% OUTPUT£º
-% cluster - ´¦ÀíºóµÄµãÔÆ¾ÛÀàÊı¾İµÄ½á¹¹ÌåÊı×é£¬»á¶àÒ»Ğ©´¦ÀíÏà¹ØµÄ×Ö¶ÎĞÅÏ¢
-% breakLines - ¶ÏÁÑÏßÔÚclusterÖĞË÷ÒıµÄÔª°ûÊı×é
+% OUTPUTï¼š
+% cluster - å¤„ç†åçš„ç‚¹äº‘èšç±»æ•°æ®çš„ç»“æ„ä½“æ•°ç»„ï¼Œä¼šå¤šä¸€äº›å¤„ç†ç›¸å…³çš„å­—æ®µä¿¡æ¯
+% breakLines - æ–­è£‚çº¿åœ¨clusterä¸­ç´¢å¼•çš„å…ƒèƒæ•°ç»„
 %
 if ~isfield(cluster,'center')
     cluster = getclusterinfo(cluster);
 end
 [cluster,breakLines] = getbreakline(cluster);
 
-%%%%%%%%%%%%%%%%µ÷ÊÔÓÃ´úÂë%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%è°ƒè¯•ç”¨ä»£ç %%%%%%%%%%%%%%%%%%%%%%%
 for i=1:size(breakLines,2)
     idx = breakLines{i};
     r = rand;
@@ -40,12 +40,12 @@ end
 
 function [cluster,breakLines] = getbreakline(cluster)
 %
-% ÌáÈ¡¶ÏÁÑÏß
+% æå–æ–­è£‚çº¿
 %
-% INPUT£º
-% cluster - ¸½´øÊôĞÔĞÅÏ¢µÄ±êÏßµãÔÆ¾ÛÀà
+% INPUTï¼š
+% cluster - é™„å¸¦å±æ€§ä¿¡æ¯çš„æ ‡çº¿ç‚¹äº‘èšç±»
 %
-% OUTPUT - cluster¡¢breakLinesÎªÌáÈ¡µÄ¶ÏÁÑÏß½á¹û
+% OUTPUT - clusterã€breakLinesä¸ºæå–çš„æ–­è£‚çº¿ç»“æœ
 %
 
 [cluster,breakLines] = getbreaklinefragment(cluster);
@@ -58,20 +58,20 @@ end
 
 function [cluster,linkedBreakLines] = refinebreaklinefragment(cluster,breakLines)
 %
-% ¶Ô³õ²½ÌáÈ¡µÄ¶ÏÁÑÏß½á¹û½øĞĞ¾«Ï¸»¯´¦Àí£¬µÃµ½×îÖÕÌáÈ¡½á¹û
+% å¯¹åˆæ­¥æå–çš„æ–­è£‚çº¿ç»“æœè¿›è¡Œç²¾ç»†åŒ–å¤„ç†ï¼Œå¾—åˆ°æœ€ç»ˆæå–ç»“æœ
 %
-% INPUT£º
-% cluster¡¢breakLines
+% INPUTï¼š
+% clusterã€breakLines
 %
-% OUTPUT£º
+% OUTPUTï¼š
 % cluster - 
-% linkedBreakLines - ½«breakLinesÖĞ½Ï¶ÌµÄÏß¶ÎÁ¬½Ó³É½Ï³¤µÄ¶ÏÁÑÏßÆ¬¶Î
+% linkedBreakLines - å°†breakLinesä¸­è¾ƒçŸ­çš„çº¿æ®µè¿æ¥æˆè¾ƒé•¿çš„æ–­è£‚çº¿ç‰‡æ®µ
 %
 
-% Ã¿´ÎÖ»Á¬½ÓÒ»¸ö·½Ïò£¬Á¬½Ó¹ı³ÌÖĞÏß¶Î·½ÏòÒ²»á·¢Éú±ä»¯£¬ËùÒÔ¶àËã¼¸´ÎÊ¹Á¬½ÓÍêÈ«
+% æ¯æ¬¡åªè¿æ¥ä¸€ä¸ªæ–¹å‘ï¼Œè¿æ¥è¿‡ç¨‹ä¸­çº¿æ®µæ–¹å‘ä¹Ÿä¼šå‘ç”Ÿå˜åŒ–ï¼Œæ‰€ä»¥å¤šç®—å‡ æ¬¡ä½¿è¿æ¥å®Œå…¨
 [cluster,linkedBreakLines] = linkBbreaklinefragment(cluster,breakLines,30,5);
 % return;
-%ÂËµôĞ¡ÓÚ3¸öÔªËØµÄÆ¬¶Î
+%æ»¤æ‰å°äº3ä¸ªå…ƒç´ çš„ç‰‡æ®µ
 nLinked = size(linkedBreakLines,2);
 breakFragmentinfo = getbreaklinefragmentinfo(cluster,linkedBreakLines);
 n = 0;
@@ -88,7 +88,7 @@ for iLinked = 1:nLinked
 end
 linkedBreakLines = linkedTmp;
 for i=1:5
-    %ĞèÒªµü´úÖ±µ½linkedBreakLines¸öÊı¹Ì¶¨ÎªÖ¹£¨Ò»°ãĞèÒª5´Î¼ÆËã£©
+    %éœ€è¦è¿­ä»£ç›´åˆ°linkedBreakLinesä¸ªæ•°å›ºå®šä¸ºæ­¢ï¼ˆä¸€èˆ¬éœ€è¦5æ¬¡è®¡ç®—ï¼‰
     [cluster,linkedBreakLines] = linkBbreaklinefragment(cluster,linkedBreakLines,60,5);
 end
 end
@@ -96,36 +96,36 @@ end
 function [cluster,linkedBreakLines,isLink] = linkBbreaklinefragment2(cluster,...
     breakLines,isLink,breakNum,breakFragmentinfo,terminalEnd,terminal,Mdl,direction)
 
-% ½«ÊôÓÚÍ¬Ò»Ìõ¶ÏÁÑÏßµÄÆ¬¶ÎÁ¬½ÓÆğÀ´
-% ÔİÊ±²»½øĞĞÔ¤²â
+% å°†å±äºåŒä¸€æ¡æ–­è£‚çº¿çš„ç‰‡æ®µè¿æ¥èµ·æ¥
+% æš‚æ—¶ä¸è¿›è¡Œé¢„æµ‹
 
 % breakFragmentinfo = getbreaklinefragmentinfo(cluster,breakLines);
 nBreak = size(breakLines,2);
 r = 60;
 iBreak = breakNum;
-    Y = terminalEnd(iBreak,1:2);%´ÓendPoint¿ªÊ¼Ôö³¤
-    pre_idx = iBreak;%breakLinesÖĞË÷Òı
-    pre_idx_t = nBreak+iBreak;%µãÔÚterminalÖĞ¶ÔÓ¦Ë÷Òı
+    Y = terminalEnd(iBreak,1:2);%ä»endPointå¼€å§‹å¢é•¿
+    pre_idx = iBreak;%breakLinesä¸­ç´¢å¼•
+    pre_idx_t = nBreak+iBreak;%ç‚¹åœ¨terminalä¸­å¯¹åº”ç´¢å¼•
     breakLine = breakLines{pre_idx};
-    pre_idx_c = breakLine(end);%ÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+    pre_idx_c = breakLine(end);%åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
     loopflag = true;
 linkedBreakLines = [];
      while(loopflag)
-        [Idx,D] = rangesearch(Mdl,Y,r);%¶Ô·½Ô²20Ã×ÄÚµÄ¾ÛÀà¶ÔÏó½øĞĞ±È¶Ô
+        [Idx,D] = rangesearch(Mdl,Y,r);%å¯¹æ–¹åœ†20ç±³å†…çš„èšç±»å¯¹è±¡è¿›è¡Œæ¯”å¯¹
         Idx = Idx{1,1};
-        for iNearst = 2:size(Idx,2) %×î½üµÄÊÇ×Ô¼º£¬ËùÒÔ´Ó2¿ªÊ¼
+        for iNearst = 2:size(Idx,2) %æœ€è¿‘çš„æ˜¯è‡ªå·±ï¼Œæ‰€ä»¥ä»2å¼€å§‹
             now_idx_t = Idx(iNearst);
             now_idx = terminal(now_idx_t,3);
             breakLine = breakLines{now_idx};
             pre_breakLine = breakLines{pre_idx};
             if terminal(now_idx_t,4) == 1
-                now_idx_c = breakLine(1);%ÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+                now_idx_c = breakLine(1);%åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
             elseif terminal(now_idx_t,4) == 2
-                now_idx_c = breakLine(end);%ÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+                now_idx_c = breakLine(end);%åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
             end
-            if  isLink(now_idx) % Èç¹ûÏß¶ÎÒÑ¾­±ê¼ÇÔòÌø¹ı
+            if  isLink(now_idx) % å¦‚æœçº¿æ®µå·²ç»æ ‡è®°åˆ™è·³è¿‡
                 if iNearst ==size(Idx,2)
-                    %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬½áÊø
+                    %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œç»“æŸ
                     loopflag = false;
                     break;
                 end
@@ -137,12 +137,12 @@ linkedBreakLines = [];
             nowY = terminal(now_idx_t,2);
             preA = cluster(pre_idx_c).angle;
             nowA =cluster(now_idx_c).angle;
-            pre_now_angle = atand((nowY-preY)/(nowX-preX));%Á½¸ö¾ÛÀàÁ¬ÏßµÄ½Ç¶È
+            pre_now_angle = atand((nowY-preY)/(nowX-preX));%ä¸¤ä¸ªèšç±»è¿çº¿çš„è§’åº¦
             if pre_now_angle<0
                 pre_now_angle = pre_now_angle+180;
             end
-            searchAngle = 5;%ËÑÑ°½Ç£¬¼´ÔÚÔÚ¾àµ±Ç°¾ØĞÎ·½ÏòÒ»¶¨·¶Î§ÄÚËÑË÷
-            limitAngle1 = abs(preA-pre_now_angle);%Á¬½ÓÏß¼Ğ½Ç
+            searchAngle = 5;%æœå¯»è§’ï¼Œå³åœ¨åœ¨è·å½“å‰çŸ©å½¢æ–¹å‘ä¸€å®šèŒƒå›´å†…æœç´¢
+            limitAngle1 = abs(preA-pre_now_angle);%è¿æ¥çº¿å¤¹è§’
             limitAngle2 = abs(nowA-pre_now_angle);
             if limitAngle1>90
                 limitAngle1 = abs(limitAngle1-180);
@@ -152,17 +152,17 @@ linkedBreakLines = [];
             end
             if ~(limitAngle1<searchAngle&&limitAngle2<searchAngle)
 %             if ~(abs(preA-pre_now_angle)<searchAngle&&abs(nowA-pre_now_angle)<searchAngle)
-                %Á½¾ÛÀà²»ÔÚÍ¬Ò»ÌõÖ±ÏßÉÏ£¬Ìø¹ı
+                %ä¸¤èšç±»ä¸åœ¨åŒä¸€æ¡ç›´çº¿ä¸Šï¼Œè·³è¿‡
                 if iNearst ==size(Idx,2)
-                    %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬½áÊø
+                    %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œç»“æŸ
                     loopflag = false;
                     break;
                 end
                 continue;
             end
-            %¼ì²éÁ¬½Ó·½ÏòÊÇ·ñÒ»ÖÂ
+            %æ£€æŸ¥è¿æ¥æ–¹å‘æ˜¯å¦ä¸€è‡´
             if (size(linkedBreakLines,2)==0)&&(size(direction,2)==1)
-                %Èç¹ûpreÖ»ÓĞÒ»¸öÔªËØ£¬ÇÒ¸ÃÔªËØÃ»ÓĞ¸½¼ÓÁ¬½Ó·½Ïò£¬Ôò²»·Ö·½Ïò
+                %å¦‚æœpreåªæœ‰ä¸€ä¸ªå…ƒç´ ï¼Œä¸”è¯¥å…ƒç´ æ²¡æœ‰é™„åŠ è¿æ¥æ–¹å‘ï¼Œåˆ™ä¸åˆ†æ–¹å‘
                 v2 = cluster(pre_idx_c).center - cluster(now_idx_c).center;
             else %size(linkedBreakLines,2)>1
                 if size(direction,2)==2
@@ -172,7 +172,7 @@ linkedBreakLines = [];
                     ;
 %                 else
 %                     if terminal(pre_idx_t,4) == 1
-%                         pre_idx_c2 = pre_breakLine(1,2);%Óë¶ËµãÏàÁÚµÄµãÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+%                         pre_idx_c2 = pre_breakLine(1,2);%ä¸ç«¯ç‚¹ç›¸é‚»çš„ç‚¹åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
 %                     elseif terminal(pre_idx_t,4) == 2
 %                         pre_idx_c2 = pre_breakLine(1,end-1);
 %                     end
@@ -180,37 +180,37 @@ linkedBreakLines = [];
                     
                 end
                 v2 = cluster(pre_idx_c).center - cluster(now_idx_c).center;
-                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%ÏòÁ¿¼Ğ½Ç
+                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%å‘é‡å¤¹è§’
                 
                 if size(breakLine,2)>1
                     if terminal(now_idx_t,4) == 1
-                        now_idx_c2 = breakLine(1,2);%Óë¶ËµãÏàÁÚµÄµãÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+                        now_idx_c2 = breakLine(1,2);%ä¸ç«¯ç‚¹ç›¸é‚»çš„ç‚¹åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
                     elseif terminal(now_idx_t,4) == 2
                         now_idx_c2 = breakLine(1,end-1);
                     end
                     v3 = cluster(now_idx_c).center - cluster(now_idx_c2).center;
-                    angleV23  = acosd(v2*v3'/(norm(v2)*norm(v3)));%ÏòÁ¿¼Ğ½Ç
+                    angleV23  = acosd(v2*v3'/(norm(v2)*norm(v3)));%å‘é‡å¤¹è§’
                 else
                     angleV23=0;
                 end
                 if ~((abs(angleV12)<searchAngle)&&(abs(angleV23)<searchAngle))
                     if iNearst ==size(Idx,2)
-                        %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬½áÊø
+                        %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œç»“æŸ
                         loopflag = false;
                         break;
                     end
                     continue;
                 end
             end             
-            %ÏÂÃæ¾ÍÖ»ĞèÅĞ¶ÏÇ°ºóÁ½¾ÛÀàµÄĞÎ×´½üËÆ³Ì¶È
+            %ä¸‹é¢å°±åªéœ€åˆ¤æ–­å‰åä¸¤èšç±»çš„å½¢çŠ¶è¿‘ä¼¼ç¨‹åº¦
             preL = breakFragmentinfo(pre_idx).length;
             nowL = breakFragmentinfo(now_idx).length;
             preW = breakFragmentinfo(pre_idx).width;
             nowW = breakFragmentinfo(now_idx).width;
-            permitDl = 0.5;%ÔÊĞíµÄ³¤¶È²î
-            permitDw = 0.15;%ÔÊĞíµÄ¿í¶È²î
+            permitDl = 0.5;%å…è®¸çš„é•¿åº¦å·®
+            permitDw = 0.15;%å…è®¸çš„å®½åº¦å·®
             if abs(preL-nowL)<permitDl&&abs(preW-nowW)<permitDw
-                % ÕâÀï¼òµ¥ÒÔ³¤¶È²î×÷ÎªÏàËÆ³Ì¶ÈÆÀ¼ÛÁ¿
+                % è¿™é‡Œç®€å•ä»¥é•¿åº¦å·®ä½œä¸ºç›¸ä¼¼ç¨‹åº¦è¯„ä»·é‡
                 tmp = breakLines{now_idx};
                 if terminal(now_idx_t,4) == 2
                     tmp = fliplr(tmp);
@@ -236,11 +236,11 @@ linkedBreakLines = [];
 %                 pre_idx_t = now_idx_t;
 %                 pre_idx_c = now_idx_c;
 %                 Y = cluster(now_idx_c).center;
-               break;% ÖĞ¶ÏÁÚÓò¼ìË÷£¬¸üĞÂÔö³¤µã
+               break;% ä¸­æ–­é‚»åŸŸæ£€ç´¢ï¼Œæ›´æ–°å¢é•¿ç‚¹
             end  
         end
         if (isempty(iNearst))||(iNearst ==size(Idx,2))
-            %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬½áÊø
+            %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œç»“æŸ
             loopflag = false;
         end
      end 
@@ -249,16 +249,16 @@ end
 
 function [cluster,linkedBreakLines] = linkBbreaklinefragment(cluster,breakLines,r,searchAngle)
 % 
-% ½«ÊôÓÚÍ¬Ò»Ìõ¶ÏÁÑÏßµÄ½Ï¶ÌµÄÏß¶ÎÁ¬½Ó³É½Ï³¤µÄÆ¬¶Î£¬´ËËã·¨Ö»´ÓÏß¶ÎµÄÆğµã¿ªÊ¼Ôö³¤£¬
-% Ôö³¤½áÊøÊ±Æğµã±äÎªÖÕµã£¬¹Ê¿ÉÍ¨¹ı¶à´ÎÑ­»·Ê¹ÓÃlinkBbreaklinefragmentÊ¹Ïß¶ÎÔö³¤
-% ÍêÈ«
+% å°†å±äºåŒä¸€æ¡æ–­è£‚çº¿çš„è¾ƒçŸ­çš„çº¿æ®µè¿æ¥æˆè¾ƒé•¿çš„ç‰‡æ®µï¼Œæ­¤ç®—æ³•åªä»çº¿æ®µçš„èµ·ç‚¹å¼€å§‹å¢é•¿ï¼Œ
+% å¢é•¿ç»“æŸæ—¶èµ·ç‚¹å˜ä¸ºç»ˆç‚¹ï¼Œæ•…å¯é€šè¿‡å¤šæ¬¡å¾ªç¯ä½¿ç”¨linkBbreaklinefragmentä½¿çº¿æ®µå¢é•¿
+% å®Œå…¨
 %
-% INPUT£º
+% INPUTï¼š
 % cluster,breakLines - 
-% r - Ïß¶ÎÔö³¤Ê±µÄËÑË÷°ë¾¶£¬ÔÚ´Ë·¶Î§ÄÚÑ°ÕÒÏß¶ÎÁ¬½Óµã
-% searchAngle - ËÑË÷½Ç¶È£¬ÔÚËÑË÷·½ÏòÒ»¶¨½Ç¶È·¶Î§ÄÚËÑË÷
+% r - çº¿æ®µå¢é•¿æ—¶çš„æœç´¢åŠå¾„ï¼Œåœ¨æ­¤èŒƒå›´å†…å¯»æ‰¾çº¿æ®µè¿æ¥ç‚¹
+% searchAngle - æœç´¢è§’åº¦ï¼Œåœ¨æœç´¢æ–¹å‘ä¸€å®šè§’åº¦èŒƒå›´å†…æœç´¢
 % 
-% OUTPUT£º
+% OUTPUTï¼š
 % cluster - 
 % linkedBreakLines - 
 %
@@ -267,17 +267,17 @@ function [cluster,linkedBreakLines] = linkBbreaklinefragment(cluster,breakLines,
 breakFragmentinfo = getbreaklinefragmentinfo(cluster,breakLines);
 nBreak = size(breakLines,2);
 points = zeros(2*nBreak,2);
-%¶Ëµã¾ØÕó£¬×¢Òâµ±¶ÏÁÑÏßÆ¬¶ÎÖ»ÓĞÒ»¸öÔªËØ£¬ÆäÊ×Ä©¶ËµãÊÇÍ¬Ò»¸öµã
+%ç«¯ç‚¹çŸ©é˜µï¼Œæ³¨æ„å½“æ–­è£‚çº¿ç‰‡æ®µåªæœ‰ä¸€ä¸ªå…ƒç´ ï¼Œå…¶é¦–æœ«ç«¯ç‚¹æ˜¯åŒä¸€ä¸ªç‚¹
 for iBreak = 1:nBreak
-   terminalStart(iBreak,1:4) =  [breakFragmentinfo(iBreak).startPoint iBreak 1];%Ä©Î»ÊÇ±ê¼ÇÁ¿£¬1±íÊ¾start¡¢2±íÊ¾end
+   terminalStart(iBreak,1:4) =  [breakFragmentinfo(iBreak).startPoint iBreak 1];%æœ«ä½æ˜¯æ ‡è®°é‡ï¼Œ1è¡¨ç¤ºstartã€2è¡¨ç¤ºend
    terminalEnd(iBreak,1:4) =  [breakFragmentinfo(iBreak).endPoint iBreak 2];
 end
 
-%ÏÈ´ÓstartPointÁ¬½Ó
+%å…ˆä»startPointè¿æ¥
 terminal = [terminalStart;terminalEnd];
 Mdl = KDTreeSearcher(terminal(:,1:2));
 % r = 30;
-isLink = zeros(nBreak,1);%±ê¼ÇÁ¿£¬±ê¼ÇÏß¶ÎÊÇ·ñÒÑ¾­Á¬½Ó¹ı
+isLink = zeros(nBreak,1);%æ ‡è®°é‡ï¼Œæ ‡è®°çº¿æ®µæ˜¯å¦å·²ç»è¿æ¥è¿‡
 nLinkedBreak = 0;
 for iBreak = 1:nBreak
     if isLink(iBreak)
@@ -286,33 +286,33 @@ for iBreak = 1:nBreak
     nLinkedBreak = nLinkedBreak+1;
     Y = terminalStart(iBreak,1:2);
     isLink(iBreak) = true;
-    pre_idx = iBreak;%breakLinesÖĞË÷Òı
-%     pre_idx_t = 2*iBreak-1;%µãÔÚterminalÖĞ¶ÔÓ¦Ë÷Òı
+    pre_idx = iBreak;%breakLinesä¸­ç´¢å¼•
+%     pre_idx_t = 2*iBreak-1;%ç‚¹åœ¨terminalä¸­å¯¹åº”ç´¢å¼•
     pre_idx_t = iBreak;
     breakLine = breakLines{pre_idx};
-    pre_idx_c = breakLine(1);%ÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+    pre_idx_c = breakLine(1);%åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
     loopflag = true;
-    linkedBreakLines(nLinkedBreak) = {fliplr(breakLines{iBreak})};%´ÓstartµãÁ¬½ÓË³ĞòÒª·´¹ıÀ´
+    linkedBreakLines(nLinkedBreak) = {fliplr(breakLines{iBreak})};%ä»startç‚¹è¿æ¥é¡ºåºè¦åè¿‡æ¥
 %     [Idx,D]= rangesearch(Mdl,Y,r);
          while(loopflag)
-        [Idx,D] = rangesearch(Mdl,Y,r);%¶Ô·½Ô²20Ã×ÄÚµÄ¾ÛÀà¶ÔÏó½øĞĞ±È¶Ô
+        [Idx,D] = rangesearch(Mdl,Y,r);%å¯¹æ–¹åœ†20ç±³å†…çš„èšç±»å¯¹è±¡è¿›è¡Œæ¯”å¯¹
         Idx = Idx{1,1};
-        for iNearst = 2:size(Idx,2) %×î½üµÄÊÇ×Ô¼º£¬ËùÒÔ´Ó2¿ªÊ¼
+        for iNearst = 2:size(Idx,2) %æœ€è¿‘çš„æ˜¯è‡ªå·±ï¼Œæ‰€ä»¥ä»2å¼€å§‹
             now_idx_t = Idx(iNearst);
             now_idx = terminal(now_idx_t,3);
             breakLine = breakLines{now_idx};
             pre_breakLine = breakLines{pre_idx};
             if terminal(now_idx_t,4) == 1
-                now_idx_c = breakLine(1);%ÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+                now_idx_c = breakLine(1);%åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
             elseif terminal(now_idx_t,4) == 2
-                now_idx_c = breakLine(end);%ÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+                now_idx_c = breakLine(end);%åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
             end
             if (now_idx_c==42|| now_idx_c==109)&&nLinkedBreak==11
                 a=0;
             end
-            if  isLink(now_idx) % Èç¹ûÏß¶ÎÒÑ¾­±ê¼ÇÔòÌø¹ı
+            if  isLink(now_idx) % å¦‚æœçº¿æ®µå·²ç»æ ‡è®°åˆ™è·³è¿‡
                 if iNearst ==size(Idx,2)
-                    %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬´ËÊ±¿ªÊ¼ĞÂµÄÒ»¸ölinkedLine
+                    %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œæ­¤æ—¶å¼€å§‹æ–°çš„ä¸€ä¸ªlinkedLine
                     loopflag = false;
                     break;
                 end
@@ -324,12 +324,12 @@ for iBreak = 1:nBreak
             nowY = terminal(now_idx_t,2);
             preA = cluster(pre_idx_c).angle;
             nowA =cluster(now_idx_c).angle;
-            pre_now_angle = atand((nowY-preY)/(nowX-preX));%Á½¸ö¾ÛÀàÁ¬ÏßµÄ½Ç¶È
+            pre_now_angle = atand((nowY-preY)/(nowX-preX));%ä¸¤ä¸ªèšç±»è¿çº¿çš„è§’åº¦
             if pre_now_angle<0
                 pre_now_angle = pre_now_angle+180;
             end
-%             searchAngle = 5;%ËÑÑ°½Ç£¬¼´ÔÚÔÚ¾àµ±Ç°¾ØĞÎ·½ÏòÒ»¶¨·¶Î§ÄÚËÑË÷
-            limitAngle1 = abs(preA-pre_now_angle);%Á¬½ÓÏß¼Ğ½Ç
+%             searchAngle = 5;%æœå¯»è§’ï¼Œå³åœ¨åœ¨è·å½“å‰çŸ©å½¢æ–¹å‘ä¸€å®šèŒƒå›´å†…æœç´¢
+            limitAngle1 = abs(preA-pre_now_angle);%è¿æ¥çº¿å¤¹è§’
             limitAngle2 = abs(nowA-pre_now_angle);
             if limitAngle1>90
                 limitAngle1 = abs(limitAngle1-180);
@@ -338,64 +338,64 @@ for iBreak = 1:nBreak
                 limitAngle2 = abs(limitAngle2-180);
             end
             if ~(limitAngle1<searchAngle&&limitAngle2<searchAngle)
-                %Á½¾ÛÀà²»ÔÚÍ¬Ò»ÌõÖ±ÏßÉÏ£¬Ìø¹ı
+                %ä¸¤èšç±»ä¸åœ¨åŒä¸€æ¡ç›´çº¿ä¸Šï¼Œè·³è¿‡
                 if iNearst ==size(Idx,2)
-                    %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬´ËÊ±¿ªÊ¼ĞÂµÄÒ»¸öbreakLine
+                    %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œæ­¤æ—¶å¼€å§‹æ–°çš„ä¸€ä¸ªbreakLine
                     loopflag = false;
                     break;
                 end
                 continue;
             end
-            %¼ì²éÁ¬½Ó·½ÏòÊÇ·ñÒ»ÖÂ
+            %æ£€æŸ¥è¿æ¥æ–¹å‘æ˜¯å¦ä¸€è‡´
             v2 = cluster(pre_idx_c).center - cluster(now_idx_c).center;
             if size(pre_breakLine,2)==1
-                %Èç¹ûÖ»ÓĞÒ»¸öÔªËØ£¬Ôò²»·Ö·½Ïò
+                %å¦‚æœåªæœ‰ä¸€ä¸ªå…ƒç´ ï¼Œåˆ™ä¸åˆ†æ–¹å‘
                 v1 = v2;
-                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%ÏòÁ¿¼Ğ½Ç
+                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%å‘é‡å¤¹è§’
             else
                 if terminal(pre_idx_t,4) == 1
-                    pre_idx_c2 = pre_breakLine(1,2);%Óë¶ËµãÏàÁÚµÄµãÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+                    pre_idx_c2 = pre_breakLine(1,2);%ä¸ç«¯ç‚¹ç›¸é‚»çš„ç‚¹åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
                 elseif terminal(pre_idx_t,4) == 2
                     pre_idx_c2 = pre_breakLine(1,end-1);
                 end
                 v1 =  cluster(pre_idx_c2).center - cluster(pre_idx_c).center;
-                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%ÏòÁ¿¼Ğ½Ç
+                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%å‘é‡å¤¹è§’
             end
             if size(breakLine,2)>1
                 if terminal(now_idx_t,4) == 1
-                    now_idx_c2 = breakLine(1,2);%Óë¶ËµãÏàÁÚµÄµãÔÚclusterÖĞ¶ÔÓ¦Ë÷Òı
+                    now_idx_c2 = breakLine(1,2);%ä¸ç«¯ç‚¹ç›¸é‚»çš„ç‚¹åœ¨clusterä¸­å¯¹åº”ç´¢å¼•
                 elseif terminal(now_idx_t,4) == 2
                     now_idx_c2 = breakLine(1,end-1);
                 end
                 v3 = cluster(now_idx_c).center - cluster(now_idx_c2).center;
-                angleV23  = acosd(v2*v3'/(norm(v2)*norm(v3)));%ÏòÁ¿¼Ğ½Ç
+                angleV23  = acosd(v2*v3'/(norm(v2)*norm(v3)));%å‘é‡å¤¹è§’
             else
                 angleV23=0;
             end
             if ~((abs(angleV12)<searchAngle)&&(abs(angleV23)<searchAngle))
                 if iNearst ==size(Idx,2)
-                    %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬´ËÊ±¿ªÊ¼ĞÂµÄÒ»¸öbreakLine
+                    %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œæ­¤æ—¶å¼€å§‹æ–°çš„ä¸€ä¸ªbreakLine
                     loopflag = false;
                     break;
                 end
                 continue;
             end
-            %ÏÂÃæ¾ÍÖ»ĞèÅĞ¶ÏÇ°ºóÁ½¾ÛÀàµÄĞÎ×´½üËÆ³Ì¶È
+            %ä¸‹é¢å°±åªéœ€åˆ¤æ–­å‰åä¸¤èšç±»çš„å½¢çŠ¶è¿‘ä¼¼ç¨‹åº¦
             preL = breakFragmentinfo(pre_idx).length;
             nowL = breakFragmentinfo(now_idx).length;
             preW = breakFragmentinfo(pre_idx).width;
             nowW = breakFragmentinfo(now_idx).width;
-            permitDl = 0.5;%ÔÊĞíµÄ³¤¶È²î
-            permitDw = 0.15;%ÔÊĞíµÄ¿í¶È²î
+            permitDl = 0.5;%å…è®¸çš„é•¿åº¦å·®
+            permitDw = 0.15;%å…è®¸çš„å®½åº¦å·®
             if abs(preL-nowL)<permitDl&&abs(preW-nowW)<permitDw
-                % ÕâÀï¼òµ¥ÒÔ³¤¶È²î×÷ÎªÏàËÆ³Ì¶ÈÆÀ¼ÛÁ¿
+                % è¿™é‡Œç®€å•ä»¥é•¿åº¦å·®ä½œä¸ºç›¸ä¼¼ç¨‹åº¦è¯„ä»·é‡
                 tmp = breakLines{now_idx};
                 if terminal(now_idx_t,4) == 2
                     tmp = fliplr(tmp);
                 end
                 linkedBreakLines(nLinkedBreak) = {[linkedBreakLines{nLinkedBreak} tmp]};
                 isLink(now_idx) = true;
-                % ¸üĞÂÔö³¤µã£¬×¢ÒâÈç¹ûµ±Ç°Á¬½ÓµÄÊÇÆ¬¶ÎÆğµã£¬ÔòÏÂÒ»²½µÄÔö³¤µãÓ¦Æ¬¶ÎÊÇÖÕµã
+                % æ›´æ–°å¢é•¿ç‚¹ï¼Œæ³¨æ„å¦‚æœå½“å‰è¿æ¥çš„æ˜¯ç‰‡æ®µèµ·ç‚¹ï¼Œåˆ™ä¸‹ä¸€æ­¥çš„å¢é•¿ç‚¹åº”ç‰‡æ®µæ˜¯ç»ˆç‚¹
                 pre_idx = now_idx;
                 if terminal(now_idx_t,4) == 1
                     pre_idx_c = breakLine(end);
@@ -405,12 +405,12 @@ for iBreak = 1:nBreak
                     pre_idx_t = now_idx;
                 end
                 Y = cluster(pre_idx_c).center;
-               break;% ÖĞ¶ÏÁÚÓò¼ìË÷£¬¸üĞÂÔö³¤µã
+               break;% ä¸­æ–­é‚»åŸŸæ£€ç´¢ï¼Œæ›´æ–°å¢é•¿ç‚¹
             end  
         end
         if (isempty(iNearst))||(iNearst ==size(Idx,2))
-%            % ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬´ËÊ±¿ªÊ¼ĞÂµÄÒ»¸öbreakLine
-%            % ÓĞ¸öbug£¬ÏòÁíÒ»¸ö·½ÏòÔö³¤Ê±£¬¶Ëµã°´¶ÀÁ¢µã´¦ÀíµÄ£¬Ã»ÓĞ¿¼ÂÇÖ®Ç°µÄÔö³¤·½Ïò
+%            % é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œæ­¤æ—¶å¼€å§‹æ–°çš„ä¸€ä¸ªbreakLine
+%            % æœ‰ä¸ªbugï¼Œå‘å¦ä¸€ä¸ªæ–¹å‘å¢é•¿æ—¶ï¼Œç«¯ç‚¹æŒ‰ç‹¬ç«‹ç‚¹å¤„ç†çš„ï¼Œæ²¡æœ‰è€ƒè™‘ä¹‹å‰çš„å¢é•¿æ–¹å‘
             if size(linkedBreakLines{nLinkedBreak},2)>1
                 tmp = linkedBreakLines{nLinkedBreak};
                 direction = cluster(tmp(1)).center - cluster(tmp(2)).center;
@@ -421,13 +421,13 @@ for iBreak = 1:nBreak
 %                 a=0;
 %             end
             %-----------------------------------------------
-            % Ã¿ÌõÏß¶ÎÓĞstartpoint¡¢endpointÁ½¸ö¶Ëµã£¬linkBbreaklinefragmentËã
-            % ·¨ÏÈ´Óstartpoint½øĞĞÔö³¤£¬Ôö³¤½áÊøºó½øÈëlinkBbreaklinefragment2
-            % ½øĞĞendpointµÄÔö³¤£¬µ«linkBbreaklinefragment2Ä¿Ç°ÓĞ2¸öbug£¬1ÊÇ»á³ö
-            % ÏÖÈñ½ÇµÄÁ¬½Ó£¬2ÊÇÂËµôµÄÎŞÓÃ¾ÛÀàÓÖ»á³öÏÖ£¬ĞèÒªÍêÉÆ¡£
-            % Èç¹ûÃ»ÓĞlinkBbreaklinefragment2£¬ÔòĞèÒª¶à´ÎÔËĞĞlinkBbreaklinefragmentÊ¹
-            % Ïß¶Î³ä·ÖÁ¬½ÓÖªµÀÏß¶ÎÊıÄ¿²»ÔÚ±ä»¯£¨Ò»°ãĞè5´ÎÒÔÉÏ£©£¬¶øÈç¹ûÓĞlinkBbreaklinefragment2£¬
-            % linkBbreaklinefragmentÒ»°ãÔËĞĞÁ½´ÎÏß¶Î¸öÊı¾Í»á¹Ì¶¨
+            % æ¯æ¡çº¿æ®µæœ‰startpointã€endpointä¸¤ä¸ªç«¯ç‚¹ï¼ŒlinkBbreaklinefragmentç®—
+            % æ³•å…ˆä»startpointè¿›è¡Œå¢é•¿ï¼Œå¢é•¿ç»“æŸåè¿›å…¥linkBbreaklinefragment2
+            % è¿›è¡Œendpointçš„å¢é•¿ï¼Œä½†linkBbreaklinefragment2ç›®å‰æœ‰2ä¸ªbugï¼Œ1æ˜¯ä¼šå‡º
+            % ç°é”è§’çš„è¿æ¥ï¼Œ2æ˜¯æ»¤æ‰çš„æ— ç”¨èšç±»åˆä¼šå‡ºç°ï¼Œéœ€è¦å®Œå–„ã€‚
+            % å¦‚æœæ²¡æœ‰linkBbreaklinefragment2ï¼Œåˆ™éœ€è¦å¤šæ¬¡è¿è¡ŒlinkBbreaklinefragmentä½¿
+            % çº¿æ®µå……åˆ†è¿æ¥çŸ¥é“çº¿æ®µæ•°ç›®ä¸åœ¨å˜åŒ–ï¼ˆä¸€èˆ¬éœ€5æ¬¡ä»¥ä¸Šï¼‰ï¼Œè€Œå¦‚æœæœ‰linkBbreaklinefragment2ï¼Œ
+            % linkBbreaklinefragmentä¸€èˆ¬è¿è¡Œä¸¤æ¬¡çº¿æ®µä¸ªæ•°å°±ä¼šå›ºå®š
 %             [cluster,endlinkedBreakLine,isLink] = linkBbreaklinefragment2(cluster,...
 %                 breakLines,isLink,iBreak,breakFragmentinfo,terminalEnd,terminal,Mdl,direction);
 %             linkedBreakLines(nLinkedBreak) = {[fliplr(endlinkedBreakLine) linkedBreakLines{nLinkedBreak}]};
@@ -440,7 +440,7 @@ end
 
 function breaklinefragmentinfo = getbreaklinefragmentinfo(cluster,breakLines)
 % 
-% ¼ÆËã¶ÏÁÑÏßÆ¬¶ÎµÄ³¤¶È¡¢Ê×Î²¶Ëµã¡¢ÔªËØµÄÆ½¾ùÊôĞÔµÈĞÅÏ¢£¬ÕâĞ©ĞÅÏ¢¿ÉÓÃÓÚºóĞø´¦ÀíÖĞ
+% è®¡ç®—æ–­è£‚çº¿ç‰‡æ®µçš„é•¿åº¦ã€é¦–å°¾ç«¯ç‚¹ã€å…ƒç´ çš„å¹³å‡å±æ€§ç­‰ä¿¡æ¯ï¼Œè¿™äº›ä¿¡æ¯å¯ç”¨äºåç»­å¤„ç†ä¸­
 %
 
 nfrag  = size(breakLines,2);
@@ -448,11 +448,11 @@ for ifrag = 1:nfrag
     breakLine = breakLines{ifrag};
     startPoint = cluster(breakLine(1)).center;
     endPoint = cluster(breakLine(end)).center;
-    %Ïß¶Î¶Ëµã
+    %çº¿æ®µç«¯ç‚¹
     breaklinefragmentinfo(ifrag).startPoint = startPoint;
     breaklinefragmentinfo(ifrag).endPoint = endPoint;
     centers = zeros(size(breakLine,2),2);
-    %ÇóÈ¡Æ½¾ùĞÎ×´
+    %æ±‚å–å¹³å‡å½¢çŠ¶
     nc = size(breakLine,2);
     for i = 1:nc
         centers(i,:) =  cluster(breakLine(i)).center;
@@ -461,11 +461,11 @@ for ifrag = 1:nfrag
         areas(i,:) = cluster(breakLine(i)).area;
         perctsA(i,:) = cluster(breakLine(i)).perctA;
     end
-    breaklinefragmentinfo(ifrag).width = mean(widths(1:nc));%ÀíÂÛÉÏÓ¦¸ÃÈ¥µôÆæÒìÊı¾İ£¬ÕâÀïÔİÊ±¼òµ¥»¯´¦Àí
+    breaklinefragmentinfo(ifrag).width = mean(widths(1:nc));%ç†è®ºä¸Šåº”è¯¥å»æ‰å¥‡å¼‚æ•°æ®ï¼Œè¿™é‡Œæš‚æ—¶ç®€å•åŒ–å¤„ç†
     breaklinefragmentinfo(ifrag).length = mean(lengths(1:nc));
     breaklinefragmentinfo(ifrag).area = mean(areas(1:nc));
     breaklinefragmentinfo(ifrag).perctA = mean(perctsA(1:nc));
-    %ÇóÈ¡Ïß¶Î³¤¶È
+    %æ±‚å–çº¿æ®µé•¿åº¦
     if size(centers,1)>1
         pre_cx = centers(1:end-1,1);
         pre_cy = centers(1:end-1,2);
@@ -474,29 +474,29 @@ for ifrag = 1:nfrag
         breaklinefragmentinfo(ifrag).range = ...
             sum(sqrt((pre_cx-next_cx).^2+(pre_cy - next_cy).^2));
     else
-        breaklinefragmentinfo(ifrag).range = 0;%Ö»ÓĞÒ»¸ö¾ÛÀàÔªËØ£¬ÈÏÎª³¤¶ÈÎª0
+        breaklinefragmentinfo(ifrag).range = 0;%åªæœ‰ä¸€ä¸ªèšç±»å…ƒç´ ï¼Œè®¤ä¸ºé•¿åº¦ä¸º0
     end   
 end
 end
 
 function [cluster,breakLines] = getbreaklinefragment(cluster)
 %
-% ¶Ô¶ÏÁÑÏßÔªËØ½øĞĞ³õ²½¾ÛÀàĞÎ³É¶ÏÁÑÏßÏß¶ÎÆ¬¶Î
+% å¯¹æ–­è£‚çº¿å…ƒç´ è¿›è¡Œåˆæ­¥èšç±»å½¢æˆæ–­è£‚çº¿çº¿æ®µç‰‡æ®µ
 %
-% INPUT£º
+% INPUTï¼š
 % cluster - 
 % 
-% OUTPUT£º
+% OUTPUTï¼š
 % cluster - 
-% breakLines - °´Ë³Ğò´æ´¢µÄ¶ÏÁÑÏßÔÚclusterÖĞµÄË÷Òı
+% breakLines - æŒ‰é¡ºåºå­˜å‚¨çš„æ–­è£‚çº¿åœ¨clusterä¸­çš„ç´¢å¼•
 %
-% ³ÌĞòÖĞµÄÖØÒª²ÎÊı£ºr¡¢searchAngle¡¢permitDl¡¢permitDw
+% ç¨‹åºä¸­çš„é‡è¦å‚æ•°ï¼šrã€searchAngleã€permitDlã€permitDw
 %
-% ÌáÈ¡¶ÏÁÑÏßÆ¬¶Î£¨ĞéÏß£©
-% ÕâÀïÊÇ¸ù¾İÇ¿É¸Ñ¡Ìõ¼şÌáÈ¡³ö¶ÏÁÑÏßÆ¬¶Î£¬´ËÊ±µÄÆ¬¶ÎÊÇËéÆ¬»¯µÄ£¬µ«ÆäÒÑ¾­ÓµÓĞ¸ü¸ß
-% Ò»¼¶Î¬¶ÈµÄĞÅÏ¢£¬ÕâĞ©ĞÅĞÄ¿ÉÓÃÓÚ¶ÏÁÑÏßµÄ½øÒ»²½¾«Ï¸»¯´¦Àí¡£
+% æå–æ–­è£‚çº¿ç‰‡æ®µï¼ˆè™šçº¿ï¼‰
+% è¿™é‡Œæ˜¯æ ¹æ®å¼ºç­›é€‰æ¡ä»¶æå–å‡ºæ–­è£‚çº¿ç‰‡æ®µï¼Œæ­¤æ—¶çš„ç‰‡æ®µæ˜¯ç¢ç‰‡åŒ–çš„ï¼Œä½†å…¶å·²ç»æ‹¥æœ‰æ›´é«˜
+% ä¸€çº§ç»´åº¦çš„ä¿¡æ¯ï¼Œè¿™äº›ä¿¡å¿ƒå¯ç”¨äºæ–­è£‚çº¿çš„è¿›ä¸€æ­¥ç²¾ç»†åŒ–å¤„ç†ã€‚
 
-% ÕÒ³ö½üËÆ³Ê¾ØĞÎ·Ö²¼µÄ¾ÛÀà
+% æ‰¾å‡ºè¿‘ä¼¼å‘ˆçŸ©å½¢åˆ†å¸ƒçš„èšç±»
  nRect = 0;
 for iCluster=1:size(cluster,2)
     if cluster(iCluster).label
@@ -507,41 +507,41 @@ for iCluster=1:size(cluster,2)
     np = cluster(iCluster).n;
     sv = cluster(iCluster).squareValue;
     if np>10&&sv>5
-        % ÒÔµã¸öÊıºÍsquareValue×÷ÎªÉ¸Ñ¡Ô­Ôò
+        % ä»¥ç‚¹ä¸ªæ•°å’ŒsquareValueä½œä¸ºç­›é€‰åŸåˆ™
         nRect = nRect+1;
         rectIndex(nRect,1:3) = [center,iCluster];
     end
     %figure(3); plot(data(:,1),data(:,2),'.');hold on;
 end
 
-% ¶Ô¶ÏÁÑÏß½øĞĞ³õ²½¾ÛÀà£¬Ê¹ÓÃµÄÊÇµ¥ÏßÌõÉú³¤Ëã·¨
+% å¯¹æ–­è£‚çº¿è¿›è¡Œåˆæ­¥èšç±»ï¼Œä½¿ç”¨çš„æ˜¯å•çº¿æ¡ç”Ÿé•¿ç®—æ³•
 Mdl = KDTreeSearcher(rectIndex(:,1:2));
 nBreakLines = 0;
 breakLines = {};
 r  = 20;
 for iRect = 1:nRect
     idx = rectIndex(iRect,3);
-    if  cluster(idx).isLabel % Èç¹ûÒÑ¾­±ê¼ÇÔòÌø¹ı
+    if  cluster(idx).isLabel % å¦‚æœå·²ç»æ ‡è®°åˆ™è·³è¿‡
         continue;
     end
     nBreakLines = nBreakLines+1;
-    Y = rectIndex(iRect,1:2); %¾ØĞÎ¾ÛÀàµÄÖĞĞÄ
+    Y = rectIndex(iRect,1:2); %çŸ©å½¢èšç±»çš„ä¸­å¿ƒ
     cluster(idx).isLabel = true;
     pre_idx = idx;
-    pre_pre_idx = 0;% 0±íÊ¾²»´æÔÚpre_pre_idx
+    pre_pre_idx = 0;% 0è¡¨ç¤ºä¸å­˜åœ¨pre_pre_idx
     loopflag = true;
     breakLines(nBreakLines) = {pre_idx};
 %     if nBreakLines==28
 %         a=0;
 %     end
     while(loopflag)
-        [Idx,D] = rangesearch(Mdl,Y,r);%¶Ô·½Ô²Ò»¶¨¾àÀëÄÚµÄ¾ÛÀà¶ÔÏó½øĞĞ±È¶Ô
+        [Idx,D] = rangesearch(Mdl,Y,r);%å¯¹æ–¹åœ†ä¸€å®šè·ç¦»å†…çš„èšç±»å¯¹è±¡è¿›è¡Œæ¯”å¯¹
         Idx = Idx{1,1};
-        for iNearst = 2:size(Idx,2) %×î½üµÄÊÇ×Ô¼º£¬ËùÒÔ´Ó2¿ªÊ¼
+        for iNearst = 2:size(Idx,2) %æœ€è¿‘çš„æ˜¯è‡ªå·±ï¼Œæ‰€ä»¥ä»2å¼€å§‹
             now_idx = rectIndex(Idx(iNearst),3);
-            if  cluster(now_idx).isLabel % Èç¹ûÒÑ¾­±ê¼ÇÔòÌø¹ı
+            if  cluster(now_idx).isLabel % å¦‚æœå·²ç»æ ‡è®°åˆ™è·³è¿‡
                 if iNearst ==size(Idx,2)
-                    %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬´ËÊ±¿ªÊ¼ĞÂµÄÒ»¸öbreakLine
+                    %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œæ­¤æ—¶å¼€å§‹æ–°çš„ä¸€ä¸ªbreakLine
                     loopflag = false;
                     break;
                 end
@@ -553,19 +553,19 @@ for iRect = 1:nRect
             nowY = cluster(now_idx).center(2);
             preA = cluster(pre_idx).angle;
             nowA =cluster(now_idx).angle;
-            pre_now_angle = atand((nowY-preY)/(nowX-preX));%Á½¸ö¾ÛÀàµÄÖĞĞÄÁ¬ÏßµÄ½Ç¶È
+            pre_now_angle = atand((nowY-preY)/(nowX-preX));%ä¸¤ä¸ªèšç±»çš„ä¸­å¿ƒè¿çº¿çš„è§’åº¦
             if pre_now_angle<0
                 pre_now_angle = pre_now_angle+180;
             end
             if pre_pre_idx~=0
                 v1 = cluster(pre_idx).center - cluster(pre_pre_idx).center;
                 v2 = cluster(now_idx).center - cluster(pre_idx).center;
-                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%ÏòÁ¿¼Ğ½Ç,±ÜÃâÔö³¤·½ÏòÍ»±ä
+                angleV12  = acosd(v1*v2'/(norm(v1)*norm(v2)));%å‘é‡å¤¹è§’,é¿å…å¢é•¿æ–¹å‘çªå˜
             else
                 angleV12 = 0;
             end
-            searchAngle = 3;%ËÑÑ°½Ç£¬¼´ÔÚÔÚ¾àµ±Ç°¾ØĞÎ·½ÏòÒ»¶¨·¶Î§ÄÚËÑË÷
-            limitAngle1 = abs(preA-pre_now_angle);%Á¬½ÓÏß¼Ğ½Ç
+            searchAngle = 3;%æœå¯»è§’ï¼Œå³åœ¨åœ¨è·å½“å‰çŸ©å½¢æ–¹å‘ä¸€å®šèŒƒå›´å†…æœç´¢
+            limitAngle1 = abs(preA-pre_now_angle);%è¿æ¥çº¿å¤¹è§’
             limitAngle2 = abs(nowA-pre_now_angle);
             if limitAngle1>90
                 limitAngle1 = abs(limitAngle1-180);
@@ -574,23 +574,23 @@ for iRect = 1:nRect
                 limitAngle2 = abs(limitAngle2-180);
             end
             if ~(limitAngle1<searchAngle&&limitAngle2<searchAngle&&(angleV12<searchAngle))
-                %Á½¾ÛÀà²»ÔÚÍ¬Ò»ÌõÖ±ÏßÉÏ£¬Ìø¹ı
+                %ä¸¤èšç±»ä¸åœ¨åŒä¸€æ¡ç›´çº¿ä¸Šï¼Œè·³è¿‡
                 if iNearst ==size(Idx,2)
-                    %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬´ËÊ±¿ªÊ¼ĞÂµÄÒ»¸öbreakLine
+                    %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œæ­¤æ—¶å¼€å§‹æ–°çš„ä¸€ä¸ªbreakLine
                     loopflag = false;
                     break;
                 end
                 continue;
             end
-            %ÏÂÃæ¾ÍÖ»ĞèÅĞ¶ÏÇ°ºóÁ½¾ÛÀàµÄĞÎ×´½üËÆ³Ì¶È
+            %ä¸‹é¢å°±åªéœ€åˆ¤æ–­å‰åä¸¤èšç±»çš„å½¢çŠ¶è¿‘ä¼¼ç¨‹åº¦
             preL = cluster(pre_idx).length;
             nowL = cluster(now_idx).length;
             preW = cluster(pre_idx).width;
             nowW = cluster(now_idx).width;
-            permitDl = 999;%ÔÊĞíµÄ³¤¶È²î
-            permitDw = 0.15;%ÔÊĞíµÄ¿í¶È²î
+            permitDl = 999;%å…è®¸çš„é•¿åº¦å·®
+            permitDw = 0.15;%å…è®¸çš„å®½åº¦å·®
             if abs(preL-nowL)<permitDl&&abs(preW-nowW)<permitDw
-                % ÕâÀï¼òµ¥ÒÔ³¤¶È²î×÷ÎªÏàËÆ³Ì¶ÈÆÀ¼ÛÁ¿
+                % è¿™é‡Œç®€å•ä»¥é•¿åº¦å·®ä½œä¸ºç›¸ä¼¼ç¨‹åº¦è¯„ä»·é‡
                 cluster(now_idx).isLabel = true;
                 breakLineTmp = breakLines{nBreakLines};
                 breakLines(nBreakLines) = {[breakLineTmp now_idx]};
@@ -601,11 +601,11 @@ for iRect = 1:nRect
                 else
                     pre_pre_idx = 0;
                 end
-               break;% ÖĞ¶ÏÁÚÓò¼ìË÷£¬¸üĞÂÔö³¤µã
+               break;% ä¸­æ–­é‚»åŸŸæ£€ç´¢ï¼Œæ›´æ–°å¢é•¿ç‚¹
             end  
         end
         if iNearst ==size(Idx,2)
-            %ÁÚÓò¼ìË÷ÍêÁË£¬Ò²Ã»ÕÒµ½ÏàËÆµÄ£¬´ËÊ±¿ªÊ¼ĞÂµÄÒ»¸öbreakLine
+            %é‚»åŸŸæ£€ç´¢å®Œäº†ï¼Œä¹Ÿæ²¡æ‰¾åˆ°ç›¸ä¼¼çš„ï¼Œæ­¤æ—¶å¼€å§‹æ–°çš„ä¸€ä¸ªbreakLine
             loopflag = false;
         end
         if size(Idx,2)==1
@@ -617,20 +617,20 @@ end
 
 % function cluster = getclusterinfo(cluster)
 % %
-% % ¼ÆËãµãÔÆ¾ÛÀàµÄÃèÊöĞÔĞÅÏ¢£¬ÈçÍâ½Ó¾ØĞÎ´óĞ¡¡¢Ãæ»ı¡¢ÖĞĞÄÎ»ÖÃ¡¢³¯ÏòµÈ£¬Ê¹ÓÃÕâĞ©ĞÅ
-% % Ï¢¶Ô¿ÉÒÔ¶Ô¾ÛÀà½øĞĞ¸ü¸ß²ã´ÎµÄ³éÏóÒÔ±ã×ö½øÒ»²½µÄ´¦Àí¡£
+% % è®¡ç®—ç‚¹äº‘èšç±»çš„æè¿°æ€§ä¿¡æ¯ï¼Œå¦‚å¤–æ¥çŸ©å½¢å¤§å°ã€é¢ç§¯ã€ä¸­å¿ƒä½ç½®ã€æœå‘ç­‰ï¼Œä½¿ç”¨è¿™äº›ä¿¡
+% % æ¯å¯¹å¯ä»¥å¯¹èšç±»è¿›è¡Œæ›´é«˜å±‚æ¬¡çš„æŠ½è±¡ä»¥ä¾¿åšè¿›ä¸€æ­¥çš„å¤„ç†ã€‚
 % %
-% % INPUT£º
-% % cluster - µãÔÆ¾ÛÀà½á¹¹Ìå
+% % INPUTï¼š
+% % cluster - ç‚¹äº‘èšç±»ç»“æ„ä½“
 % % 
-% % OUTPUT£º
-% % cluster - ÓµÓĞÏà¹ØÃèÊöĞÔÊôĞÔ×Ö¶ÎµÄµãÔÆ¾ÛÀà½á¹¹Ìå
+% % OUTPUTï¼š
+% % cluster - æ‹¥æœ‰ç›¸å…³æè¿°æ€§å±æ€§å­—æ®µçš„ç‚¹äº‘èšç±»ç»“æ„ä½“
 % 
-% nc  = size(cluster,2);%¾ÛÀà¸öÊı
+% nc  = size(cluster,2);%èšç±»ä¸ªæ•°
 % for i=1:nc
 %     data = cluster(i).data;
 %     cluster(i).isLabel = false;
-%     cluster(i).label = -1;%-1±íÊ¾Àà±ğ»¹Î´Öª
+%     cluster(i).label = -1;%-1è¡¨ç¤ºç±»åˆ«è¿˜æœªçŸ¥
 %     x = data(:,1);
 %     y = data(:,2);
 %     [rectx,recty,rectArea,perimeter] = minboundrect(data(:,1),data(:,2));
@@ -638,20 +638,20 @@ end
 %     cluster(i).recty = recty;
 %     cx = mean(rectx);
 %     cy = mean(recty);
-%     cluster(i).center = [cx cy];%Íâ½Ó¾ØĞÎÖĞĞÄ
-%     cluster(i).rectArea = rectArea;%×îĞ¡Íâ½Ó¾ØĞÎÃæ»ı
+%     cluster(i).center = [cx cy];%å¤–æ¥çŸ©å½¢ä¸­å¿ƒ
+%     cluster(i).rectArea = rectArea;%æœ€å°å¤–æ¥çŸ©å½¢é¢ç§¯
 %     cluster(i).perimeter = perimeter;
-%     d = sqrt((rectx(1:2) - rectx(2:3)).^2+(recty(1:2) - recty(2:3)).^2);%Íâ½Ó¾ØĞÎ±ß³¤
+%     d = sqrt((rectx(1:2) - rectx(2:3)).^2+(recty(1:2) - recty(2:3)).^2);%å¤–æ¥çŸ©å½¢è¾¹é•¿
 %     cluster(i).length = max(d);
 %     cluster(i).width = min(d);
-%     areaSeed = unique([roundn(x,-1) roundn(y,-1)],'rows');%×ø±ê¶ÔÓ¦µ½0.1Ã×µÄ¸ñÍøÖĞ
-%     pointArea = 0.1*0.1*size(areaSeed,1)-0.5*perimeter*0.1;%ÒÔ¸ñÍø¸öÊı½üËÆ¼ÆËãµãÔÆÃæ»ı 
+%     areaSeed = unique([roundn(x,-1) roundn(y,-1)],'rows');%åæ ‡å¯¹åº”åˆ°0.1ç±³çš„æ ¼ç½‘ä¸­
+%     pointArea = 0.1*0.1*size(areaSeed,1)-0.5*perimeter*0.1;%ä»¥æ ¼ç½‘ä¸ªæ•°è¿‘ä¼¼è®¡ç®—ç‚¹äº‘é¢ç§¯ 
 %     cluster(i).area = pointArea;
 %     cluster(i).perctA = pointArea/rectArea;
 %     
-%     %¾ØĞÎ·½ÏòÏòÁ¿£¬±íÊ¾ÁË¾ØĞÎµÄ×ËÌ¬£¨²¿·Ö·½Ïò£©£¬Ä£µÄ´óĞ¡±íÊ¾ÁË³Ê¾ØĞÎµÄ³Ì¶È
+%     %çŸ©å½¢æ–¹å‘å‘é‡ï¼Œè¡¨ç¤ºäº†çŸ©å½¢çš„å§¿æ€ï¼ˆéƒ¨åˆ†æ–¹å‘ï¼‰ï¼Œæ¨¡çš„å¤§å°è¡¨ç¤ºäº†å‘ˆçŸ©å½¢çš„ç¨‹åº¦
 %     if d(1)==d(2)
-%         cluster(i).direction = [0,0];%Õı·½ĞÎÏòÁ¿Ä£Îª0
+%         cluster(i).direction = [0,0];%æ­£æ–¹å½¢å‘é‡æ¨¡ä¸º0
 %     elseif d(1)>d(2)
 %          cluster(i).direction = [(rectx(1) - rectx(2))/d(1),(recty(1) - recty(2))/d(1)].*(abs(d(1)/d(2)-1));   
 %     elseif d(1)<d(2)
@@ -662,7 +662,7 @@ end
 %     end 
 %     cluster(i).angle = atand(cluster(i).direction(2)/cluster(i).direction(1));
 %     if cluster(i).angle<0
-%         cluster(i).angle = cluster(i).angle+180;%½Ç¶È»»Ëãµ½0~180
+%         cluster(i).angle = cluster(i).angle+180;%è§’åº¦æ¢ç®—åˆ°0~180
 %     end
 % %     plot(rectx,recty,'-');hold on;
 % %     plot(x,y,'.');hold on;

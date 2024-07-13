@@ -1,6 +1,6 @@
 function   [cluster_new,idx_new] = removelines(cluster,breakLines)
 %
-%È¥³ýclusterÖÐµÄbreakLines
+%åŽ»é™¤clusterä¸­çš„breakLines
 existIdx = [];
 for i=1:size(breakLines,2)
     existIdx = [existIdx breakLines{i}];

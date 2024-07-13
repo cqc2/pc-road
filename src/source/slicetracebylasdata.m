@@ -1,20 +1,20 @@
 function traceDataOutput = slicetracebylasdata(traceData,ladData)
 %
-%¸ù¾İÊ±¼ä´ÁÌáÈ¡³öµãÔÆ¶ÔÓ¦µÄ¹ì¼£Êı¾İ
-%-----ÒÔÎäººÊı¾İ¶ş»·µ¥µã¹ì¼£Êı¾İÎªÀı
+%æ ¹æ®æ—¶é—´æˆ³æå–å‡ºç‚¹äº‘å¯¹åº”çš„è½¨è¿¹æ•°æ®
+%-----ä»¥æ­¦æ±‰æ•°æ®äºŒç¯å•ç‚¹è½¨è¿¹æ•°æ®ä¸ºä¾‹
 % traceData = importdata('dataspace_wuhan\dandian.txt');
 % ladData = LASreadAll('dataspace_wuhan\origindata\data-20170418-085955.las');
 lastime = ladData.time;
 startTime = lastime(1);
 endTime = lastime(end);
 
-%½«¹ì¼£Êı¾İµÄÊ±·ÖÃë×ª»»³ÉÃë
+%å°†è½¨è¿¹æ•°æ®çš„æ—¶åˆ†ç§’è½¬æ¢æˆç§’
 tracetime = traceData(:,2);
-tracetime = mod(tracetime.*1e-9,1).*1e9;%Ê±·ÖÃëÊı×Ö´®£¬9Î»Êı
-traceH = floor(tracetime.*1e-7);%Ê±£¬2Î»Êı
+tracetime = mod(tracetime.*1e-9,1).*1e9;%æ—¶åˆ†ç§’æ•°å­—ä¸²ï¼Œ9ä½æ•°
+traceH = floor(tracetime.*1e-7);%æ—¶ï¼Œ2ä½æ•°
 tracetime = tracetime - traceH.*1e7;
 traceMin = floor(tracetime.*1e-5);
-tracetime = tracetime - traceMin.*1e5;%5Î»Ğ¡Êı£¬ÃëºÍÑÇÃë
+tracetime = tracetime - traceMin.*1e5;%5ä½å°æ•°ï¼Œç§’å’Œäºšç§’
 traceScd = tracetime.*1e-3;
 traceT = traceH.*3600+traceMin.*60+traceScd;%
 

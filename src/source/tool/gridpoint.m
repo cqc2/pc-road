@@ -30,15 +30,15 @@ function stripsArray = cut2strips(pointData,nStrips,startValue,endValue,pxielSiz
     if isempty(pointData),
         return;
     end
-    pointData = sortrows(pointData,type);%°´x×ø±êÅÅĞò
+    pointData = sortrows(pointData,type);%æŒ‰xåæ ‡æ’åº
     nPoint = size(pointData,1);
-    valueArray = pointData(:,type);%·Ö¸îµÄÒÀ¾İ£¬Èç°´x»òÕßy×ø±ê
+    valueArray = pointData(:,type);%åˆ†å‰²çš„ä¾æ®ï¼Œå¦‚æŒ‰xæˆ–è€…yåæ ‡
     cutStart = startValue;
     cutEnd = startValue + pxielSize;
     iPoint=1;
     value = valueArray(1);
-    isEndPoint = false;%ÊÇ·ñ±éÀúµ½×îºóÒ»¸öµã
-    for i = 1:nStrips,%·Ö³ÉnStripsÌõ
+    isEndPoint = false;%æ˜¯å¦éå†åˆ°æœ€åä¸€ä¸ªç‚¹
+    for i = 1:nStrips,%åˆ†æˆnStripsæ¡
         strip = [];
         iStripPoint = 0;
         while value<cutEnd,

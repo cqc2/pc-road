@@ -1,6 +1,6 @@
   function roadPoint = getroadpointbyslices(pointCloudData,posData,roadThickness,marginW,minRoadWidth,windowW)
 %
-%Í¨¹ıµãÔÆÇĞÆ¬Ê¶±ğµÀÂ·
+%é€šè¿‡ç‚¹äº‘åˆ‡ç‰‡è¯†åˆ«é“è·¯
 % datetime('now','TimeZone','local','Format','HH:mm:ss Z')
 if ~exist('roadThickness','var') || isempty(roadThickness),roadThickness = []; end
 if ~exist('marginW','var') || isempty(marginW), marginW = []; end
@@ -9,7 +9,7 @@ if ~exist('windowW','var') || isempty(windowW), windowW = []; end
 
 % pointCloudData =  readpointcloudfile2('dataspace_slice\test#123.xyz');
 % posData = readposfile('dataspace_slice\POS_#2_20150703.txt',14);
-SliceArray = slice(pointCloudData(:,:),'bypos',posData,0,0.5,20);%ÇĞÆ¬Ô½Ï¸£¬¼ÆËãÔ½Âı
+SliceArray = slice(pointCloudData(:,:),'bypos',posData,0,0.5,20);%åˆ‡ç‰‡è¶Šç»†ï¼Œè®¡ç®—è¶Šæ…¢
 projectArray = project2section(SliceArray);
 roadPoint = getroadfromproject(projectArray,roadThickness,marginW,minRoadWidth,windowW);
 % savepointcloud2file(roadPoint,'road#123_byslices8888',false);
@@ -18,8 +18,8 @@ end
 
 function projectArray = project2section(SliceArray)
 %
-% -X: ÔÚ¶şÎ¬Í¶Ó°ÃæÖĞµãµÄºá×ø±ê
-%½«ÇĞÆ¬Í¶Ó°µ½¶ÏÃæ
+% -X: åœ¨äºŒç»´æŠ•å½±é¢ä¸­ç‚¹çš„æ¨ªåæ ‡
+%å°†åˆ‡ç‰‡æŠ•å½±åˆ°æ–­é¢
 nSlice = size(SliceArray,2);
 projectArray = SliceArray;
 for iSlice=1:nSlice,
@@ -31,9 +31,9 @@ for iSlice=1:nSlice,
     y0 = info(2);
     k0 = tan(info(3)+pi/2);
     k1 = -1/k0;
-    %½«ÇĞÆ¬µãÔÆÑ¹Ëõµ½ÈıÎ¬¿Õ¼äµÄÆ½Ãæ
+    %å°†åˆ‡ç‰‡ç‚¹äº‘å‹ç¼©åˆ°ä¸‰ç»´ç©ºé—´çš„å¹³é¢
 %     pX = (y0-y1+k1.*x1-k0.*x0)/(k1-k0);
-    pX = ((y0-y1)*k0+(-1).*x1-k0*k0.*x0)/(-1-k0*k0);%·ÀÖ¹k0Ç÷ÓÚ0Ê±£¬µ¼ÖÂk1ÎŞÇî´ó¼ÆËã³ö´í£¬ËùÒÔ·Ö×Ó·ÖÄ¸Í¬³Ëk0
+    pX = ((y0-y1)*k0+(-1).*x1-k0*k0.*x0)/(-1-k0*k0);%é˜²æ­¢k0è¶‹äº0æ—¶ï¼Œå¯¼è‡´k1æ— ç©·å¤§è®¡ç®—å‡ºé”™ï¼Œæ‰€ä»¥åˆ†å­åˆ†æ¯åŒä¹˜k0
     if k0==0,
         pY = y1;
     else
@@ -43,10 +43,10 @@ for iSlice=1:nSlice,
         a=0;
     end
     
-    %½«ÈıÎ¬¿Õ¼äµÄÆ½Ãæ×ª»»Îª¶şÎ¬¶ÏÃæ
+    %å°†ä¸‰ç»´ç©ºé—´çš„å¹³é¢è½¬æ¢ä¸ºäºŒç»´æ–­é¢
     minx = min(pX);
     miny = min(pY);
-    X = sqrt((pX-minx).^2 + (pY-miny).^2); %ÔÚ¶şÎ¬Í¶Ó°ÃæÖĞµãµÄºá×ø±ê
+    X = sqrt((pX-minx).^2 + (pY-miny).^2); %åœ¨äºŒç»´æŠ•å½±é¢ä¸­ç‚¹çš„æ¨ªåæ ‡
     projectArray(iSlice).X = X;
 end
 end
@@ -57,7 +57,7 @@ function roadPoint= getroadfromproject(projectArray,roadThickness,marginW,minRoa
 nProject = size(projectArray,2);
 roadPoint = [];
 for iProject = 1:nProject,
-    X = projectArray(iProject).X;%Í¶Ó°µ½¶ÏÃæÊ±µÄºá×ø±ê
+    X = projectArray(iProject).X;%æŠ•å½±åˆ°æ–­é¢æ—¶çš„æ¨ªåæ ‡
     H = projectArray(iProject).h;
     x = projectArray(iProject).x;
     y = projectArray(iProject).y;
@@ -66,27 +66,27 @@ for iProject = 1:nProject,
     nPoint = size(X,1);
     pseudoWidth = 0.05;
     [pseudoScanline,pseudoIndex] = getpseudoscanline([X H],pseudoWidth,'min');
-    %¹¹ÔìÎ±É¨ÃèÏß½á¹¹Ìå
+    %æ„é€ ä¼ªæ‰«æçº¿ç»“æ„ä½“
     pseudoX = pseudoScanline(:,1);
-    pseudoY = (1:size(pseudoScanline,1))';%¼ÇÂ¼Î±É¨ÃèÏßµÄË³ĞòË÷ÒıºÅ£¬
+    pseudoY = (1:size(pseudoScanline,1))';%è®°å½•ä¼ªæ‰«æçº¿çš„é¡ºåºç´¢å¼•å·ï¼Œ
     pseudoH = pseudoScanline(:,2);  
 %     plot(pseudoX,pseudoH,'r.');axis equal
     PseudoScanlineArray.x = pseudoX;
     PseudoScanlineArray.h = pseudoH;
     PseudoScanlineArray.y = pseudoY; 
-    PseudoScanlineArray.ins = pseudoScanline(:,1)*0;%Ö»ÊÇÈÃÊı¾İ½á¹¹Í³Ò»£¬²»ÆğÊµÖÊ×÷ÓÃ
-    %´ÓÎ±É¨ÃèÏßÖĞ³õ²½ÌáÈ¡³öÎ±µÀÂ·¶ÏÃæµã
+    PseudoScanlineArray.ins = pseudoScanline(:,1)*0;%åªæ˜¯è®©æ•°æ®ç»“æ„ç»Ÿä¸€ï¼Œä¸èµ·å®è´¨ä½œç”¨
+    %ä»ä¼ªæ‰«æçº¿ä¸­åˆæ­¥æå–å‡ºä¼ªé“è·¯æ–­é¢ç‚¹
      fluctuateH = 0.3;
      pseudoRoadPointData = getroadbyscanline(PseudoScanlineArray,[],[],fluctuateH);
      if isempty(pseudoRoadPointData),continue;end
-     %¶ÔÎ±µÀÂ·¶ÏÃæÖ±Ïß²¿·Ö½øĞĞÄâºÏ
+     %å¯¹ä¼ªé“è·¯æ–­é¢ç›´çº¿éƒ¨åˆ†è¿›è¡Œæ‹Ÿåˆ
      pseudoRoadX = pseudoRoadPointData(:,1);
      pseudoRoadH = pseudoRoadPointData(:,3); 
      [coefficients,percet] = ransac([pseudoRoadX pseudoRoadH],1,0.1,10);
      if percet<0.6,continue;end
-     %ÓÉÄâºÏµÄÖ±Ïß²ÎÊıÌáÈ¡Ö±Ïß»º³åÇøÄÚµÄµã½øĞĞ½øÒ»²½·ÖÎö£¬
-     %ÕâÀï(1:nPoint)'ÎªË÷Òı±ê¼ÇÁ¿£¬ÓÃÓÚÍ¶Ó°×ø±êÓëÕæÊµ×ø±ê¶ÔÓ¦
-     bufferpoint = getbufferpoint([X H (1:nPoint)'],coefficients,1);  %Í¶Ó°×ø±êĞÎÊ½ 
+     %ç”±æ‹Ÿåˆçš„ç›´çº¿å‚æ•°æå–ç›´çº¿ç¼“å†²åŒºå†…çš„ç‚¹è¿›è¡Œè¿›ä¸€æ­¥åˆ†æï¼Œ
+     %è¿™é‡Œ(1:nPoint)'ä¸ºç´¢å¼•æ ‡è®°é‡ï¼Œç”¨äºæŠ•å½±åæ ‡ä¸çœŸå®åæ ‡å¯¹åº”
+     bufferpoint = getbufferpoint([X H (1:nPoint)'],coefficients,1);  %æŠ•å½±åæ ‡å½¢å¼ 
 %      index = bufferpoint1(1:end,3);
 % if iProject==70,
 %     a=1;
@@ -104,30 +104,30 @@ end
 
 function  raodPointXH = refineroadpoint(bufferpoint,roadThickness,marginW,minRoadWidth,windowW)
 %
-%ÒÆ¶¯´°¿Ú·¨ÂË²¨¶ÔÂ·Ãæ½øĞĞ¾«Ï¸ÌáÈ¡
-%¼ÙÉèÂ·ÃæµãÔÆ²»´æÔÚ´óµÄ¼ä¸ô
-%-------Ä¬ÈÏ²ÎÊı----------------------
-%     -roadThickness £º0.2£¬¶ÏÃæÍ¶Ó°ºóµÄÂ·Ãæºñ¶È£¬ÓëÂ·Ãæ´Ö²Ú³Ì¶È¡¢µãµÄ²âÁ¿¾«¶ÈÒÔ¼°¶ÏÃæÍ¶Ó°Îó²î´óĞ¡ÓĞ¹Ø;
-%     -marginW £º 2£¬µÀÂ·±ßÔµÓëÀ¸¸ËµÄ¾àÀë£¬ÓëµÀÂ·±ßÔµĞ¡ÓÚ´Ë¾àÀëµÄÍ»³öÎïÈÏÎªÊÇÀ¸¸Ë£¬²¢ÒÔ´ËÈ·¶¨ÒªÌáÈ¡µÄÂ·Ãæ·¶Î§
-%     -minRoadWidth £º4£¬,×îĞ¡Â·¿í£¬Ğ¡ÓÚ´Î¿í¶ÈµÄµãÔÆ»áºöÂÔ                
-%     -windowW£º0.4£¬¼ÆËã¹ı³ÌÖĞ·Ö¸î´°¿ÚµÄ¿í¶È£¬Â·Ãæ¸´ÔÓ¡¢µãÔÆÃÜ¶È´ó¿ÉÊÊµ±ËõĞ¡£¬Â·ÃæÆ½Ì¯¡¢µãÔÆÃÜ¶ÈÏ¡¿ÉÊÊµ±·Å´ó£¬²»ÄÜĞ¡ÓÚÂ·Ãæµã¼ä¾à
+%ç§»åŠ¨çª—å£æ³•æ»¤æ³¢å¯¹è·¯é¢è¿›è¡Œç²¾ç»†æå–
+%å‡è®¾è·¯é¢ç‚¹äº‘ä¸å­˜åœ¨å¤§çš„é—´éš”
+%-------é»˜è®¤å‚æ•°----------------------
+%     -roadThickness ï¼š0.2ï¼Œæ–­é¢æŠ•å½±åçš„è·¯é¢åšåº¦ï¼Œä¸è·¯é¢ç²—ç³™ç¨‹åº¦ã€ç‚¹çš„æµ‹é‡ç²¾åº¦ä»¥åŠæ–­é¢æŠ•å½±è¯¯å·®å¤§å°æœ‰å…³;
+%     -marginW ï¼š 2ï¼Œé“è·¯è¾¹ç¼˜ä¸æ æ†çš„è·ç¦»ï¼Œä¸é“è·¯è¾¹ç¼˜å°äºæ­¤è·ç¦»çš„çªå‡ºç‰©è®¤ä¸ºæ˜¯æ æ†ï¼Œå¹¶ä»¥æ­¤ç¡®å®šè¦æå–çš„è·¯é¢èŒƒå›´
+%     -minRoadWidth ï¼š4ï¼Œ,æœ€å°è·¯å®½ï¼Œå°äºæ¬¡å®½åº¦çš„ç‚¹äº‘ä¼šå¿½ç•¥                
+%     -windowWï¼š0.4ï¼Œè®¡ç®—è¿‡ç¨‹ä¸­åˆ†å‰²çª—å£çš„å®½åº¦ï¼Œè·¯é¢å¤æ‚ã€ç‚¹äº‘å¯†åº¦å¤§å¯é€‚å½“ç¼©å°ï¼Œè·¯é¢å¹³æ‘Šã€ç‚¹äº‘å¯†åº¦ç¨€å¯é€‚å½“æ”¾å¤§ï¼Œä¸èƒ½å°äºè·¯é¢ç‚¹é—´è·
 if ~exist('roadThickness','var') || isempty(roadThickness),roadThickness = 0.2; end
 if ~exist('marginW','var') || isempty(marginW), marginW = 2; end
 if ~exist('minRoadWidth','var') || isempty(minRoadWidth), minRoadWidth = 4; end
 if ~exist('windowW','var') || isempty(windowW), windowW = 0.4; end
-% windowW = 0.3;%´°¿Ú¿í¶È
-% roadThickness = 0.2;%µÀÂ·Í¶Ó°ºñ¶È
-% marginW = 2;%Î§À¸ÓëÂ·±ßÔµ¾àÀë
-% minRoadWidth = 4;%×îĞ¡Â·¿í
+% windowW = 0.3;%çª—å£å®½åº¦
+% roadThickness = 0.2;%é“è·¯æŠ•å½±åšåº¦
+% marginW = 2;%å›´æ ä¸è·¯è¾¹ç¼˜è·ç¦»
+% minRoadWidth = 4;%æœ€å°è·¯å®½
 
 raodPointXH =[];
 minX = min(bufferpoint(:,1));
 maxX = max(bufferpoint(:,1));
 nWindow = ceil((maxX-minX)/windowW);
-windowInfo = Inf(nWindow,4);%·Ö±ğÎª´°¿ÚµÄ¸ß²î¡¢×î¸ßµã¡¢×îµÍµã¡¢µã¸öÊı
+windowInfo = Inf(nWindow,4);%åˆ†åˆ«ä¸ºçª—å£çš„é«˜å·®ã€æœ€é«˜ç‚¹ã€æœ€ä½ç‚¹ã€ç‚¹ä¸ªæ•°
 windowArray = cell(1,nWindow);
 
-%¼ÆËãÃ¿¸ö´°¿ÚµÄÏà¹ØÊôĞÔĞÅÏ¢
+%è®¡ç®—æ¯ä¸ªçª—å£çš„ç›¸å…³å±æ€§ä¿¡æ¯
 for i=1:nWindow,
     window = bufferpoint((bufferpoint(:,1)<(i*windowW+minX))&(bufferpoint(:,1)>((i-1)*windowW+minX)),:);
     if isempty(window),windowInfo(i,4) = 0;continue;end
@@ -143,27 +143,27 @@ end
 dminH = windowInfo(2:end,3) - windowInfo(1:end-1,3);
 nCluster = 0;
 isStart = false;
-%Ê¶±ğµÀÂ·ºòÑ¡Æ¬¶Î
+%è¯†åˆ«é“è·¯å€™é€‰ç‰‡æ®µ
 roadClusterIndex = [];
 for  i=1:nWindow-1, 
-    %ÈÏÎªµÀÂ·Ö÷ÌåµÄ×îµÍµãÊÇÁ¬ĞøÇÒ¸ß³Ì½üËÆµÄ
+    %è®¤ä¸ºé“è·¯ä¸»ä½“çš„æœ€ä½ç‚¹æ˜¯è¿ç»­ä¸”é«˜ç¨‹è¿‘ä¼¼çš„
     if abs(dminH(i))<=0.2&&~isStart,
         nCluster = nCluster+1;
         roadClusterIndex(nCluster,1) = i;
         startIndex = i;
         isStart = true;
     elseif abs(dminH(i))>0.2&&isStart,
-        roadClusterIndex(nCluster,2:3) = [i,i-startIndex+1];%µÚ¶şÏîÎªµÀÂ·ºòÑ¡Æ¬¶ÎÖĞ°üº¬µÄ´°¿ÚÊı
+        roadClusterIndex(nCluster,2:3) = [i,i-startIndex+1];%ç¬¬äºŒé¡¹ä¸ºé“è·¯å€™é€‰ç‰‡æ®µä¸­åŒ…å«çš„çª—å£æ•°
         isStart = false;
     end 
 end
 if isStart,
-    %Ò»°ãÊÇÒÔ¸ß³ÌÍ»±ä´°¿Ú×÷ÎªÆ¬¶Î±ß½ç
-    %µ±¼ìË÷ÖÁ×îºóÒ»¸ö´°¿ÚÈÔÎ´·¢ÉúÍ»±äÊ±£¬ÔòÒÔÆä×÷Îª½áÎ²±ß½ç
+    %ä¸€èˆ¬æ˜¯ä»¥é«˜ç¨‹çªå˜çª—å£ä½œä¸ºç‰‡æ®µè¾¹ç•Œ
+    %å½“æ£€ç´¢è‡³æœ€åä¸€ä¸ªçª—å£ä»æœªå‘ç”Ÿçªå˜æ—¶ï¼Œåˆ™ä»¥å…¶ä½œä¸ºç»“å°¾è¾¹ç•Œ
     roadClusterIndex(nCluster,2:3) = [nWindow,nWindow-startIndex+1];
 end
 
-%ÈÏÎª×î³¤µÄºòÑ¡Æ¬¶ÎÊÇµÀÂ·Ö÷Ìå²¿·Ö
+%è®¤ä¸ºæœ€é•¿çš„å€™é€‰ç‰‡æ®µæ˜¯é“è·¯ä¸»ä½“éƒ¨åˆ†
 if isempty(roadClusterIndex),
     return;
 end;
@@ -171,11 +171,11 @@ roadClusterIndex = sortrows(roadClusterIndex,3);
 roadStartIndex = roadClusterIndex(end,1);
 roadEndIndex = roadClusterIndex(end,2);
 if roadClusterIndex(end,3)<ceil(minRoadWidth/windowW),
-    %Èç¹ûºòÑ¡Æ¬¶Î³¤¶ÈĞ¡ÓÚ2Ã×£¬ÔòºöÂÔ
+    %å¦‚æœå€™é€‰ç‰‡æ®µé•¿åº¦å°äº2ç±³ï¼Œåˆ™å¿½ç•¥
     return;
 end
 
-%ÓëµÀÂ·Ö÷Ìå²¿·Ö±ß½çÏà½ÓµÄ´°¿ÚÒ²ÓĞ¿ÉÄÜ°üº¬²¿·ÖµÀÂ·£¬ËùÒÔÓ¦ÏòÁ½²à¸÷À©³äÒ»¸ö´°¿Ú²¢¼ì²â³öÆäÖĞÊôÓÚµÀÂ·Ö÷Ìå²¿·Ö
+%ä¸é“è·¯ä¸»ä½“éƒ¨åˆ†è¾¹ç•Œç›¸æ¥çš„çª—å£ä¹Ÿæœ‰å¯èƒ½åŒ…å«éƒ¨åˆ†é“è·¯ï¼Œæ‰€ä»¥åº”å‘ä¸¤ä¾§å„æ‰©å……ä¸€ä¸ªçª—å£å¹¶æ£€æµ‹å‡ºå…¶ä¸­å±äºé“è·¯ä¸»ä½“éƒ¨åˆ†
 if roadStartIndex~=1&&windowInfo(roadStartIndex-1,4)~=0,
     minH = windowInfo(roadStartIndex,3);
     pdata = windowArray{roadStartIndex-1};
@@ -188,7 +188,7 @@ if roadStartIndex~=1&&windowInfo(roadStartIndex-1,4)~=0,
         end
     end
     if i<npdata,
-        %½«À©³ä´°¿ÚÖĞµÄµÀÂ·µãÌí¼Óµ½µÀÂ·´°¿ÚÖĞ
+        %å°†æ‰©å……çª—å£ä¸­çš„é“è·¯ç‚¹æ·»åŠ åˆ°é“è·¯çª—å£ä¸­
         windowData = windowArray{roadStartIndex};
         windowData = [windowData;pdata(i+1:end,:)];
         windowArray(roadStartIndex) = {windowData};
@@ -206,16 +206,16 @@ if roadEndIndex~=nWindow&&windowInfo(roadEndIndex+1,4)~=0,
         end
     end
     if i>1,
-        %½«À©³ä´°¿ÚÖĞµÄµÀÂ·µãÌí¼Óµ½µÀÂ·´°¿ÚÖĞ
+        %å°†æ‰©å……çª—å£ä¸­çš„é“è·¯ç‚¹æ·»åŠ åˆ°é“è·¯çª—å£ä¸­
         windowData = windowArray{roadEndIndex};
         windowData = [windowData;pdata(1:i-1,:)];
         windowArray(roadEndIndex) = {windowData};
     end     
 end
 
-%ÌáÈ¡µÀÂ·Ö÷Ìå²¿·ÖµÄ¹Ø¼ü´°¿Ú
-%ÈÏÎªºñ¶È³¬¹ı0.2Ã×Îª±ß½ç»òÕßµØÃæ¸½×÷Îï¡£
-critcleWinClusterIndex = [];%¹Ø¼ü´°¿ÚË÷Òı¾ÛÀà
+%æå–é“è·¯ä¸»ä½“éƒ¨åˆ†çš„å…³é”®çª—å£
+%è®¤ä¸ºåšåº¦è¶…è¿‡0.2ç±³ä¸ºè¾¹ç•Œæˆ–è€…åœ°é¢é™„ä½œç‰©ã€‚
+critcleWinClusterIndex = [];%å…³é”®çª—å£ç´¢å¼•èšç±»
 numCluster = 0;
 isAddCluster = true;
 for i = roadStartIndex:roadEndIndex,
@@ -234,17 +234,17 @@ end
 
 %
 if numCluster==0,
-    %È«²¿ÊÇÂ·Ãæµã
+    %å…¨éƒ¨æ˜¯è·¯é¢ç‚¹
     for m = roadStartIndex:roadEndIndex,
         winPoint =  windowArray{m};
         raodPointXH = [raodPointXH;winPoint];
     end
 else
-    %¼òµ¥Æğ¼û£¬ÕâÀïÖ»¼ì²âÇ°Á½¸öºÍºóÁ½¸ö¹Ø¼ü´°¿Úµ½±ß½çµÄ¾àÀë
+    %ç®€å•èµ·è§ï¼Œè¿™é‡Œåªæ£€æµ‹å‰ä¸¤ä¸ªå’Œåä¸¤ä¸ªå…³é”®çª—å£åˆ°è¾¹ç•Œçš„è·ç¦»
     if numCluster>1&&(critcleWinClusterIndex(2,1)-roadStartIndex)<=ceil(marginW/windowW),
         cutIndexL = [critcleWinClusterIndex(2,2),2];
     elseif (critcleWinClusterIndex(1,1)-roadStartIndex)<=ceil(marginW/windowW),
-        %ÈÏÎªÊÇ×ó±ß½çÇĞ¸îµã
+        %è®¤ä¸ºæ˜¯å·¦è¾¹ç•Œåˆ‡å‰²ç‚¹
         cutIndexL = [critcleWinClusterIndex(1,2),1];
     else
         cutIndexL = [roadStartIndex-1,0];
@@ -252,7 +252,7 @@ else
     if numCluster>1&&(roadEndIndex-critcleWinClusterIndex(end-1,2))<=ceil(marginW/windowW),
         cutIndexR = [critcleWinClusterIndex(end-1,1),2];
     elseif (roadEndIndex-critcleWinClusterIndex(end,2))<=ceil(marginW/windowW),
-        %ÈÏÎªÊÇÓÒ²à±ß½çÇĞ¸îµã
+        %è®¤ä¸ºæ˜¯å³ä¾§è¾¹ç•Œåˆ‡å‰²ç‚¹
         cutIndexR = [critcleWinClusterIndex(end,1),1];
     else
         cutIndexR = [roadEndIndex+1,0];
@@ -274,15 +274,15 @@ function raodPointXH = removeRoadNoise(wArray,wInfo,criWinCluIndex,cutL,cutR,rSt
 %
 %
 raodPointXH = [];
-flagL = 0;%0±íÊ¾Ã»ÓĞ¶Ô±ß½ç´°¿Ú½øĞĞÇĞ¸î£¬1±íÊ¾´Ó×ó²àµÚÒ»¸ö¹Ø¼ü´°¿Ú½øĞĞÁËÇĞ¸î£¬2±íÊ¾´Ó×ó²àµÚ¶ş¸ö¹Ø¼ü´°¿Ú½øĞĞÁËÇĞ¸î
+flagL = 0;%0è¡¨ç¤ºæ²¡æœ‰å¯¹è¾¹ç•Œçª—å£è¿›è¡Œåˆ‡å‰²ï¼Œ1è¡¨ç¤ºä»å·¦ä¾§ç¬¬ä¸€ä¸ªå…³é”®çª—å£è¿›è¡Œäº†åˆ‡å‰²ï¼Œ2è¡¨ç¤ºä»å·¦ä¾§ç¬¬äºŒä¸ªå…³é”®çª—å£è¿›è¡Œäº†åˆ‡å‰²
 flagR = 0;
 cutLnum = cutL(1,2);
 cutRnum = cutR(1,2);
 cutL = cutL(1,1);
 cutR = cutR(1,1);
-%¶Ëµã´°¿Ú´¦Àí
+%ç«¯ç‚¹çª—å£å¤„ç†
 if cutL>=rStart&&cutL<rEnd,
-    maxH = wInfo(cutL+1,2);%ÓÒÁÚ´°¿ÚµÄ×î¸ßµã
+    maxH = wInfo(cutL+1,2);%å³é‚»çª—å£çš„æœ€é«˜ç‚¹
    winPoint =  wArray{cutL};
    winPoint =  sortrows(winPoint,1);
    np = size(winPoint,1);
@@ -297,7 +297,7 @@ if cutL>=rStart&&cutL<rEnd,
    rStart = cutL+1;
 end
 if cutR<=rEnd&&cutR>rStart,
-    maxH = wInfo(cutR-1,2);%×óÁÚ´°¿ÚµÄ×î¸ßµã
+    maxH = wInfo(cutR-1,2);%å·¦é‚»çª—å£çš„æœ€é«˜ç‚¹
    winPoint =  wArray{cutR};
    winPoint =  sortrows(winPoint,1);
    np = size(winPoint,1);
@@ -312,13 +312,13 @@ if cutR<=rEnd&&cutR>rStart,
    rEnd = cutR-1;
 end
 
-%Í»³öÂ·ÃæµÄ¹Ø¼ü´°¿Ú´¦Àí£¬¼´ÂË³ıÍ»³öµØÃæµÄµã
+%çªå‡ºè·¯é¢çš„å…³é”®çª—å£å¤„ç†ï¼Œå³æ»¤é™¤çªå‡ºåœ°é¢çš„ç‚¹
 num = size(criWinCluIndex,1);
 for i = 1+flagL:num-flagR,
    indexL =  criWinCluIndex(i,1);
    indexR = criWinCluIndex(i,2);
    if size(wInfo,1)<indexR+1||1>indexL-1,
-       a=0;%ÓĞÊ±Êı×éÒç³ö£¬ÔİÊ±Î´ÕÒµ½Ô­Òò
+       a=0;%æœ‰æ—¶æ•°ç»„æº¢å‡ºï¼Œæš‚æ—¶æœªæ‰¾åˆ°åŸå› 
        return;
    end
    maxHL = wInfo(indexL-1,2);
@@ -331,7 +331,7 @@ for i = 1+flagL:num-flagR,
    end
 end
 
-%ÆäËû´¦Àí£¬¼´Î´Í»³öÂ·ÃæµÄµãÖ±½ÓÌáÈ¡
+%å…¶ä»–å¤„ç†ï¼Œå³æœªçªå‡ºè·¯é¢çš„ç‚¹ç›´æ¥æå–
 if flagL~=0,flagL = flagL-1;end
 if flagR~=0,flagR = flagR-1;end
 for i = 1+flagL:num-flagR-1,
@@ -343,7 +343,7 @@ for i = 1+flagL:num-flagR-1,
    end
 end
 
-%±ßÔµ´¦Àí
+%è¾¹ç¼˜å¤„ç†
 indexL =  criWinCluIndex(1,1);
 indexR =  criWinCluIndex(end,2);
 for m = rStart:indexL-1,
@@ -371,10 +371,10 @@ bufferPoint = pointData(d(d(:,1)<length,2),:);
 end
 
 function pointData = getpointfrompseudo(projectArray,pseudoIndex,index)
-%ÌáÈ¡³öÎ±É¨Ãèµã¶ÔÓ¦µÄµã
-%   -projectArray:Ô­Ê¼Í¶Ó°µãÊı¾İµÄ½á¹¹Ìå
-%   -pseudoIndex:Î±É¨ÃèµãÓëÊµ¼ÊµãµÄ¶ÔÓ¦Ë÷Òı£¬ÈçµÚÒ»¸öÎ±É¨Ãèµã¶ÔÓ¦ÄÄĞ©Êµ¼Êµã
-%   -index:ĞèÒªÌáÈ¡µÄÎ±É¨ÃèµãË÷Òı£¬ÈçÌáÈ¡µÚÈı¸öÎ±É¨Ãèµã
+%æå–å‡ºä¼ªæ‰«æç‚¹å¯¹åº”çš„ç‚¹
+%   -projectArray:åŸå§‹æŠ•å½±ç‚¹æ•°æ®çš„ç»“æ„ä½“
+%   -pseudoIndex:ä¼ªæ‰«æç‚¹ä¸å®é™…ç‚¹çš„å¯¹åº”ç´¢å¼•ï¼Œå¦‚ç¬¬ä¸€ä¸ªä¼ªæ‰«æç‚¹å¯¹åº”å“ªäº›å®é™…ç‚¹
+%   -index:éœ€è¦æå–çš„ä¼ªæ‰«æç‚¹ç´¢å¼•ï¼Œå¦‚æå–ç¬¬ä¸‰ä¸ªä¼ªæ‰«æç‚¹
     nPseudoRoadPoint = size(index,1);
      pointData = [];
      for i=1:nPseudoRoadPoint,
@@ -389,8 +389,8 @@ end
 
 function [pseudoScanline,pseudoIndex] = getpseudoscanline(pointData,width,type)
 %
-% -pseudoIndex:Î±É¨ÃèÏßÖĞµÄµãËù¶ÔÓ¦µÄµÄÊµ¼Êµã¼¯µÄË÷Òı
-%´Ó¶ÏÃæÍ¶Ó°ÖĞÉú³ÉÎ±É¨ÃèÏß
+% -pseudoIndex:ä¼ªæ‰«æçº¿ä¸­çš„ç‚¹æ‰€å¯¹åº”çš„çš„å®é™…ç‚¹é›†çš„ç´¢å¼•
+%ä»æ–­é¢æŠ•å½±ä¸­ç”Ÿæˆä¼ªæ‰«æçº¿
     nPoint = size(pointData,1);
     X = pointData(:,1);
     H = pointData(:,2);
@@ -401,7 +401,7 @@ function [pseudoScanline,pseudoIndex] = getpseudoscanline(pointData,width,type)
     nPseudoScanline = 0;
     for i=1:nPseudoGrid,
         pseudoX = pseudoX+width;
-          XXtemp =  XX((XX(:,1)<pseudoX)&(XX(:,1)>=(pseudoX-width)),:);%°´pseudoX´Ó×óµ½ÓÒÉú³É
+          XXtemp =  XX((XX(:,1)<pseudoX)&(XX(:,1)>=(pseudoX-width)),:);%æŒ‰pseudoXä»å·¦åˆ°å³ç”Ÿæˆ
           if ~isempty(XXtemp),
               nPseudoScanline = nPseudoScanline+1;
               if strcmp(type,'min'),

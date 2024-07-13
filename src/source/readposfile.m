@@ -1,7 +1,7 @@
 function posData = readposfile(filePath,nField,startPos,endPos)
 % read pose file 
     
-%¶ÁÈ¡posÊı¾İÊ±×¢ÒâÊı¾İÅÅÁĞ¸ñÊ½
+%è¯»å–posæ•°æ®æ—¶æ³¨æ„æ•°æ®æ’åˆ—æ ¼å¼
     fid=fopen(filePath,'r');
     if nField==16,
         data = fscanf(fid,'%d %d %d %d %d %f %d %f %f %f %f %f %f %f %f %f',[16,inf])';

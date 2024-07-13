@@ -1,21 +1,21 @@
 function [cluster1,breakLines1,remainCluster] = vectorizesolidline(cluster,tracedata)
 %
-%¶ÔÊµÏß½øĞĞÊ¸Á¿»¯
-%×¢ÒâclusterÊÇ·ñÒÑ¾­ÖØ¾ÛÀà
+%å¯¹å®çº¿è¿›è¡ŒçŸ¢é‡åŒ–
+%æ³¨æ„clusteræ˜¯å¦å·²ç»é‡èšç±»
 
-%¼ÆËã¾ÛÀàĞÅÏ¢
+%è®¡ç®—èšç±»ä¿¡æ¯
 if ~isfield(cluster,'center')
     cluster = getclusterinfo(cluster);
 end
 % [cluster,removedCluster1] = recluster(cluster);
 % savecluster2file([],cluster,'erqi_bigpaper_4solidline_5m');
 [newCluster,removedCluster2]= removevertical(cluster,tracedata,45);
-[cluster1,breakLines1] = vectorizebreakline_for_solid(newCluster);%ÌáÈ¡Ö÷ÒªÊµÏß
+[cluster1,breakLines1] = vectorizebreakline_for_solid(newCluster);%æå–ä¸»è¦å®çº¿
 [removedCluster3]= removelines(cluster1,breakLines1);
 remainCluster = mergecluster(mergecluster(removedCluster1,removedCluster2),removedCluster3);
 
 % cluster2 = removelines(cluster1,breakLines1);
-% [cluster2,breakLines2] = vectorizebreakline_for_solid2(cluster2);%ÌáÈ¡Ä£ºıµÄÊµÏß
+% [cluster2,breakLines2] = vectorizebreakline_for_solid2(cluster2);%æå–æ¨¡ç³Šçš„å®çº¿
 % for i=1:size(newCluster,2 )
 %     data = newCluster(i).data;
 %     
@@ -25,8 +25,8 @@ end
 
 
 function [newCluster,uselesscluster] = recluster(cluster,len,r)
-%¶Ô¾ÛÀàµãÔÆ½øĞĞÖØ¾ÛÀà
-% uselesscluster - Ã»ÓĞ²ÎÓëÖØ¾ÛÀàµÄ¾ÛÂä
+%å¯¹èšç±»ç‚¹äº‘è¿›è¡Œé‡èšç±»
+% uselesscluster - æ²¡æœ‰å‚ä¸é‡èšç±»çš„èšè½
 
 if ~exist('len','var')||isempty(len), len=5;end
 if ~exist('r','var')||isempty(r), r = 0.15;end

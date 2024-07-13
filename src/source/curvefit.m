@@ -1,12 +1,12 @@
 function fittedPointData = curvefit(pointData)
-%¶Ô¹ì¼£Ïß·Ö¶ÎÄâºÏ,ÕâÀïÒÔ10Ã×¼ä¸ô¶ş½×¶àÏîÊ½ÄâºÏ
+%å¯¹è½¨è¿¹çº¿åˆ†æ®µæ‹Ÿåˆ,è¿™é‡Œä»¥10ç±³é—´éš”äºŒé˜¶å¤šé¡¹å¼æ‹Ÿåˆ
 %     segmentArray = zeros(nCenterPoint/10,1);
-    fitDist =10;%·Ö¶ÎÄâºÏ¾àÀë
+    fitDist =10;%åˆ†æ®µæ‹Ÿåˆè·ç¦»
     interpolationNum = 100;
 %     pointCloudFilePath = 'dataspace\traceData_notfit.xyz';
 %     pointData = readpointcloudfile2(pointCloudFilePath);
   
-    segmentArray(1) = 1;%´æ´¢·Ö¶ÎµãµÄË³ĞòºÅ
+    segmentArray(1) = 1;%å­˜å‚¨åˆ†æ®µç‚¹çš„é¡ºåºå·
     iSegmentArray = 1;
     preX = pointData(1,1);
     preY = pointData(1,2);
@@ -15,10 +15,10 @@ function fittedPointData = curvefit(pointData)
 %     axis equal;
   
     for i = 2:nPoint,
-    %°´¾àÀë½«´ıÄâºÏµã·Ö³ÉÈô¸É¶Î
+    %æŒ‰è·ç¦»å°†å¾…æ‹Ÿåˆç‚¹åˆ†æˆè‹¥å¹²æ®µ
         x = pointData(i,1);
         y = pointData(i,2);
-        %¹ì¼£µãÖ®¼äµÄ¼ä¸ô¾àÀë
+        %è½¨è¿¹ç‚¹ä¹‹é—´çš„é—´éš”è·ç¦»
         dist = sqrt((x-preX)^2+(y-preY)^2);
         if dist>fitDist,
             iSegmentArray = iSegmentArray+1;
@@ -28,8 +28,8 @@ function fittedPointData = curvefit(pointData)
         end      
     end
     segmentArray(iSegmentArray) = nPoint;
-    %ÄâºÏÖ®ºó¸øÃ¿Ò»¶ÎÄÚ²åµã
-    %¼ò±ãÆğ¼û£¬ËäÈ»×îºóÒ»¸öÄâºÏ¶Î¿ÉÄÜĞ¡ÓÚfitDist£¬µ«ÈÔÈ»ÄÚ²åinterpolationNum¸öµã
+    %æ‹Ÿåˆä¹‹åç»™æ¯ä¸€æ®µå†…æ’ç‚¹
+    %ç®€ä¾¿èµ·è§ï¼Œè™½ç„¶æœ€åä¸€ä¸ªæ‹Ÿåˆæ®µå¯èƒ½å°äºfitDistï¼Œä½†ä»ç„¶å†…æ’interpolationNumä¸ªç‚¹
     fittedPointData = zeros((iSegmentArray-1)*interpolationNum,2);
     for i=1:iSegmentArray-1,
         nStart = segmentArray(i);
@@ -40,8 +40,8 @@ function fittedPointData = curvefit(pointData)
         hdata = traceTemp(:,3);
         p=polyfit(xdata,ydata,2);
         syms d(varX);
-        d(varX) = diff(p(1)*varX^2+p(2)*varX+p(3));%ÄâºÏµÄ¶ş½×¶àÏîÊ½¶ÔÓ¦µÄÒ»½×µ¼Êı
-        %µÈ·Ö³ÉÈô¸É¸ö¼ä¸ô
+        d(varX) = diff(p(1)*varX^2+p(2)*varX+p(3));%æ‹Ÿåˆçš„äºŒé˜¶å¤šé¡¹å¼å¯¹åº”çš„ä¸€é˜¶å¯¼æ•°
+        %ç­‰åˆ†æˆè‹¥å¹²ä¸ªé—´éš”
         x1 = linspace(pointData(nStart,1),pointData(nEnd,1),interpolationNum);
         y1 = polyval(p,x1);
 %         plot(x1,y1,'r-')
@@ -51,13 +51,13 @@ function fittedPointData = curvefit(pointData)
             temp = ceil(step*m);      
             h(m) = hdata(temp);
         end
-        fragmentFittedPointData = [x1' y1' h'];%±¾¶Î¶àÏîÊ½ÄâºÏºó²åÖµ½á¹û
+        fragmentFittedPointData = [x1' y1' h'];%æœ¬æ®µå¤šé¡¹å¼æ‹Ÿåˆåæ’å€¼ç»“æœ
         fittedPointData((i-1)*interpolationNum+1:i*interpolationNum,1:3) ...
             = fragmentFittedPointData;        
         if i==1,
-            %´Ë´¦Ê¹ÓÃÉÏÒ»¶Î2/3´¦µÄ²åÖµµã£¬Á½Ïß¶ÎÏà½ÓµÄ¶Ëµã£¬ÏÂÒ»¶Î1/3´¦²åÖµµãÕâÈı
-            %¸÷µã×÷ÎªÑùÌõÄâºÏµã
-            %ÈıµÈ·ÖÓĞËÄ¸öµã,ÒÀ´ÎÃüÃû
+            %æ­¤å¤„ä½¿ç”¨ä¸Šä¸€æ®µ2/3å¤„çš„æ’å€¼ç‚¹ï¼Œä¸¤çº¿æ®µç›¸æ¥çš„ç«¯ç‚¹ï¼Œä¸‹ä¸€æ®µ1/3å¤„æ’å€¼ç‚¹è¿™ä¸‰
+            %å„ç‚¹ä½œä¸ºæ ·æ¡æ‹Ÿåˆç‚¹
+            %ä¸‰ç­‰åˆ†æœ‰å››ä¸ªç‚¹,ä¾æ¬¡å‘½å
 %             SmoothFittedPointData(1:floor(interpolationNum*(2/3)),1:3) ...
 %             = fragmentFittedPointData(1:floor(interpolationNum*(2/3)),1:3);
             currentFragmentFittedPointData = fragmentFittedPointData;

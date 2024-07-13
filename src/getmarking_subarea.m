@@ -1,18 +1,18 @@
 function  getmarking_subarea(pointCloudFilePath)
-% µãÔÆ·ÖÇø´¦Àí
+% ç‚¹äº‘åˆ†åŒºå¤„ç†
 datetime('now','TimeZone','local','Format','HH:mm:ss Z')
 addpath(genpath(pwd));
 
-% ¶ÁÈ¡Â·ÃæµãÔÆÊı¾İ
+% è¯»å–è·¯é¢ç‚¹äº‘æ•°æ®
 pointCloudFilePath = 'CASEDATA\marking_anys\yingwuzhou.xyz';
 fid=fopen(pointCloudFilePath,'r');
 pointCloudData = readpointcloudfile2(fid);
 
-% »ùÓÚµãÃÜ¶È¼ÆËã¹ì¼£
+% åŸºäºç‚¹å¯†åº¦è®¡ç®—è½¨è¿¹
 %  roughTraceData = searchtracepoint(pointCloudData);
 %  traceData = curvefit(roughTraceData);
 
-% Ê¹ÓÃ¾«ÃÜ¹ì¼£ÎÄ¼ş£¨ÍÆ¼ö£©
+% ä½¿ç”¨ç²¾å¯†è½¨è¿¹æ–‡ä»¶ï¼ˆæ¨èï¼‰
 posFilePath ='YingwuzhouBridge\tracedata\road-all_GNSStrace.xyz';
 % posData = readposfile(posFilePath,14);
 traceData = importdata(posFilePath);
@@ -21,20 +21,20 @@ posData.y = traceData(:,2);
 posData.h = traceData(:,3);
 
 % savepointcloud2file([posData.x posData.y posData.h zeros(size(posData.h,1),1)],'tracedata',1);
-%ÇĞÆ¬²»ÒË¹ıºñ£¬·ñÔò¶Ô¹ÕÍä´¦×İÏòÇĞ¸îÊ±ÇĞ¸îÏß»áÓëÂ·²»Æ½ĞĞ
-%ÇĞ¸îÓÃµÄposÊı¾İÒªÖÁÉÙ±ÈµãÔÆ³¤³öÒ»¸öÇĞ¸î³¤¶È£¬ÕâÑù²ÅÄÜ±ÜÃâÇĞ¸îÊ±µÀÂ·¶Ëµã¸½½ü±»ºöÂÔ
+%åˆ‡ç‰‡ä¸å®œè¿‡åšï¼Œå¦åˆ™å¯¹æ‹å¼¯å¤„çºµå‘åˆ‡å‰²æ—¶åˆ‡å‰²çº¿ä¼šä¸è·¯ä¸å¹³è¡Œ
+%åˆ‡å‰²ç”¨çš„posæ•°æ®è¦è‡³å°‘æ¯”ç‚¹äº‘é•¿å‡ºä¸€ä¸ªåˆ‡å‰²é•¿åº¦ï¼Œè¿™æ ·æ‰èƒ½é¿å…åˆ‡å‰²æ—¶é“è·¯ç«¯ç‚¹é™„è¿‘è¢«å¿½ç•¥
 posData = cutuselesspos(pointCloudData,posData,10);
 SliceArray = slice(pointCloudData,'bypos',posData,[0,5,25]);
 nSlice = size(SliceArray,2);
 PointSet= struct('x',0,'y',0,'h',0,'ins',0);
 markingPoint=repmat(PointSet,[1 nSlice]);
 %---------------------------
-% ´´½¨²¢ĞĞ³Ø
+% åˆ›å»ºå¹¶è¡Œæ± 
 % if isempty(gcp('nocreate'))
 %     parpool('local',5); 
 % end
 %--------------------------
-calibinterval = 100;% Ç¿¶ÈĞ£Õı²ÎÊı¸üĞÂ¼ä¸ô
+calibinterval = 100;% å¼ºåº¦æ ¡æ­£å‚æ•°æ›´æ–°é—´éš”
  imdata =  [];
 for iSlice = 1:nSlice
 % parfor iSlice = 1:nSlice
@@ -42,21 +42,21 @@ for iSlice = 1:nSlice
     y = SliceArray(iSlice).y;
     h = SliceArray(iSlice).h;
     ins = SliceArray(iSlice).ins;
-    info = SliceArray(iSlice).info;% info°üº¬ÇĞµã×ø±êºÍ½Ç¶È
+    info = SliceArray(iSlice).info;% infoåŒ…å«åˆ‡ç‚¹åæ ‡å’Œè§’åº¦
     slicePoint = [x y h ins];
     
-    % ÒÔÇĞµãÎª×ø±ê0µãµÄ·Ö¸îµã»®·Ö
+    % ä»¥åˆ‡ç‚¹ä¸ºåæ ‡0ç‚¹çš„åˆ†å‰²ç‚¹åˆ’åˆ†
     seg1 = -4.7;
     seg2 = -2;
     seg3 = 2;
     seg4 = 4.7;
     data = slicePoint;
-    %Ç¿¶ÈĞ£Õı²ÎÊı
+    %å¼ºåº¦æ ¡æ­£å‚æ•°
 %     if 1==mod(iSlice,calibinterval)
         outposData = cutuselesspos(data,posData,2);
-        dataSliceArray = slice(data,'bypos',outposData,[0,0.5,25]);%È¡ÖĞ¼ä0.5Ã×µÄµãÔÆ¼ÆËãĞ£ÕıÄ£ĞÍ
+        dataSliceArray = slice(data,'bypos',outposData,[0,0.5,25]);%å–ä¸­é—´0.5ç±³çš„ç‚¹äº‘è®¡ç®—æ ¡æ­£æ¨¡å‹
         nDataSlice = size(dataSliceArray,2);
-        k = floor((nDataSlice+1)/2);%ÖĞ¼äÇĞÆ¬µÄĞòºÅ
+        k = floor((nDataSlice+1)/2);%ä¸­é—´åˆ‡ç‰‡çš„åºå·
         calibPointdata = [dataSliceArray(k).x dataSliceArray(k).y  dataSliceArray(k).h dataSliceArray(k).ins];
         calibInfo = dataSliceArray(k).info;
         calibdata_update = calibratintensity(calibPointdata,calibInfo);
@@ -90,8 +90,8 @@ for iSlice = 1:nSlice
         [imageData ,gridArray] = convertPD2img(data,0.05,0.2);
         imageData = imgaussfilt(imageData,2);
 %         imwrite(imageData,'test--.png');
-        % ¼ÆËã±³¾°»Ò¶ÈÖµ¡£×ÔÊÊÓ¦·Ö¸îãĞÖµÊÇÓÉ»ı·ÖÍ¼È·¶¨£¬·ÇÂ·ÃæÇøÓòµÄ»Ò¶ÈÖµÎª0£¬Õâ»á¶Ô½á
-        % ¹ûÂ·Ãæ±ßÔµ±êÏßµÄÌáÈ¡²úÉúÓ°ÏìÓÃÂ·ÃæÇøÓòµÄ·Ç±êÏßµÍ»Ò¶ÈÖµÏñËØ¾ùÖµÈ·¶¨
+        % è®¡ç®—èƒŒæ™¯ç°åº¦å€¼ã€‚è‡ªé€‚åº”åˆ†å‰²é˜ˆå€¼æ˜¯ç”±ç§¯åˆ†å›¾ç¡®å®šï¼Œéè·¯é¢åŒºåŸŸçš„ç°åº¦å€¼ä¸º0ï¼Œè¿™ä¼šå¯¹ç»“
+        % æœè·¯é¢è¾¹ç¼˜æ ‡çº¿çš„æå–äº§ç”Ÿå½±å“ç”¨è·¯é¢åŒºåŸŸçš„éæ ‡çº¿ä½ç°åº¦å€¼åƒç´ å‡å€¼ç¡®å®š
         imageData = imfillnan(imageData);
         
         SensityValue = 0.53;
@@ -109,12 +109,12 @@ for iSlice = 1:nSlice
         
         se = strel('line',3,3);
         se2 = strel('diamond',2);
-        imageData2 = imopen(imageData2,se2);%ustuµ¥ãĞÖµ·Ö¸î
+        imageData2 = imopen(imageData2,se2);%ustuå•é˜ˆå€¼åˆ†å‰²
         
-        imageData3 = imopen(imageData3,se);%ustu¶àãĞÖµ·Ö¸î»Ò¶ÈÖµ´óµÄ½á¹û
-        BW = imopen(BW,se);%×ÔÊÊÓ¦ãĞÖµ½á¹û
+        imageData3 = imopen(imageData3,se);%ustuå¤šé˜ˆå€¼åˆ†å‰²ç°åº¦å€¼å¤§çš„ç»“æœ
+        BW = imopen(BW,se);%è‡ªé€‚åº”é˜ˆå€¼ç»“æœ
         
-       I = padarray(imageData,[10 10],'replicate','both');%±ßÔµÀ©Õ¹
+       I = padarray(imageData,[10 10],'replicate','both');%è¾¹ç¼˜æ‰©å±•
        BW2 =  imadaptive(I,10,1.1);
        BW2 = BW2(11:end-10,11:end-10);
        BW2 = bwareaopen(BW2,10);
@@ -122,7 +122,7 @@ for iSlice = 1:nSlice
 %        BW2 = imopen(BW2,se);
 %        BW2 =  imopen(BW2,se);
 
-       I = padarray(imageData,[10 10],'replicate','both');%±ßÔµÀ©Õ¹
+       I = padarray(imageData,[10 10],'replicate','both');%è¾¹ç¼˜æ‰©å±•
        BW3 =  imadaptive(I,10,1.25);
        BW3 = BW3(11:end-10,11:end-10);
        BW3 = bwareaopen(BW3,10);
@@ -140,8 +140,8 @@ for iSlice = 1:nSlice
         figure(4);imshow(BW);
         figure(5);imshow(BW2);
         figure(6);imshow(BW3);
-%         imwrite(BW,'²»Ğ£Õı×Ô´ø×ÔÊÊÓ¦.png');
-%         imwrite(BW2,'²»Ğ£ÕıÎÒµÄ×ÔÊÊÓ¦.png');
+%         imwrite(BW,'ä¸æ ¡æ­£è‡ªå¸¦è‡ªé€‚åº”.png');
+%         imwrite(BW2,'ä¸æ ¡æ­£æˆ‘çš„è‡ªé€‚åº”.png');
 
 % %
         if iBlock == 1
@@ -160,7 +160,7 @@ for iSlice = 1:nSlice
         markingpieceBW = [markingpieceBW;pointBW];
     end    
 %     markingPoint = [markingPoint;markingpiece];
-%parpool²¢ĞĞ¼ÆËãÊ±ËÆºõ²»ÄÜÓÃÔª°û£¬ÕâÀïÊ¹ÓÃ½á¹¹ÌåÊı×é¡£
+%parpoolå¹¶è¡Œè®¡ç®—æ—¶ä¼¼ä¹ä¸èƒ½ç”¨å…ƒèƒï¼Œè¿™é‡Œä½¿ç”¨ç»“æ„ä½“æ•°ç»„ã€‚
 markingPoint(iSlice).x = markingpiece(:,1);
 markingPoint(iSlice).y = markingpiece(:,2);
 markingPoint(iSlice).h = markingpiece(:,3);
@@ -185,7 +185,7 @@ savepointcloud2file(imdata,'yingwuzhou_c',false);
     [imageData ,gridArray] = convertPD2img(imdata,0.05,0.2);
     imwrite(imageData,'lai.png');
 %------------------
-%¹Ø±Õ²¢ĞĞ³Ø
+%å…³é—­å¹¶è¡Œæ± 
 % parpool close 
 %-----------------
  markingPoint =  getpointfromstructArray(markingPoint);
@@ -197,7 +197,7 @@ savepointcloud2file(imdata,'yingwuzhou_c',false);
 
 % fclose(fid);
 
-% imwrite(imageData,'road.png');%Í¼ÏñÉú³É
+% imwrite(imageData,'road.png');%å›¾åƒç”Ÿæˆ
 % img = imread('roadimage\22.png');
 % gimg = edge(img,'Canny',0.2);
 datetime('now','TimeZone','local','Format','HH:mm:ss Z')
@@ -207,9 +207,9 @@ end
 
 function point = getpointfromgrid(gridArray,seg_I,num,type)
 %
-% -seg_I:ÕûÊı»¯ºóµÄÍ¼Ïñ¾ØÕó
-% -num;ÒªÌáÈ¡µÄÊı×ÖÇøÓò
-% -type:ºá×İ×ø±êËùÔÚÎ»Êı£¬12´ú±íÔÚ1¡¢2Î»£¬56´ú±íÔÚ5¡¢6Î»¡£
+% -seg_I:æ•´æ•°åŒ–åçš„å›¾åƒçŸ©é˜µ
+% -num;è¦æå–çš„æ•°å­—åŒºåŸŸ
+% -type:æ¨ªçºµåæ ‡æ‰€åœ¨ä½æ•°ï¼Œ12ä»£è¡¨åœ¨1ã€2ä½ï¼Œ56ä»£è¡¨åœ¨5ã€6ä½ã€‚
 [row,col] = size(seg_I);
 point = zeros(10000,4);
 np = 0;

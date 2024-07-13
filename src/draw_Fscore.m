@@ -6,7 +6,7 @@ name = 'F_score_yingwuzhou2';
 f2 = importdata(strcat(name,'.mat'));
 draw_Fscore2(f2);
 figure(2);draw_Fscore2(f1);
-% Ð£ÕýºóµÄÍ¼ÏñfÖµËãÒ»±é£¬È»ºóËµ
+% æ ¡æ­£åŽçš„å›¾åƒfå€¼ç®—ä¸€éï¼Œç„¶åŽè¯´
 end
 
 function draw_Fscore2(F_score)
@@ -30,17 +30,17 @@ function draw_Fscore2(F_score)
       idx = [idx;r(r2(1,1),1)];
     end
     hold on;
-    plot3(s(idx),t(idx),score(idx),'r-');%»æÖÆ¼¹Ïß
-    plot3(s(idx),t(idx),score(idx),'r.');%»æÖÆ¼¹Ïß
+    plot3(s(idx),t(idx),score(idx),'r-');%ç»˜åˆ¶è„Šçº¿
+    plot3(s(idx),t(idx),score(idx),'r.');%ç»˜åˆ¶è„Šçº¿
     mid_idx = idx(ceil(size(idx,1)/2));
     
 %     quiver3(s(mid_idx)+0.01,t(mid_idx)+0.01,score(mid_idx)+0.01,s(mid_idx),t(mid_idx),score(mid_idx),0.01);
-    text(s(mid_idx)+0.05,t(mid_idx)+0.05,score(mid_idx)+0.05,'¼«Öµ¼¹Ïß');
+    text(s(mid_idx)+0.05,t(mid_idx)+0.05,score(mid_idx)+0.05,'æžå€¼è„Šçº¿');
     maxF = max(score);
     [r,~] = find(score>=maxF);
     plot3(s(r),t(r),score(r),'ko');
     plot3(s(r),t(r),score(r),'g*');
-    text(s(r),t(r),score(r)+0.05,['×î´óÖµµã (',num2str(s(r)),',',num2str(t(r)),',',num2str(score(r)),')'])
+    text(s(r),t(r),score(r)+0.05,['æœ€å¤§å€¼ç‚¹ (',num2str(s(r)),',',num2str(t(r)),',',num2str(score(r)),')'])
     shading interp;
     
 end

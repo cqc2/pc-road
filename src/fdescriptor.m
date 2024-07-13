@@ -2,7 +2,7 @@
 % 03.11.2009
 %function uebung1()
 %This is just for runing the whole process of the task
-%¸µÀïÒ¶ÃèÊö×Ó
+%å‚…é‡Œå¶æè¿°å­
 function uebung1(leaves,leaf1,leaf2)
 % leaf1 = imread('leaf_type1.jpg');
 % leaf2 = imread('leaf_type2.jpg');

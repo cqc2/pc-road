@@ -1,7 +1,7 @@
 function xyzgrgb2xyzgfile
-%°Ñxyz»Ò¶ÈrgbÎÄ¼ş×ª»»³ÉxyzgÎÄ¼ş¸ñÊ½
+%æŠŠxyzç°åº¦rgbæ–‡ä»¶è½¬æ¢æˆxyzgæ–‡ä»¶æ ¼å¼
     datetime('now','TimeZone','local','Format','HH:mm:ss Z')
-    pointCloudFilePath = 'D:\20161219µãÔÆÅäÉ«\22.3\2#.xyz';
+    pointCloudFilePath = 'D:\20161219ç‚¹äº‘é…è‰²\22.3\2#.xyz';
     pointData = readfile(pointCloudFilePath);
     x = pointData.x;
     y = pointData.y;
@@ -12,7 +12,7 @@ function xyzgrgb2xyzgfile
 end
 
 function pointData = readfile(filePath)
-%¶ÁÈ¡posÊı¾İÊ±×¢ÒâÊı¾İÅÅÁĞ¸ñÊ½
+%è¯»å–posæ•°æ®æ—¶æ³¨æ„æ•°æ®æ’åˆ—æ ¼å¼
     fid=fopen(filePath,'r');
     data = fscanf(fid,'%f %f %f %d %d %d %d',[7,inf])';
     pointData.x = data(1:end,1);

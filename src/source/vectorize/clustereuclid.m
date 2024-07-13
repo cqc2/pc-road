@@ -1,17 +1,17 @@
 function index = clustereuclid(data,dist,maxp)
 %
-% Å·Ê½¾ÛÀà
+% æ¬§å¼èšç±»
 % index = clustereuclid(data,dist,maxp)
 %
 % INPUT:
-% data - ¾ÛÀàÊı¾İ£¬¿ÉÒÔÊÇ¶àÎ¬
-% dist - ¾ÛÀà¾àÀë
-% maxp - ×î´óµã¸öÊı£¬Ô­¾ÛÀàÖĞÈç¹ûµã¸öÊı´óÓÚmaxp£¬½«½øĞĞ·ÖÁÑĞÎ³ÉÁ½¸ö¾ÛÀà
+% data - èšç±»æ•°æ®ï¼Œå¯ä»¥æ˜¯å¤šç»´
+% dist - èšç±»è·ç¦»
+% maxp - æœ€å¤§ç‚¹ä¸ªæ•°ï¼ŒåŸèšç±»ä¸­å¦‚æœç‚¹ä¸ªæ•°å¤§äºmaxpï¼Œå°†è¿›è¡Œåˆ†è£‚å½¢æˆä¸¤ä¸ªèšç±»
 %
 % OUTPUT:
-% index - Ã¿¸öÔªËØµÄÀà±ğºÅ
-% ×¢Òâ£º²âÊÔ·¢ÏÖ£¬Êı¾İÁ¿Ôö¼ÓÒ»±¶£¬ºÄÊ±Ôö¼Ó´óÓÚ1±¶£¬ËùÒÔ´¦ÀíµÄÊı¾İ½Ï¶àÊ±£¬Ó¦·Ö¿é´¦Àí
-%       µã¸öÊıÒ»°ã²»Òª´óÓÚ1000
+% index - æ¯ä¸ªå…ƒç´ çš„ç±»åˆ«å·
+% æ³¨æ„ï¼šæµ‹è¯•å‘ç°ï¼Œæ•°æ®é‡å¢åŠ ä¸€å€ï¼Œè€—æ—¶å¢åŠ å¤§äº1å€ï¼Œæ‰€ä»¥å¤„ç†çš„æ•°æ®è¾ƒå¤šæ—¶ï¼Œåº”åˆ†å—å¤„ç†
+%       ç‚¹ä¸ªæ•°ä¸€èˆ¬ä¸è¦å¤§äº1000
 % REFERENCES:
 % PCL 1.8.0\include\pcl-1.8\pcl\segmentation\extract_clusters.h
 
@@ -19,7 +19,7 @@ if ~exist('maxp','var')||isempty(maxp), maxp = 9999;end
 
 Mdl = KDTreeSearcher(data);
 n = size(data,1);
-processed = zeros([n 1]);%ÊÇ·ñÒÑ¾­±»·ÖÀà
+processed = zeros([n 1]);%æ˜¯å¦å·²ç»è¢«åˆ†ç±»
 nCluster  = 0;
 index = zeros([n 1]);
 for i = 1:n
@@ -27,7 +27,7 @@ for i = 1:n
         continue;
     end
     sq_idx = 1;
-    seed_queue = i;%ËÑË÷¶ÓÁĞ
+    seed_queue = i;%æœç´¢é˜Ÿåˆ—
     processed(i) = true;
     while size(seed_queue,2)>=sq_idx
         idx = rangesearch(Mdl,data(seed_queue(sq_idx),:),dist);
@@ -45,7 +45,7 @@ for i = 1:n
         end
         sq_idx = sq_idx+1;      
         if exist('maxp','var')&&size(seed_queue,2)>maxp
-            break;%Èç¹û¶àÓÚmaxp¸öµã£¬Ôò½øĞĞ·ÖÁÑ
+            break;%å¦‚æœå¤šäºmaxpä¸ªç‚¹ï¼Œåˆ™è¿›è¡Œåˆ†è£‚
         end
     end
     nCluster = nCluster+1;

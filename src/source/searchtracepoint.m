@@ -1,6 +1,6 @@
 function tracePointData = searchtracepoint(pointCloudData)
 % search the nearest point to scanner according to the point density of scanline 
-%¶Ô¹ì¼£µã½øĞĞÁË·Ö¶ÎÄâºÏ£¬ÔİÎ´¶Ô¶Ëµã½øĞĞÆ½»¬´¦Àí
+%å¯¹è½¨è¿¹ç‚¹è¿›è¡Œäº†åˆ†æ®µæ‹Ÿåˆï¼Œæš‚æœªå¯¹ç«¯ç‚¹è¿›è¡Œå¹³æ»‘å¤„ç†
     nPoint = size(pointCloudData,1);
     prePoint = pointCloudData(1:nPoint-1,1:4);
     nextPoint = pointCloudData(2:nPoint,1:4);    
@@ -8,16 +8,16 @@ function tracePointData = searchtracepoint(pointCloudData)
     dy = (prePoint(1:nPoint-1,2)-nextPoint(1:nPoint-1,2));
     dh = (prePoint(1:nPoint-1,3)-nextPoint(1:nPoint-1,3));
     ds = sqrt(dx.^2+dy.^2+dh.^2);
-%¿ÉÒÔÓÃ´ËÍ¼ÏñÀ´Àí½â±¾Ëã·¨
+%å¯ä»¥ç”¨æ­¤å›¾åƒæ¥ç†è§£æœ¬ç®—æ³•
 %     plot(1:1000,ds(1:1000),'r.');
 %     hold on
 %     plot(10000:20000,ds(10000:20000));
     centerPointArray = zeros(fix(nPoint/100),4);
     iTracePoint = 0;
-    num = 0;%Ã¿ÌõÉ¨ÃèÏßÖĞ¼ä¸ôĞ¡ÓÚ0.5mµÄµãµÄÊıÁ¿£¬¹ì¼£µãÔÚÕâĞ©µãµ±ÖĞ
-    %intervalQuantity±íÊ¾ÏàÁÚÉ¨ÃèÏßÖ®¼ä¼ä¸ôµÄµã¸öÊı£¬Ò»°ãÈ¡É¨ÃèÏßµã¸öÊıµÄ0.75
-    %¹ì¼£µãÌáÈ¡½á¹û¶Ô´Ë²ÎÊı²»ÊÇºÜÃô¸Ğ£¬²»ÒªÓëÊµ¼ÊÇé¿ö²î±ğÌ«´ó¼´¿É
-    %intervalQuantit¹ıĞ¡»áÊ¹¹ì¼£µã¹ı¶ÈÌáÈ¡£¬¹ı´ó»áÊ¹Ò»Ğ©É¨ÃèÏßµÄ¹ì¼£µã±»ºöÂÔ
+    num = 0;%æ¯æ¡æ‰«æçº¿ä¸­é—´éš”å°äº0.5mçš„ç‚¹çš„æ•°é‡ï¼Œè½¨è¿¹ç‚¹åœ¨è¿™äº›ç‚¹å½“ä¸­
+    %intervalQuantityè¡¨ç¤ºç›¸é‚»æ‰«æçº¿ä¹‹é—´é—´éš”çš„ç‚¹ä¸ªæ•°ï¼Œä¸€èˆ¬å–æ‰«æçº¿ç‚¹ä¸ªæ•°çš„0.75
+    %è½¨è¿¹ç‚¹æå–ç»“æœå¯¹æ­¤å‚æ•°ä¸æ˜¯å¾ˆæ•æ„Ÿï¼Œä¸è¦ä¸å®é™…æƒ…å†µå·®åˆ«å¤ªå¤§å³å¯
+    %intervalQuantitè¿‡å°ä¼šä½¿è½¨è¿¹ç‚¹è¿‡åº¦æå–ï¼Œè¿‡å¤§ä¼šä½¿ä¸€äº›æ‰«æçº¿çš„è½¨è¿¹ç‚¹è¢«å¿½ç•¥
     intervalQuantity = 50;
     for i = 1:nPoint-1,
         if (ds(i))<0.5,
@@ -27,17 +27,17 @@ function tracePointData = searchtracepoint(pointCloudData)
         elseif (ds(i))>=0.5&&(num>=intervalQuantity),
             iTracePoint = iTracePoint+1;
             linePointArray=sortrows(linePointArray,2);
-            minDs = linePointArray(1,2);%×îĞ¡¼ä¸ô
-            nMinDs=0;%×îĞ¡¼ä¸ôÊıÁ¿
+            minDs = linePointArray(1,2);%æœ€å°é—´éš”
+            nMinDs=0;%æœ€å°é—´éš”æ•°é‡
             while (minDs==linePointArray(nMinDs+1,2))&&((nMinDs+1)<=num),
-                %ÓĞĞ©×îĞ¡¼ä¸ô¾àÀëÊÇÒ»ÑùµÄ£¬ËùÒÔ²»ÄÜÖ»È¡µÚÒ»¸öµã
+                %æœ‰äº›æœ€å°é—´éš”è·ç¦»æ˜¯ä¸€æ ·çš„ï¼Œæ‰€ä»¥ä¸èƒ½åªå–ç¬¬ä¸€ä¸ªç‚¹
                 nMinDs=nMinDs+1; 
             end
             a= median(linePointArray(1:nMinDs,1));
-            %ÓÉ¼ì²âµÄ¹ì¼£µãÄâºÏµÄ¹ì¼£ÓëÊµ²âposÊı¾İ¶Ô±È£¬·¢ÏÖÏòĞĞ³µ·½Ïò×ó²à´æÔÚ´óÔ¼
-            %2cm×óÓÒµÄÏµÍ³Îó²î£¬ÔÚ²¹³¥ÁË4¸öÑù±¾¹ì¼£µã¾àÀëºó½á¹ûµÃµ½½Ï´ó¸ÄÉÆ£¬ÍÆ²â
-            %¿ÉÄÜÊÇ²âÁ¿³µ±ê¶¨Ê±²úÉúµÄÎó²î
-            minDsPointOrder=ceil((linePointArray(1,1)+linePointArray(nMinDs,1))/2)-4;%×îĞ¡¼ä¸ô¶ÔÓ¦µÄ×óµãĞòºÅ   
+            %ç”±æ£€æµ‹çš„è½¨è¿¹ç‚¹æ‹Ÿåˆçš„è½¨è¿¹ä¸å®æµ‹posæ•°æ®å¯¹æ¯”ï¼Œå‘ç°å‘è¡Œè½¦æ–¹å‘å·¦ä¾§å­˜åœ¨å¤§çº¦
+            %2cmå·¦å³çš„ç³»ç»Ÿè¯¯å·®ï¼Œåœ¨è¡¥å¿äº†4ä¸ªæ ·æœ¬è½¨è¿¹ç‚¹è·ç¦»åç»“æœå¾—åˆ°è¾ƒå¤§æ”¹å–„ï¼Œæ¨æµ‹
+            %å¯èƒ½æ˜¯æµ‹é‡è½¦æ ‡å®šæ—¶äº§ç”Ÿçš„è¯¯å·®
+            minDsPointOrder=ceil((linePointArray(1,1)+linePointArray(nMinDs,1))/2)-4;%æœ€å°é—´éš”å¯¹åº”çš„å·¦ç‚¹åºå·   
             if minDsPointOrder<1
                 minDsPointOrder = 1;
             end
@@ -50,7 +50,7 @@ function tracePointData = searchtracepoint(pointCloudData)
     end
     nTracePoint = iTracePoint;
     tracePointData = centerPointArray(1:nTracePoint,:);
-%     %¶Ô¹ì¼£Ïß·Ö¶ÎÄâºÏ,ÕâÀïÒÔ10Ã×¼ä¸ô¶ş½×¶àÏîÊ½ÄâºÏ
+%     %å¯¹è½¨è¿¹çº¿åˆ†æ®µæ‹Ÿåˆ,è¿™é‡Œä»¥10ç±³é—´éš”äºŒé˜¶å¤šé¡¹å¼æ‹Ÿåˆ
 % %     segmentArray = zeros(nCenterPoint/10,1);
 %     segmentArray(1) = 1;
 %     iSegmentArray = 1;
@@ -59,7 +59,7 @@ function tracePointData = searchtracepoint(pointCloudData)
 %     for i = 1:nCenterPoint,
 %         x = centerPointArray(i,1);
 %         y = centerPointArray(i,2);
-%         %¹ì¼£µãÖ®¼äµÄ¼ä¸ô¾àÀë
+%         %è½¨è¿¹ç‚¹ä¹‹é—´çš„é—´éš”è·ç¦»
 %         dist = sqrt((x-preX)^2+(y-preY)^2);
 %         if dist>10,
 %             iSegmentArray = iSegmentArray+1;
@@ -78,7 +78,7 @@ function tracePointData = searchtracepoint(pointCloudData)
 %         ydata = traceTemp(:,2);
 %         hdata = traceTemp(:,3);
 %         p=polyfit(xdata,ydata,1);
-%         %µÈ·Ö³É100¸ö¼ä¸ô
+%         %ç­‰åˆ†æˆ100ä¸ªé—´éš”
 %         x1 = linspace(centerPointArray(nStart,1),centerPointArray(nEnd,1));
 %         y1 = polyval(p,x1);
 %         step = (nEnd-nStart)/100;

@@ -1,6 +1,6 @@
 function [imageData,gridArray] = convertpointcloud2img(pointCloudData,pxielSize,radius)
 %
-% -radius:ÏñËØ²åÖµ°ë¾¶£¬¹ı´ó»áÔö¼Ó¼ÆËãÁ¿£¬¹ıĞ¡Í¼Ïñ»á²úÉúºÚ¶´ÏñËØµã£¬Ò»°ãÉèÖÃÎªµãµÄ¼ä¸ô´óĞ¡
+% -radius:åƒç´ æ’å€¼åŠå¾„ï¼Œè¿‡å¤§ä¼šå¢åŠ è®¡ç®—é‡ï¼Œè¿‡å°å›¾åƒä¼šäº§ç”Ÿé»‘æ´åƒç´ ç‚¹ï¼Œä¸€èˆ¬è®¾ç½®ä¸ºç‚¹çš„é—´éš”å¤§å°
 % datetime('now','TimeZone','local','Format','HH:mm:ss Z')
 if ~exist('radius','var')||isempty(radius),radius = pxielSize*3;end
 %     pointCloudFilePath = 'circle_30d60d_All.xyz';
@@ -9,24 +9,24 @@ if ~exist('radius','var')||isempty(radius),radius = pxielSize*3;end
     maxI = max(pointCloudData(:,4));
     minI = min(pointCloudData(:,4));
     [width,height,minX,minY,maxX,maxY] = calculatesize(pointCloudData,pxielSize);
-    gridArray = gridpoint(pointCloudData,pxielSize);%¸ñÍø»¯
-    greyImage = idw(gridArray,minX,minY,maxI,minI,pxielSize,radius);%²åÖµ£¬±È½ÏºÄÊ± 
+    gridArray = gridpoint(pointCloudData,pxielSize);%æ ¼ç½‘åŒ–
+    greyImage = idw(gridArray,minX,minY,maxI,minI,pxielSize,radius);%æ’å€¼ï¼Œæ¯”è¾ƒè€—æ—¶ 
 %    img =  imread('qq.png');
 %    img = rgb2gray(img);
 %    hist =  imhist(img); 
 %     [imageData,T] = histeq(greyImage);
     imageData = greyImage;
 %     figure,plot((0:255)/255,T);
-%     imwrite(imageData,'car.png');%Í¼ÏñÉú³É
+%     imwrite(imageData,'car.png');%å›¾åƒç”Ÿæˆ
 % datetime('now','TimeZone','local','Format','HH:mm:ss Z')
 end
 
 function  normPara = normalizegray(imageArray)
 %correct grat value
-%¶ÔÏñËØ¸ñÍøÊı¾İ½øĞĞÏ¡Êè²ÉÑù¹éÒ»»¯´¦Àí
-%È¡×ÜÁ¿Íò·ÖÖ®Ò»¸öÏñËØµã½øĞĞ¹éÒ»»¯²ÉÑù
+%å¯¹åƒç´ æ ¼ç½‘æ•°æ®è¿›è¡Œç¨€ç–é‡‡æ ·å½’ä¸€åŒ–å¤„ç†
+%å–æ€»é‡ä¸‡åˆ†ä¹‹ä¸€ä¸ªåƒç´ ç‚¹è¿›è¡Œå½’ä¸€åŒ–é‡‡æ ·
 [row,col] = size(imageArray);
-rowNum = ceil(row/100);%ĞĞ²ÉÑù¸öÊı
+rowNum = ceil(row/100);%è¡Œé‡‡æ ·ä¸ªæ•°
 colNum = ceil(col/100);
    indexRow= getsampleindex(row,rowNum); 
    indexCol= getsampleindex(col,colNum); 
@@ -65,14 +65,14 @@ end
 
 function imageOut = idw(imageArray,minX,minY,maxI,minI,pxielSize,radius)
 %inverse distance weighted interpolation
-% -radius £º 0.10;²åÖµ°ë¾¶£¬¿ÉÒÔÌî²¹¿Õ¶´ÏñËØµã
-nGrid = ceil(radius/pxielSize) - 1;%»Ò¶ÈÖµÊÜÖÜÎ§nGrid¸ö¸ñÍøÓ°Ïì
+% -radius ï¼š 0.10;æ’å€¼åŠå¾„ï¼Œå¯ä»¥å¡«è¡¥ç©ºæ´åƒç´ ç‚¹
+nGrid = ceil(radius/pxielSize) - 1;%ç°åº¦å€¼å—å‘¨å›´nGridä¸ªæ ¼ç½‘å½±å“
 [height,width] = size(imageArray);
 imageOut = zeros(height,width);
-% normPara = normalizegray(imageArray);%¹éÒ»»¯½üËÆÏµÊı
+% normPara = normalizegray(imageArray);%å½’ä¸€åŒ–è¿‘ä¼¼ç³»æ•°
 if maxI~=minI,
-    normPara = 1/abs(0.8*maxI-minI);%´óÓÚ0.8maxIµÄÏñËØµã»á
-    normPara = 1/abs(maxI-minI);%´óÓÚ0.8maxIµÄÏñËØµã»á
+    normPara = 1/abs(0.8*maxI-minI);%å¤§äº0.8maxIçš„åƒç´ ç‚¹ä¼š
+    normPara = 1/abs(maxI-minI);%å¤§äº0.8maxIçš„åƒç´ ç‚¹ä¼š
 else
     normPara = 1;
 end
@@ -82,7 +82,7 @@ end
 %             a=0;
 %         end
         for iWidth=1:width,
-            %±éÀúËùÓĞ¸ñÍø
+            %éå†æ‰€æœ‰æ ¼ç½‘
             xLR = iWidth - nGrid;
             yLR = iHeight - nGrid;
             xRB = iWidth + nGrid;
@@ -100,15 +100,15 @@ end
                 yRB=height;
             end
             pointsArray = imageArray(yLR:yRB,xLR:xRB);
-            interX = minX+(iWidth-1)*pxielSize+0.5*pxielSize;%²åÖµÖĞĞÄ×ø±ê
+            interX = minX+(iWidth-1)*pxielSize+0.5*pxielSize;%æ’å€¼ä¸­å¿ƒåæ ‡
             interY = minY+(iHeight-1)*pxielSize+0.5*pxielSize;
             [wPoints,hPoints] = size(pointsArray);
             nPoints=0;
-            points = zeros(100,4);%ÏÈ³õÊ¼»¯50¸öÄÚ´æ£¬±ÜÃâºóÃæÆµ·±¸Ä±ä³¤¶È
+            points = zeros(100,4);%å…ˆåˆå§‹åŒ–50ä¸ªå†…å­˜ï¼Œé¿å…åé¢é¢‘ç¹æ”¹å˜é•¿åº¦
             for m=1:wPoints,
                 for n=1:hPoints,
-                    %±éÀúÓ°Ïì·¶Î§ÄÚµÄ¸ñÍøµã
-                    %Ö÷ÒªÔÚÕâÀï¼ÆËãºÄ·ÑÊ±¼ä
+                    %éå†å½±å“èŒƒå›´å†…çš„æ ¼ç½‘ç‚¹
+                    %ä¸»è¦åœ¨è¿™é‡Œè®¡ç®—è€—è´¹æ—¶é—´
                     point = pointsArray{m,n};
                     nPoint = size(point,1);
                     if nPoint==0,
@@ -129,9 +129,9 @@ end
                 y = points(i,2);
                 ins = points(i,4);
                 dist = norm([interX-x interY-y]);
-                %¶¨È¨´ÎÊıÔ½¸ß£¬²åÖµ½á¹û¶Ô±È¶ÈÔ½´ó£¬Ò»°ã¸ßÓÚ3´Î·½Ê±½á¹û¼´Ç÷ÓÚÎÈ¶¨
+                %å®šæƒæ¬¡æ•°è¶Šé«˜ï¼Œæ’å€¼ç»“æœå¯¹æ¯”åº¦è¶Šå¤§ï¼Œä¸€èˆ¬é«˜äº3æ¬¡æ–¹æ—¶ç»“æœå³è¶‹äºç¨³å®š
                 weight = (pxielSize/dist)^3;
-                %µÈÈ¨²åÖµ£¬½á¹û±È½ÏÄ£ºı
+                %ç­‰æƒæ’å€¼ï¼Œç»“æœæ¯”è¾ƒæ¨¡ç³Š
 %               weight = 1;
                 insOut = insOut+weight*(ins-minI);
                 weightTotal = weightTotal+weight;
@@ -151,15 +151,15 @@ function stripsArray = cut2strips(pointData,nStrips,startValue,endValue,pxielSiz
     if isempty(pointData),
         return;
     end
-    pointData = sortrows(pointData,type);%°´x×ø±êÅÅĞò
+    pointData = sortrows(pointData,type);%æŒ‰xåæ ‡æ’åº
     nPoint = size(pointData,1);
-    valueArray = pointData(:,type);%·Ö¸îµÄÒÀ¾İ£¬Èç°´x»òÕßy×ø±ê
+    valueArray = pointData(:,type);%åˆ†å‰²çš„ä¾æ®ï¼Œå¦‚æŒ‰xæˆ–è€…yåæ ‡
     cutStart = startValue;
     cutEnd = startValue + pxielSize;
     iPoint=1;
     value = valueArray(1);
-    isEndPoint = false;%ÊÇ·ñ±éÀúµ½×îºóÒ»¸öµã
-    for i = 1:nStrips,%·Ö³ÉnStripsÌõ
+    isEndPoint = false;%æ˜¯å¦éå†åˆ°æœ€åä¸€ä¸ªç‚¹
+    for i = 1:nStrips,%åˆ†æˆnStripsæ¡
         strip = [];
         iStripPoint = 0;
         while value<cutEnd,
@@ -207,7 +207,7 @@ end
 
 function index = getsampleindex(nPoint,nSample)
 %
-%ÔÚ1~nPointÖĞËæ»ú³éÈ¡nSample¸ö²»ÖØ¸´¶ÔÏñ£¬·µ»Ø¶ÔÏóË÷ÒıºÅ
+%åœ¨1~nPointä¸­éšæœºæŠ½å–nSampleä¸ªä¸é‡å¤å¯¹åƒï¼Œè¿”å›å¯¹è±¡ç´¢å¼•å·
     index = -ones(nSample,1);
     iSample = 0;
     while iSample<nSample,

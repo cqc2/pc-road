@@ -1,17 +1,17 @@
 function roadPoint = getroadbyscanline(ScanLineArray,curbHeight,minCurbSlope,fluctuateH,minRoadPoinNumber)
 %abstract road point from scanline points.
 %
-% -minRoadPoinNumber:Â·Ãæµã×îÉÙµã¸öÊı£¬Ğ¡ÓÚ´Ë¸öÊıµÄÉ¨ÃèÏß¶Î²»ÈÏÎªÊÇÂ·Ãæ£¬´Ë²Î
-%                    Êı¿ÉÒÔÂÇÈ¥¸öÊı½ÏÉÙµÄÔÓµã£¬Ò²¿ÉÒÔÂËµôÔ¶ÀëÂ·ÃæµÄ½¨ÖşÎï£¬´Î
-%                    ²ÎÊıÉèÖÃÓëÉ¨ÃèÃÜ¶ÈÓĞ¹Ø£¬Ò»°ã¿ÉÉèÖÃÎªµÀÂ·ÉÏÒ»ÌõÉ¨ÃèÏßµã¸ö
-%                    ÊıµÄÒ»°ë
-% minRoadPoinNumber = 350;%ÊÊºÏÎäººÊı¾İ
-% minRoadPoinNumber = 30;%ÊÊºÏsickÉ¨ÃèÒÇÊı¾İ
+% -minRoadPoinNumber:è·¯é¢ç‚¹æœ€å°‘ç‚¹ä¸ªæ•°ï¼Œå°äºæ­¤ä¸ªæ•°çš„æ‰«æçº¿æ®µä¸è®¤ä¸ºæ˜¯è·¯é¢ï¼Œæ­¤å‚
+%                    æ•°å¯ä»¥è™‘å»ä¸ªæ•°è¾ƒå°‘çš„æ‚ç‚¹ï¼Œä¹Ÿå¯ä»¥æ»¤æ‰è¿œç¦»è·¯é¢çš„å»ºç­‘ç‰©ï¼Œæ¬¡
+%                    å‚æ•°è®¾ç½®ä¸æ‰«æå¯†åº¦æœ‰å…³ï¼Œä¸€èˆ¬å¯è®¾ç½®ä¸ºé“è·¯ä¸Šä¸€æ¡æ‰«æçº¿ç‚¹ä¸ª
+%                    æ•°çš„ä¸€åŠ
+% minRoadPoinNumber = 350;%é€‚åˆæ­¦æ±‰æ•°æ®
+% minRoadPoinNumber = 30;%é€‚åˆsickæ‰«æä»ªæ•°æ®
 if ~exist('curbHeight','var') || isempty(curbHeight),curbHeight = []; end
 if ~exist('minCurbSlope','var') || isempty(minCurbSlope), minCurbSlope = []; end
 if ~exist('fluctuateH','var') || isempty(fluctuateH), fluctuateH = []; end
 if ~exist('minRoadPoinNumber','var') || isempty(minRoadPoinNumber), minRoadPoinNumber = 350; end
-%ÓÉ¸ß¶È¡¢µãÃÜ¶È¡¢¼¸ºÎĞÎÌ¬×ÛºÏÉ¸Ñ¡
+%ç”±é«˜åº¦ã€ç‚¹å¯†åº¦ã€å‡ ä½•å½¢æ€ç»¼åˆç­›é€‰
     nScanLine = size(ScanLineArray,2);
     nPoint = 0;
     for i=1:nScanLine,
@@ -33,8 +33,8 @@ if ~exist('minRoadPoinNumber','var') || isempty(minRoadPoinNumber), minRoadPoinN
         criticalPoint = getroughcriticalpoint(ScanLinePoint,curbHeight,minCurbSlope,fluctuateH);
         nScanLinePoint = size(ScanLinePoint.x,1);
         if nScanLinePoint<minRoadPoinNumber
-            %´Ë²ÎÊıÓëÊı¾İµãÃÜ¶ÈÓĞ¹Ø
-            %Ğ¡ÓÚ30¸öµãÔòºöÂÔµô£¬ÒòÎª¹ı¶ÈÇĞÆ¬Ê±¿ÉÄÜ°ÑÉÙÁ¿ÔÓµãÈÏÎªÊÇÒ»ÌõÉ¨ÃèÏß
+            %æ­¤å‚æ•°ä¸æ•°æ®ç‚¹å¯†åº¦æœ‰å…³
+            %å°äº30ä¸ªç‚¹åˆ™å¿½ç•¥æ‰ï¼Œå› ä¸ºè¿‡åº¦åˆ‡ç‰‡æ—¶å¯èƒ½æŠŠå°‘é‡æ‚ç‚¹è®¤ä¸ºæ˜¯ä¸€æ¡æ‰«æçº¿
             continue;
         end
         ss = nScanLinePoint;

@@ -1,14 +1,14 @@
 function I = imfillnan(I,type,t)
-% ���Ҷ�ͼ����nan����0ֵ��������ͼ��Ĳ�����ֵ��䣬����߽紦�ָ����
-% t - �Ҷ����ϵ����Ĭ��ֵΪ1������ǻҶȲ����ȵ�ͼ�񣬿���t=0.5
+% 将灰度图像中nan或者0值的像素用图像的采样均值填充，避免边界处分割错误
+% t - 灰度填充系数，默认值为1，如果是灰度不均匀的图像，可令t=0.5
 % 
-% �������������Ե�Ҷ�ֵ���أ������þ�ֵ����
+% 最理想的是做边缘灰度值延拓，这里用均值代替
 % 
 
 if ~exist('type','var')||isempty(type),type = 0;end
 if ~exist('t','var')||isempty(t),t = 1;end
 if 0==type
-    %ȫ�־�ֵ���
+    %全局均值填充
       [r,c] = size(I);
         num = 0;
         grays = [];
@@ -25,7 +25,7 @@ if 0==type
         grays = sort(grays);
         backGray = mean(grays(1:ceil(num)));
 else
-    %�߽紦8�����ֵ(Ĭ��)
+    %边界处8邻域均值(默认)
     I(isnan(I))=0;
     I2 = I;
     I2(I2~=0)=1;

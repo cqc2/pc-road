@@ -1,6 +1,6 @@
 %--------------------------------------------------------------------------
 %Random Sample Consensus(RANSAC)
-%Author£ºQichao Chen
+%Authorï¼šQichao Chen
 %Date:20170317
 %--------------------------------------------------------------------------
 
@@ -9,16 +9,16 @@ function  [coefficients,percet,pointIndex] = ransac(pointData,shapeType,deviatio
 % Random Sample Consensus
 % [coefficients,percet,pointIndex] = ransac(pointData,shapeType,deviation,permitIterations)
 % INPUT:
-% pointData - ´ıÄâºÏÊı¾İ£¬¿ÉÒÔÊÇ¶àÎ¬µãÔÆÊı¾İ£¬µ«ÄâºÏÖ»Ê¹ÓÃÇ°Á½Î¬
-% shapeType - ÄâºÏÀàĞÍ£¬1Ò»´Î¶şÎ¬ÇúÏß¡¢2¶ş´Î¶şÎ¬ÇúÏß¡¢3Èı´Î¶şÎ¬ÇúÏß¡¢'plane'
-%             Æ½ÃæÄâºÏ¡¢'circle'Ô²ÄâºÏ
-% deviation - ÔÊĞíÆ«ÀëÁ¿
-% permitIterations - ×î´óµü´ú´ÎÊı
+% pointData - å¾…æ‹Ÿåˆæ•°æ®ï¼Œå¯ä»¥æ˜¯å¤šç»´ç‚¹äº‘æ•°æ®ï¼Œä½†æ‹Ÿåˆåªä½¿ç”¨å‰ä¸¤ç»´
+% shapeType - æ‹Ÿåˆç±»å‹ï¼Œ1ä¸€æ¬¡äºŒç»´æ›²çº¿ã€2äºŒæ¬¡äºŒç»´æ›²çº¿ã€3ä¸‰æ¬¡äºŒç»´æ›²çº¿ã€'plane'
+%             å¹³é¢æ‹Ÿåˆã€'circle'åœ†æ‹Ÿåˆ
+% deviation - å…è®¸åç¦»é‡
+% permitIterations - æœ€å¤§è¿­ä»£æ¬¡æ•°
 %
 % OUTPUT:
-% coefficients - ÄâºÏ½á¹ûµÄÏµÊı
-% percet - ÔÚÆ«ÒÆÁ¿ÄÚµÄÔªËØÕ¼×ÜÌå±ÈÀı
-% pointIndex - ÔÚÆ«ÒÆÁ¿ÄÚµÄÔªËØË÷Òı
+% coefficients - æ‹Ÿåˆç»“æœçš„ç³»æ•°
+% percet - åœ¨åç§»é‡å†…çš„å…ƒç´ å æ€»ä½“æ¯”ä¾‹
+% pointIndex - åœ¨åç§»é‡å†…çš„å…ƒç´ ç´¢å¼•
 
 if ~exist('permitIterations','var') || isempty(permitIterations),
     permitIterations = 100;
@@ -34,46 +34,46 @@ nSatisfiedPoint = 0;
 mostSatisfiedPoint = 0;
 iterations = 0;
 coefficients = [];
-while nSatisfiedPoint < nPoint*2/3 &&  iterations<permitIterations,      %ÓĞ2/3µÄÊı¾İ·ûºÏÄâºÏÄ£ĞÍ»ò´ïµ½×î´óµü´ú´ÎÊı¾Í¿ÉÒÔÍË³öÁË
+while nSatisfiedPoint < nPoint*2/3 &&  iterations<permitIterations,      %æœ‰2/3çš„æ•°æ®ç¬¦åˆæ‹Ÿåˆæ¨¡å‹æˆ–è¾¾åˆ°æœ€å¤§è¿­ä»£æ¬¡æ•°å°±å¯ä»¥é€€å‡ºäº†
     switch shapeType
         case 1
-            [nSatisfiedPoint,coefficients,pointIndex]=  ransacline(pointData,deviation);%Ò»´Î¶şÎ¬ÇúÏß
+            [nSatisfiedPoint,coefficients,pointIndex]=  ransacline(pointData,deviation);%ä¸€æ¬¡äºŒç»´æ›²çº¿
         case 2
-            [nSatisfiedPoint,coefficients]=  ransaccurve2(pointData,deviation);%¶ş´Î¶şÎ¬ÇúÏß
+            [nSatisfiedPoint,coefficients]=  ransaccurve2(pointData,deviation);%äºŒæ¬¡äºŒç»´æ›²çº¿
         case 3
-            [nSatisfiedPoint,coefficients]=  ransaccurve3(pointData,deviation);%Èı´Î¶şÎ¬ÇúÏß
+            [nSatisfiedPoint,coefficients]=  ransaccurve3(pointData,deviation);%ä¸‰æ¬¡äºŒç»´æ›²çº¿
         case 'plane'
-            [nSatisfiedPoint,coefficients]=  ransacplane(pointData,deviation);%Æ½ÃæÄâºÏ
+            [nSatisfiedPoint,coefficients]=  ransacplane(pointData,deviation);%å¹³é¢æ‹Ÿåˆ
         case 'circle'
-            [nSatisfiedPoint,coefficients]=  ransaccircle(pointData,deviation);%Ô²ÄâºÏ
+            [nSatisfiedPoint,coefficients]=  ransaccircle(pointData,deviation);%åœ†æ‹Ÿåˆ
         otherwise
             return;
     end
-    if nSatisfiedPoint>mostSatisfiedPoint,            %ÕÒµ½·ûºÏÄâºÏÖ±ÏßÊı¾İ×î¶àµÄÄâºÏÖ±Ïß
+    if nSatisfiedPoint>mostSatisfiedPoint,            %æ‰¾åˆ°ç¬¦åˆæ‹Ÿåˆç›´çº¿æ•°æ®æœ€å¤šçš„æ‹Ÿåˆç›´çº¿
         mostSatisfiedPoint = nSatisfiedPoint;
-        bestCoefficients=coefficients;          %ÕÒµ½×îºÃµÄÄâºÏÖ±Ïß
+        bestCoefficients=coefficients;          %æ‰¾åˆ°æœ€å¥½çš„æ‹Ÿåˆç›´çº¿
     end  
     iterations=iterations+1;
 end
- percet = mostSatisfiedPoint/nPoint;%·ûºÏÄâºÏ²ÎÊıµÄµã±ÈÀı
+ percet = mostSatisfiedPoint/nPoint;%ç¬¦åˆæ‹Ÿåˆå‚æ•°çš„ç‚¹æ¯”ä¾‹
 if mostSatisfiedPoint~=0,
     coefficients = bestCoefficients;
 else
-    %µü´ú²»ÊÕÁ²
+    %è¿­ä»£ä¸æ”¶æ•›
     return;
 end
-% coefficients=polyfit(pointData(:,1),pointData(:,2),2); %ÆÕÍ¨×îĞ¡¶ø³ÉÄâºÏ
+% coefficients=polyfit(pointData(:,1),pointData(:,2),2); %æ™®é€šæœ€å°è€Œæˆæ‹Ÿåˆ
 %     drawresult(pointData,shapeType,coefficients);
 end
 
 function drawresult(pointData,shapeType,coefficients)
-%ÏÔÊ¾·ûºÏ×î¼ÑÄâºÏµÄÊı¾İ
+%æ˜¾ç¤ºç¬¦åˆæœ€ä½³æ‹Ÿåˆçš„æ•°æ®
 nPoint = size(pointData,1);
     if shapeType==1,
         for i=1:nPoint
             plot(pointData(i,1),pointData(i,2),'r.');hold on
         end
-        %»æÖÆÄâºÏµÄÖ±Ïß
+        %ç»˜åˆ¶æ‹Ÿåˆçš„ç›´çº¿
         x = [pointData(1,1) ;pointData(nPoint,1)];
         y = coefficients(1,1)*x+[coefficients(1,2);coefficients(1,2)];
         plot(x,y,'b-');
@@ -81,7 +81,7 @@ nPoint = size(pointData,1);
         for i=1:nPoint
             plot(pointData(i,1),pointData(i,2),'r.');hold on
         end
-        %»æÖÆ¶ş´ÎÇúÏß
+        %ç»˜åˆ¶äºŒæ¬¡æ›²çº¿
         if 1 == size(coefficients,2),
             x= coefficients(1,1)*ones(nPoint,1);
             y = pointData(:,2);
@@ -94,7 +94,7 @@ nPoint = size(pointData,1);
         for i=1:nPoint
             plot3(pointData(i,1),pointData(i,2),pointData(i,3),'r.');hold on
         end
-        %»æÖÆÆ½Ãæ
+        %ç»˜åˆ¶å¹³é¢
         if pointData(1,1)>pointData(nPoint,1),
             L = pointData(nPoint,1);R=pointData(1,1);
         else
@@ -129,18 +129,18 @@ function [nSatisfiedPoint ,coefficients,pointIndex]=  ransacline(pointData,devia
 %line
     nPoint = size(pointData,1);
     nSatisfiedPoint = 0;
-    SampIndex=floor(1+(nPoint-1)*rand(2,1));  %²úÉúÁ½¸öËæ»úË÷Òı£¬ÕÒÑù±¾ÓÃ£¬floorÏòÏÂÈ¡Õû
-    samp(1,:)=pointData(SampIndex(1),1:2);      %¶ÔÔ­Êı¾İËæ»ú³éÑùÁ½¸öÑù±¾
+    SampIndex=floor(1+(nPoint-1)*rand(2,1));  %äº§ç”Ÿä¸¤ä¸ªéšæœºç´¢å¼•ï¼Œæ‰¾æ ·æœ¬ç”¨ï¼Œfloorå‘ä¸‹å–æ•´
+    samp(1,:)=pointData(SampIndex(1),1:2);      %å¯¹åŸæ•°æ®éšæœºæŠ½æ ·ä¸¤ä¸ªæ ·æœ¬
     samp(2,:)=pointData(SampIndex(2),1:2);
     x = samp(:,1);
     y = samp(:,2);
     if x(1,1)~=x(2,1),
         coefficients=polyfit(x,y,1);  
     elseif x(1,1)==x(2,1)&&y(1,1)~=y(2,1),
-        %Ğ±ÂÊÎŞÇî´óÊ±
+        %æ–œç‡æ— ç©·å¤§æ—¶
         coefficients = x(1,1);
     else
-        %Á½µã×ø±êÏàÍ¬£¬Çó½âÌõ¼ş²»×ã
+        %ä¸¤ç‚¹åæ ‡ç›¸åŒï¼Œæ±‚è§£æ¡ä»¶ä¸è¶³
         nSatisfiedPoint = 0;
         coefficients = [];
         pointIndex = [];
@@ -173,16 +173,16 @@ function [nSatisfiedPoint ,coefficients]=  ransaccurve2(pointData,deviation)
             SampIndex(nRand,1) = rand0;
         end
     end
-    samp(1,:)=pointData(SampIndex(1),1:2);      %¶ÔÔ­Êı¾İËæ»ú³éÑùÁ½¸öÑù±¾
+    samp(1,:)=pointData(SampIndex(1),1:2);      %å¯¹åŸæ•°æ®éšæœºæŠ½æ ·ä¸¤ä¸ªæ ·æœ¬
     samp(2,:)=pointData(SampIndex(2),1:2);
     samp(3,:)=pointData(SampIndex(3),1:2);
     x = samp(:,1);
     y = samp(:,2);
     if x(1,1)~=x(2,1)&&x(1,1)~=x(3,1)&&x(2,1)~=x(3,1),
-        %Èıµã²»Í¬
+        %ä¸‰ç‚¹ä¸åŒ
         coefficients=polyfit(x,y,1);
     elseif x(1,1)==x(2,1)&&x(1,1)==x(3,1)&&x(2,1)==x(3,1)&&y(1,1)~=y(2,1)&&y(1,1)~=y(3,1)&&y(2,1)~=y(3,1),
-        %Ğ±ÂÊÎŞÇî´óÊ±
+        %æ–œç‡æ— ç©·å¤§æ—¶
         coefficients = x(1,1);
         dist = abs(pointData(:,1) - coefficients.*ones(nPoint,1));
         for i=1:nPoint,
@@ -192,27 +192,27 @@ function [nSatisfiedPoint ,coefficients]=  ransaccurve2(pointData,deviation)
         end
         return;
     else
-        %ÖÁÉÙ´æÔÚÁ½µã×ø±êÏàÍ¬£¬Çó½âÌõ¼ş²»×ã
+        %è‡³å°‘å­˜åœ¨ä¸¤ç‚¹åæ ‡ç›¸åŒï¼Œæ±‚è§£æ¡ä»¶ä¸è¶³
         nSatisfiedPoint = 0;
         coefficients = [];
         return;
     end
     
     coefficients=polyfit(x,y,2);    
-    a = coefficients(1,1);%¶ş´ÎÇúÏßµÄÏµÊı
+    a = coefficients(1,1);%äºŒæ¬¡æ›²çº¿çš„ç³»æ•°
     b = coefficients(1,2);
     c = coefficients(1,3);
     for iPoint = 1:nPoint,
         X = pointData(iPoint,1);
         Y = pointData(iPoint,2);
-        coeffi = [2*a^2 3*a*b 2*a*c-2*a*Y+b^2+1 b*c-b*Y-X];%¼«Öµ·½³ÌµÄÏµÊı
+        coeffi = [2*a^2 3*a*b 2*a*c-2*a*Y+b^2+1 b*c-b*Y-X];%æå€¼æ–¹ç¨‹çš„ç³»æ•°
         root = roots(coeffi);
         minDist = -1;
         for i=1:3,
             x = root(i);
             if isreal(x),
-                %ÔÚÊµÊı½âÖĞÒÔ×î¶Ì¾àÀëÎª×¼
-                x=real(x);%ÇúÏßÉÏÓë£¨X£¬Y¾àÀë×î½üµÄµã£©
+                %åœ¨å®æ•°è§£ä¸­ä»¥æœ€çŸ­è·ç¦»ä¸ºå‡†
+                x=real(x);%æ›²çº¿ä¸Šä¸ï¼ˆXï¼ŒYè·ç¦»æœ€è¿‘çš„ç‚¹ï¼‰
                 y = a*x^2+b*x+c;
                 dist = norm([X-x Y-y]);
                 if minDist==-1,
@@ -242,7 +242,7 @@ function [nSatisfiedPoint,coefficients]=  ransacplane(pointData,deviation)
             SampIndex(nRand,1) = rand0;
         end
     end
-    samp(1,:)=pointData(SampIndex(1),1:3);      %¶ÔÔ­Êı¾İËæ»ú³éÑù3¸öÑù±¾
+    samp(1,:)=pointData(SampIndex(1),1:3);      %å¯¹åŸæ•°æ®éšæœºæŠ½æ ·3ä¸ªæ ·æœ¬
     samp(2,:)=pointData(SampIndex(2),1:3);
     samp(3,:)=pointData(SampIndex(3),1:3);
     x = samp(:,1);
@@ -254,12 +254,12 @@ function [nSatisfiedPoint,coefficients]=  ransacplane(pointData,deviation)
     if r==3,
         coefficients = A\b;
     else
-      %Ìõ¼ş²»×ã£¬ÎŞ·¨Î¨Ò»È·¶¨Æ½Ãæ  
+      %æ¡ä»¶ä¸è¶³ï¼Œæ— æ³•å”¯ä¸€ç¡®å®šå¹³é¢  
       nSatisfiedPoint = 0;
       coefficients = [];
       return;
     end       
-    a1 = coefficients(1,1);%Æ½Ãæ·½³ÌµÄÏµÊı,Ax+By+Cz+1=0,ÆäÖĞ[A B C] = [a1 a2 a3]
+    a1 = coefficients(1,1);%å¹³é¢æ–¹ç¨‹çš„ç³»æ•°,Ax+By+Cz+1=0,å…¶ä¸­[A B C] = [a1 a2 a3]
     a2 = coefficients(2,1);
     a3 = coefficients(3,1);
     a4 = -1;
@@ -279,7 +279,7 @@ function [nSatisfiedPoint,coefficients] = ransaccircle(pointData,deviation)
     nSatisfiedPoint = 0;
     coefficients = [];
     index = getsampleindex(nPoint,3);
-    samp(1,:)=pointData(index(1),1:2);      %¶ÔÔ­Êı¾İËæ»ú³éÑù3¸öÑù±¾
+    samp(1,:)=pointData(index(1),1:2);      %å¯¹åŸæ•°æ®éšæœºæŠ½æ ·3ä¸ªæ ·æœ¬
     samp(2,:)=pointData(index(2),1:2);
     samp(3,:)=pointData(index(3),1:2);
     x1 = samp(1,1);
@@ -315,7 +315,7 @@ end
 
 function index = getsampleindex(nPoint,nSample)
 %
-%ÔÚ1~nPointÖĞËæ»ú³éÈ¡nSample¸ö²»ÖØ¸´¶ÔÏñ£¬·µ»Ø¶ÔÏóË÷ÒıºÅ
+%åœ¨1~nPointä¸­éšæœºæŠ½å–nSampleä¸ªä¸é‡å¤å¯¹åƒï¼Œè¿”å›å¯¹è±¡ç´¢å¼•å·
     index = -ones(nSample,1);
     iSample = 0;
     while iSample<nSample,

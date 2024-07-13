@@ -1,10 +1,10 @@
 function outpos = cutuselesspos(pointCloudData,posData_in,extendD)
 % 
 % outpos = cutuselesspos(pointCloudData,posData_in,extendD)
-% È¥³ý²»ÐèÒªµÄposÊý¾Ý£¬Ö»ÁôÏÂµãÔÆÇøÓòÄÚµÄposÊý¾Ý
-% pointCloudData - µãÔÆÊý¾Ý
-% posData_in  - ¹ì¼£Êý¾Ý£¬½á¹¹ÌåÀàÐÍ
-% extendD - ¹ì¼£Êý¾ÝÇÐ¸îÊ±Á½Í·ÐèÒªÑÓ³¤µÄ¾àÀë
+% åŽ»é™¤ä¸éœ€è¦çš„posæ•°æ®ï¼Œåªç•™ä¸‹ç‚¹äº‘åŒºåŸŸå†…çš„posæ•°æ®
+% pointCloudData - ç‚¹äº‘æ•°æ®
+% posData_in  - è½¨è¿¹æ•°æ®ï¼Œç»“æž„ä½“ç±»åž‹
+% extendD - è½¨è¿¹æ•°æ®åˆ‡å‰²æ—¶ä¸¤å¤´éœ€è¦å»¶é•¿çš„è·ç¦»
 %
 
 if ~exist('extendD','var')||isempty(extendD),extendD = 0;end
@@ -30,7 +30,7 @@ idx2 = r2(1,1);
 d2 = r2(1,2);
 
 
- extendN = ceil(extendD/norm(posData(1,:)-posData(2,:)))+10;%ÑÓ³¤µÄposµã¸öÊý
+ extendN = ceil(extendD/norm(posData(1,:)-posData(2,:)))+10;%å»¶é•¿çš„posç‚¹ä¸ªæ•°
  if (idx1-extendN)>0
      idx1 = idx1-extendN;
  end

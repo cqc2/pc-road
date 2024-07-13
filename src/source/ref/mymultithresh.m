@@ -1,5 +1,5 @@
 function [thresh, metric] = mymultithresh(varargin)
-%´ËÎªMATLAB×Ô´øº¯Êý£¬ÂÔ×÷ÐÞ¸Ä
+%æ­¤ä¸ºMATLABè‡ªå¸¦å‡½æ•°ï¼Œç•¥ä½œä¿®æ”¹
 %MULTITHRESH Multi-level image thresholds using Otsu's method.
 %   THRESH = MULTITHRESH(A) computes a single threshold for image A using
 %   Otsu's method and returns it in THRESH. THRESH can be used to convert A
@@ -278,7 +278,7 @@ end
 % Convert to uint8 for fastest histogram computation.
 A = grayto8mex(A);
 counts = imhist(A,num_bins);
-counts(1) = 0;%ºöÂÔ0Ç¿¶ÈÖµ
+counts(1) = 0;%å¿½ç•¥0å¼ºåº¦å€¼
 p = counts / sum(counts);
 
 end

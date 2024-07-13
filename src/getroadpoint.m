@@ -1,14 +1,14 @@
 function getroadpoint
 %getroadpoint - get road point from sliced cloud point.
-%×¢Òâ£º´óÁ¿¼ÆËãÊ±Ò»¶¨Òª°Ñ»­Í¼Óï¾ä×¢ÊÍµô£¬·ñÔò»áºÜÂı£¡
+%æ³¨æ„ï¼šå¤§é‡è®¡ç®—æ—¶ä¸€å®šè¦æŠŠç”»å›¾è¯­å¥æ³¨é‡Šæ‰ï¼Œå¦åˆ™ä¼šå¾ˆæ…¢ï¼
 datetime('now','TimeZone','local','Format','HH:mm:ss Z')
 %     pointCloudFilePath = 'RawPointCloudData\#2Final_Point_Cloud_Data.xyz';
     pointCloudFilePath = 'dataspace_wuhan\data-20170418-085955.las';
     lasdata = LASreadAll(pointCloudFilePath);
     data = [lasdata.x lasdata.y lasdata.z lasdata.intensity];
     saveRoadFileName = 'data-20170418-085955_road';
-    %×¢Òâ£ºµ±Ê¹ÓÃÇĞÆ¬·¨Ê±£¬·Ö´Î¶ÁÈëÊı¾İ¿ÉÄÜ»áÒ»¸öÉ¨ÃèÒÇÊı¾İ¶ÁÍê²Å»á¶¼ÏÂÒ»¸ö£¬Ê¹Ö»¶ÔÒ»ÌõÉ¨ÃèÒÇÊı¾İÇĞÆ¬£¬¶ø²»ÊÇÍ¬Ê±¶ÔËùÓĞÊı¾İÇĞÆ¬
-    nPointEachTime = 1000000;%Ò»´Î´¦ÀíµãµÄ¸öÊı
+    %æ³¨æ„ï¼šå½“ä½¿ç”¨åˆ‡ç‰‡æ³•æ—¶ï¼Œåˆ†æ¬¡è¯»å…¥æ•°æ®å¯èƒ½ä¼šä¸€ä¸ªæ‰«æä»ªæ•°æ®è¯»å®Œæ‰ä¼šéƒ½ä¸‹ä¸€ä¸ªï¼Œä½¿åªå¯¹ä¸€æ¡æ‰«æä»ªæ•°æ®åˆ‡ç‰‡ï¼Œè€Œä¸æ˜¯åŒæ—¶å¯¹æ‰€æœ‰æ•°æ®åˆ‡ç‰‡
+    nPointEachTime = 1000000;%ä¸€æ¬¡å¤„ç†ç‚¹çš„ä¸ªæ•°
     rows = size(data,1); 
     nData = ceil(rows/nPointEachTime);
     PointSet= struct('x',0,'y',0,'h',0,'ins',0);
@@ -33,7 +33,7 @@ datetime('now','TimeZone','local','Format','HH:mm:ss Z')
     PointSet= struct('x',0,'y',0,'h',0,'ins',0);
     Road=repmat(PointSet,[1 nData]);
     %---------------------------
-    %´´½¨²¢ĞĞ³Ø
+    %åˆ›å»ºå¹¶è¡Œæ± 
     if isempty(gcp('nocreate'))
         parpool('local',4);
     end

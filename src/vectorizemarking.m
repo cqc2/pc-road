@@ -1,16 +1,16 @@
 function vectorizemarking()
 %
 %
-addpath(genpath(pwd));%½«µ±Ç°Ä¿Â¼ÎÄ¼ş¼Ğ¼°Æä×ÓÄ¿Â¼Ìí¼Ó½øÎÄ¼ş¼Ğ
+addpath(genpath(pwd));%å°†å½“å‰ç›®å½•æ–‡ä»¶å¤¹åŠå…¶å­ç›®å½•æ·»åŠ è¿›æ–‡ä»¶å¤¹
 % clusterDir = 'CASEDATA\YingwuzhouBridge\segMarking2\';
 % clusterDir = 'CASEDATA\FazhanAvenue\segMarking2\';
 % clusterDir = 'CASEDATA\ErqiBridge\segMarking\';
 % clusterDir = 'CASEDATA\MoshuiLake\segMarking2\';
 % clusterDir = 'CASEDATA\YingwuzhouBridge\segMarking2\';
-clusterDir = 'CASEDATA\test\'; %²»·ÖÇøÈ¥µôĞéÏß
-% clusterDir = 'CASEDATA\all-withut-solidline-5mÖØ¾ÛÀà\'; %²»·ÖÇøÈ¥µôĞéÏß ÖØ¾ÛÀà
-% clusterDir = 'CASEDATA\FazhanAvenue\test_zhiyoushixian\'; %·ÖÇø·Ö¸îµÄÊµÏß£¬ÔëÉù½Ï¶à
-% clusterDir = 'CASEDATA\ErqiBridge\test_zhiyoushixian\'; %·ÖÇø·Ö¸îµÄÊµÏß£¬ÔëÉù½Ï¶à
+clusterDir = 'CASEDATA\test\'; %ä¸åˆ†åŒºå»æ‰è™šçº¿
+% clusterDir = 'CASEDATA\all-withut-solidline-5mé‡èšç±»\'; %ä¸åˆ†åŒºå»æ‰è™šçº¿ é‡èšç±»
+% clusterDir = 'CASEDATA\FazhanAvenue\test_zhiyoushixian\'; %åˆ†åŒºåˆ†å‰²çš„å®çº¿ï¼Œå™ªå£°è¾ƒå¤š
+% clusterDir = 'CASEDATA\ErqiBridge\test_zhiyoushixian\'; %åˆ†åŒºåˆ†å‰²çš„å®çº¿ï¼Œå™ªå£°è¾ƒå¤š
 % clusterDir = 'CASEDATA\cluster4guideline\';
 % clusterDir = 'CASEDATA\ErqiBridge\erqi_bigpaper\';
 posFilePath1 ='CASEDATA\ErqiBridge\tracedata\road-all_GNSStrace.xyz';

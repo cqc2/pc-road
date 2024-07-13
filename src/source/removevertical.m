@@ -1,5 +1,5 @@
 function [newCluster,removedCluster] = removevertical(cluster,tracedata,limit_A)
-%È¥µô¾ØĞÎ·½ÏòÓë¹ì¼£Ïß²»½üËÆÆ½ĞĞßÀµÄ¾ÛÀà
+%å»æ‰çŸ©å½¢æ–¹å‘ä¸è½¨è¿¹çº¿ä¸è¿‘ä¼¼å¹³è¡Œå‘ƒçš„èšç±»
 if ~isfield(cluster,'center')
     cluster = getclusterinfo(cluster);
 end 
@@ -11,13 +11,13 @@ for i=1:size(cluster,2)
    [Idx,D] = rangesearch(Mdl,c,30);
    Idx = Idx{1};
    angle1 = cluster(i).angle;
-   isremoved = true;%±ê¼ÇÁ¿
-   if size(Idx,2)>=2%¼ÆËã¹ì¼£·½ÏòÖÁÉÙĞèÒª2¸öµã
+   isremoved = true;%æ ‡è®°é‡
+   if size(Idx,2)>=2%è®¡ç®—è½¨è¿¹æ–¹å‘è‡³å°‘éœ€è¦2ä¸ªç‚¹
        dx =  tracedata(Idx(1),1)-tracedata(Idx(2),1);
        dy = tracedata(Idx(1),2)-tracedata(Idx(2),2);
-       angle2 = atand(dy/dx);%¹ì¼£½Ç¶È
+       angle2 = atand(dy/dx);%è½¨è¿¹è§’åº¦
        if angle2<0
-          angle2 = angle2+180;%½Ç¶È»»Ëãµ½0~180
+          angle2 = angle2+180;%è§’åº¦æ¢ç®—åˆ°0~180
        end
        if abs(angle1-angle2)<=limit_A
            nNewCluster = nNewCluster+1;

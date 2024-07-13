@@ -1,6 +1,6 @@
 function index = getsampleindex(nPoint,nSample)
 %
-%ÔÚ1~nPointÖĞËæ»ú³éÈ¡nSample¸ö²»ÖØ¸´¶ÔÏñ£¬·µ»Ø¶ÔÏóË÷ÒıºÅ
+%åœ¨1~nPointä¸­éšæœºæŠ½å–nSampleä¸ªä¸é‡å¤å¯¹åƒï¼Œè¿”å›å¯¹è±¡ç´¢å¼•å·
     index = -ones(nSample,1);
     iSample = 0;
     while iSample<nSample,

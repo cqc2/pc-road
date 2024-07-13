@@ -1,7 +1,7 @@
 function getroadpoint_batch(dataspaceFolder)
-addpath(genpath(pwd));%½«µ±Ç°Ä¿Â¼ÎÄ¼ş¼Ğ¼°Æä×ÓÄ¿Â¼Ìí¼Ó½øÎÄ¼ş¼Ğ
+addpath(genpath(pwd));%å°†å½“å‰ç›®å½•æ–‡ä»¶å¤¹åŠå…¶å­ç›®å½•æ·»åŠ è¿›æ–‡ä»¶å¤¹
 %---------------------------
-%´´½¨²¢ĞĞ³Ø
+%åˆ›å»ºå¹¶è¡Œæ± 
 % if isempty(gcp('nocreate'))
 %     parpool('local',6);
 % end
@@ -27,8 +27,8 @@ datetime('now','TimeZone','local','Format','HH:mm:ss Z')
         mkdir(xyzdatafolder);
     end
     iscomputeRoad = true;
-    iscomputeTrace = false;%ÊÇ·ñ¸ù¾İµãÃÜ¶È¼ÆËã¹ì¼£
-    isSliceTrace = false;%ÊÇ·ñ¸ù¾İÊ±¼ä´Á¶ÔGNSS¹ì¼£ÇĞÆ¬
+    iscomputeTrace = false;%æ˜¯å¦æ ¹æ®ç‚¹å¯†åº¦è®¡ç®—è½¨è¿¹
+    isSliceTrace = false;%æ˜¯å¦æ ¹æ®æ—¶é—´æˆ³å¯¹GNSSè½¨è¿¹åˆ‡ç‰‡
     
     for iflie = 1:nfile       
         if ~lasdataInfo(iflie).isdir           
@@ -48,7 +48,7 @@ datetime('now','TimeZone','local','Format','HH:mm:ss Z')
                 existRoadfilename = roadFolderInfo(i).name;
                 originalExistRoadfilename = getoriginalname(existRoadfilename);
                 if strcmp(originalLasFilename,originalExistRoadfilename)
-                    iscompute = false;%ÒÑ¾­´æÔÚ²»ÔÚ¼ÆËã
+                    iscompute = false;%å·²ç»å­˜åœ¨ä¸åœ¨è®¡ç®—
                     break;
                 end
             end
@@ -56,10 +56,10 @@ datetime('now','TimeZone','local','Format','HH:mm:ss Z')
                 continue;
             end         
             filepath = strcat(lasFilefolder,'/',originalLasFilename,'.las');
-            disp(strcat(originalLasFilename,'¿ªÊ¼ÌáÈ¡µÀÂ·'));
+            disp(strcat(originalLasFilename,'å¼€å§‹æå–é“è·¯'));
             [roadpoint,xyzdata] = getroadpoint(filepath);
             if iscomputeTrace
-                disp(strcat(originalLasFilename,'¿ªÊ¼ÌáÈ¡¹ì¼£'));
+                disp(strcat(originalLasFilename,'å¼€å§‹æå–è½¨è¿¹'));
                 roughTraceData = searchtracepoint(roadpoint);
                 traceData = curvefit(roughTraceData);  
                 posdataname = strcat(posdatafolder,originalLasFilename,'_trace');
@@ -87,7 +87,7 @@ else
     xyzdata = [];
     return;
 end
-    nPointEachTime = 1000000;%Ò»´Î´¦ÀíµãµÄ¸öÊı
+    nPointEachTime = 1000000;%ä¸€æ¬¡å¤„ç†ç‚¹çš„ä¸ªæ•°
     rows = size(xyzdata,1); 
     nData = ceil(rows/nPointEachTime);
     roadpoint = zeros(rows,4);

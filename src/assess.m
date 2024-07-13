@@ -8,8 +8,8 @@ addpath(genpath(pwd));
 % name = 'fazhan';type = 2;
 % name = 'moshuihu';type = 3;
 % name = 'yingwuzhou';type = 4;
-img_manual = im2double(importdata(strcat(name,'-manual.png')));%人工结果
-img = importdata(strcat(name,'.mat'));%原始图像
+img_manual = im2double(importdata(strcat(name,'-manual.png')));%浜哄伐缁撴灉
+img = importdata(strcat(name,'.mat'));%鍘熷鍥惧儚
 % imshow(img);
 % img = imgaussfilt(img,1);
 F_score = [];
@@ -43,7 +43,7 @@ if ~exist('B','var')||isempty(T) B = 0;end
 if ~exist('L','var')||isempty(T) L = 0;end
 if ~exist('R','var')||isempty(T) R = 0;end
 if ~exist('fillpara','var')||isempty(fillpara) fillpara = 0.5;end
-%图像裁剪
+%鍥惧儚瑁佸壀
 img = img(1+T:end-B,1+L:end-R);
 img_manual = img_manual(1+T:end-B,1+L:end-R);
 
@@ -61,9 +61,9 @@ dta = BW-img_manual;
 [tp,~] = find(dta==1);
 [fn,~] = find(dta==-1);
 [fp,~] = find(dta==2);
-TP = size(tp,1);%正常
-FN = size(fn,1);%残缺
-FP = size(fp,1);%溢出
+TP = size(tp,1);%姝ｅ父
+FN = size(fn,1);%娈嬬己
+FP = size(fp,1);%婧㈠嚭
 completeness = TP/(TP+FN);
 correctness = TP/(TP+FP);
 F_score = 2*completeness*correctness/(completeness+correctness);
